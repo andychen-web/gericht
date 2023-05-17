@@ -1,12 +1,13 @@
-import { Routes, Route } from "react-router-dom";
-import RestaurantHome from "./pages/RestaurantHome";
 import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./css/custom.css";
+import Navigation from "./components/Navbar";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<RestaurantHome />} />
-    </Routes>
+    <>
+      <Navigation />
+    </>
   );
 }
 export default App;

@@ -3,4 +3,21 @@
 }
 .nav-link.customLink:hover {
   color: grey;
+}
+
+.custom-text {
+  color: #dcca87;
+}
+
+@media (min-width: 1200px) {
+  .custom-text {
+    font-size: 4rem !important;
+  }
+}
+.custom-btn {
+  background: #dcca87;
+  color: black;
+  border: none;
+  font-weight: 700;
+  width: 4rem;
 }/*# sourceMappingURL=custom.css.map */

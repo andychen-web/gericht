@@ -1,3 +1,6 @@
+.menu-title {
+  font-family: "Cormorant Upright", serif;
+}
 .nav-link.customLink {
   color: white;
   &:hover {
@@ -21,8 +24,8 @@
   border: none;
   font-weight: 700;
   max-width: 5rem;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding: 10px;
+  border-radius: 10px;
 }
 .bg {
   background-image: url("../assets/bg.png");
@@ -31,6 +34,12 @@
 .bg-brown {
   background-image: url("../assets/bg-brown.png");
 }
-.bg-grey {
-  background-color: #080808;
+.white-line {
+  width: 10%;
+  height: 1px;
+  background-color: white;
+}
+
+.golden-text {
+  color: #dcca87;
 }

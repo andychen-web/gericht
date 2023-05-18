@@ -6,11 +6,10 @@ const Header = () => {
   return (
     <div
       style={{
-        display: "flex",
         backgroundImage: `url(${images.bg})`,
       }}
     >
-      <Container className=" py-5">
+      <Container className="py-5">
         <Row>
           <Col
             xs={12}

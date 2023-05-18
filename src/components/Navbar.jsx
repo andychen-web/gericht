@@ -8,7 +8,7 @@ const Navigation = () => {
     <Navbar bg="black" expand="lg" variant="dark">
       <div className="container">
         <Navbar.Brand className="w-50" href="/">
-          <img src={images.gericht} alt="" style={{ maxWidth: "30vw" }} />
+          <img src={images.gericht} alt="" style={{ maxWidth: "12vw" }} />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarNav" />
         <Navbar.Collapse id="navbarNav">

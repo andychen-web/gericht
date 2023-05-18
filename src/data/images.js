@@ -21,7 +21,8 @@ import sign from "../assets/sign.png";
 import spoon from "../assets/spoon.png";
 import spoonSvg from "../assets/spoon.svg";
 import welcome from "../assets/welcome.png";
-
+import bgBrown from "../assets/bg-brown.png";
+import woodSpoon from "../assets/cooking-spoon.png";
 export default {
   bg,
   award01,
@@ -46,4 +47,6 @@ export default {
   spoon,
   spoonSvg,
   welcome,
+  bgBrown,
+  woodSpoon,
 };

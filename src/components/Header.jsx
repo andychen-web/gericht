@@ -21,10 +21,10 @@ const Header = () => {
             <span className="text-capitalize fw-bold custom-text fs-1">
               探索精緻飲食
             </span>
-            <p className="text-muted">
+            <h5 className="text-white py-1">
               品味創意菜餚，沉浸於令人心馳神往的味覺饗宴，彷彿探險家在未知的味道中遨遊
-            </p>
-            <button className="custom-btn">菜單</button>
+            </h5>
+            <button  className="custom-btn">菜單</button>
           </Col>
           <Col xs={12} md={6}>
             <img width={"100%"} src={images.welcome} alt="welcome" />

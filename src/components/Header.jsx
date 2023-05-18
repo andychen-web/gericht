@@ -5,9 +5,7 @@ import images from "../data/images";
 const Header = () => {
   return (
     <div
-      style={{
-        backgroundImage: `url(${images.bg})`,
-      }}
+      className="bg"
     >
       <Container className="py-5">
         <Row>
@@ -24,7 +22,7 @@ const Header = () => {
             <h5 className="text-white py-1">
               品味創意菜餚，沉浸於令人心馳神往的味覺饗宴，彷彿探險家在未知的味道中遨遊
             </h5>
-            <button  className="custom-btn">菜單</button>
+            <button className="custom-btn">菜單</button>
           </Col>
           <Col xs={12} md={6}>
             <img width={"100%"} src={images.welcome} alt="welcome" />

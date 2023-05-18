@@ -4,11 +4,7 @@ import images from "../data/images";
 
 const AboutUs = () => {
   return (
-    <div
-      style={{
-        backgroundImage: `url(${images.bgBrown})`,
-      }}
-    >
+    <div className="bgBrown">
       <Container className="py-5">
         <Row>
           <Col

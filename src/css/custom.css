@@ -22,4 +22,12 @@
   max-width: 5rem;
   padding-top: 10px;
   padding-bottom: 10px;
+}
+
+.bg {
+  background-image: url("../assets/bg.png");
+}
+
+.bgBrown {
+  background-image: url("../assets/bg-brown.png");
 }/*# sourceMappingURL=custom.css.map */

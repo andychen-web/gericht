@@ -11,7 +11,6 @@ import gallery02 from "../assets/gallery02.png";
 import gallery03 from "../assets/gallery03.png";
 import gallery04 from "../assets/gallery04.png";
 import gericht from "../assets/gericht.png";
-import knife from "../assets/knife.png";
 import laurels from "../assets/laurels.png";
 import logo from "../assets/logo.png";
 import menu from "../assets/menu.png";
@@ -37,7 +36,6 @@ export default {
   gallery03,
   gallery04,
   gericht,
-  knife,
   laurels,
   logo,
   menu,

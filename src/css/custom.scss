@@ -58,7 +58,21 @@
     object-fit: cover;
   }
 }
-
-.overlay {
+.play-btn {
   cursor: pointer;
+}
+.laurels {
+  @media (min-width: 300px) {
+    max-width: 40%;
+  }
+  @media (min-width: 800px) {
+    max-width: 110%;
+    position: relative;
+    bottom: 3rem;
+  }
+
+  @media (min-width: 1200px) {
+    max-width: 105%;
+    bottom: 0;
+  }
 }

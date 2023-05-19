@@ -66,6 +66,25 @@
      object-fit: cover;
 }
 
-.overlay {
+.play-btn {
   cursor: pointer;
+}
+
+@media (min-width: 300px) {
+  .laurels {
+    max-width: 40%;
+  }
+}
+@media (min-width: 800px) {
+  .laurels {
+    max-width: 110%;
+    position: relative;
+    bottom: 3rem;
+  }
+}
+@media (min-width: 1200px) {
+  .laurels {
+    max-width: 105%;
+    bottom: 0;
+  }
 }/*# sourceMappingURL=custom.css.map */

@@ -1,5 +1,7 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import Container from "react-bootstrap/container";
+import Row from "react-bootstrap/row";
+import Col from "react-bootstrap/col";
 import images from "../data/images";
 
 const Header = () => {

@@ -4,6 +4,7 @@ import Row from "react-bootstrap/row";
 import Col from "react-bootstrap/col";
 import images from "../data/images";
 import data from "../data/data";
+import Title from "./Title";
 const wines = data.wines;
 const cocktails = data.cocktails;
 
@@ -13,14 +14,7 @@ const Menu = () => {
       <Container className="py-5 d-flex flex-column align-items-center">
         <Row xs={12} md={12}>
           <Col className="d-flex flex-column align-items-center justify-content-center">
-            <h2 className="text-white">挑動味蕾</h2>
-            <img
-              height={"auto"}
-              width={"40px"}
-              src={images.spoon}
-              alt="spoonImg"
-            />
-            <span className="fw-bold custom-text fs-1">近期菜單</span>
+            <Title title={"挑動味蕾"} subTitle={"近期菜單"} />
           </Col>
         </Row>
         <Row md={12}>

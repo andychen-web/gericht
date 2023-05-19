@@ -3,6 +3,7 @@ import Container from "react-bootstrap/container";
 import Row from "react-bootstrap/row";
 import Col from "react-bootstrap/col";
 import images from "../data/images";
+import Title from "./Title";
 
 const Header = () => {
   return (
@@ -14,11 +15,10 @@ const Header = () => {
             md={6}
             className="d-flex flex-column justify-content-center"
           >
-            <h2 className="text-white">追尋新風味</h2>
-            <img height={"auto"} width={"40px"} src={images.spoon} alt="" />
-            <span className="fw-bold custom-text fs-1">探索精緻飲食</span>
-            <h5 className="text-white py-1">
-              品味創意菜餚，沉浸於令人心馳神往的味覺饗宴，彷彿探險家在未知的味道中遨遊
+            <Title title={"追尋新風味"} subTitle={"探索精緻飲食"} />
+            <h5 className="text-white py-4 w-75">
+              品嘗菜餚，享受令人嚮往的味覺饗宴
+              <br /> 彷彿探險家在未知的味道中遨遊
             </h5>
             <button className="custom-btn">菜單</button>
           </Col>

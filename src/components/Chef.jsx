@@ -3,6 +3,7 @@ import Container from "react-bootstrap/container";
 import Row from "react-bootstrap/row";
 import Col from "react-bootstrap/col";
 import images from "../data/images";
+import Title from "./Title";
 
 const Chef = () => {
   return (
@@ -17,9 +18,7 @@ const Chef = () => {
             md={6}
             className="d-flex flex-column justify-content-center ps-5 mt-3"
           >
-            <h4 className="text-white">主廚理念</h4>
-            <img height={"auto"} width={"40px"} src={images.spoon} alt="" />
-            <span className="fw-bold custom-text fs-1">我們的堅持</span>
+            <Title title={"主廚理念"} subTitle={"我們的堅持"}></Title>
             <div className="py-sm-1 py-md-4">
               <img src={images.quote} width={"9%"} alt="quote" />
               <h5 className="text-white py-1">

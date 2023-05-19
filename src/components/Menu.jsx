@@ -24,12 +24,10 @@ const Menu = () => {
               <>
                 <Row key={key} className="d-flex align-items-center">
                   <Col xs={7} md={8} className="py-2">
-                    <div className="fs-4 golden-text menu-title">
-                      {item.title}
-                    </div>
+                    <div className="fs-4 golden-text">{item.title}</div>
                   </Col>
                   <Col xs={3} md={2} className="white-line"></Col>
-                  <Col xs={2} md={2} className="menu-title">
+                  <Col xs={2} md={2} className="golden-text">
                     {item.price}
                   </Col>
                 </Row>
@@ -48,12 +46,10 @@ const Menu = () => {
               <>
                 <Row key={key} className="d-flex align-items-center">
                   <Col xs={7} md={8} className="py-2">
-                    <div className="fs-4 golden-text menu-title">
-                      {item.title}
-                    </div>
+                    <div className="fs-4 golden-text">{item.title}</div>
                   </Col>
                   <Col xs={3} md={2} className="white-line"></Col>
-                  <Col xs={2} md={2} className="menu-title">
+                  <Col xs={2} md={2} className="golden-text">
                     {item.price}
                   </Col>
                 </Row>

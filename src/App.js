@@ -5,6 +5,7 @@ import Navigation from "./components/Navbar";
 import Header from "./components/Header";
 import AboutUs from "./components/AboutUs";
 import Menu from "./components/Menu";
+import Chef from "./components/Chef";
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
       <Navigation />
       <Header />
       <AboutUs></AboutUs>
-      <Menu></Menu>
+      <Menu />
+      <Chef />
     </>
   );
 }

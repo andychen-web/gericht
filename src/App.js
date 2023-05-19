@@ -6,15 +6,19 @@ import Header from "./components/Header";
 import AboutUs from "./components/AboutUs";
 import Menu from "./components/Menu";
 import Chef from "./components/Chef";
+import IntroVideo from "./components/IntroVideo";
+import Awards from "./components/Awards";
 
 function App() {
   return (
     <>
       <Navigation />
       <Header />
-      <AboutUs></AboutUs>
+      <AboutUs />
       <Menu />
       <Chef />
+      <IntroVideo />
+      <Awards />
     </>
   );
 }

@@ -13,10 +13,10 @@ const Navigation = () => {
         <Navbar.Toggle aria-controls="navbarNav" />
         <Navbar.Collapse id="navbarNav">
           <Nav className=" ml-auto">
-            <Nav.Link className="customLink" href="#">
+            <Nav.Link className="custom-link" href="#">
               首頁
             </Nav.Link>
-            <Nav.Link className="customLink" href="#">
+            <Nav.Link className="custom-link" href="#">
               聯絡我們
             </Nav.Link>
           </Nav>

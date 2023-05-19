@@ -1,11 +1,17 @@
-.menu-title {
+.menu-title,
+.signature-text {
   font-family: "Cormorant Upright", serif;
 }
 
-.nav-link.customLink {
+.signature-text {
+  font-size: 2.5rem;
+  color: #dcca87;
+}
+
+.nav-link.custom-link {
   color: white;
 }
-.nav-link.customLink:hover {
+.nav-link.custom-link:hover {
   color: grey;
 }
 
@@ -13,11 +19,17 @@
   color: #dcca87;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 300px) {
   .custom-text {
-    font-size: 4rem !important;
+    font-size: 2.3rem;
   }
 }
+@media (min-width: 1200px) {
+  .custom-text {
+    font-size: 4rem;
+  }
+}
+
 .custom-btn {
   background: #dcca87;
   color: black;

@@ -87,4 +87,12 @@
     max-width: 105%;
     bottom: 0;
   }
+}
+
+.scrollbar {
+  cursor: pointer;
+}
+
+.gallery {
+  scroll-behavior: smooth;
 }/*# sourceMappingURL=custom.css.map */

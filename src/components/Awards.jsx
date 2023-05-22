@@ -10,10 +10,10 @@ const awards = data.awards;
 const Awards = () => {
   return (
     <div className="bg-brown">
-      <img className="ps-4 pt-4" width={"10%"} src={images.logo} alt="logo" />
+      <img className="ps-4 pt-4" width={"150px"} src={images.logo} alt="logo" />
       <Container className="py-5" id="awards">
         <Row>
-          <Col md={8} className="d-flex flex-column">
+          <Col lg={8} md={7} className="d-flex flex-column">
             <Title title={"獲獎"} subTitle={"美食指南獎項"} />
             <Row className={"pt-5"}>
               <Col>
@@ -22,8 +22,8 @@ const Awards = () => {
                     // Start a new row for every even item (0, 2, ...)
                     if (index % 2 === 0) {
                       return (
-                        <Row key={index} className="py-3">
-                          <Col xs={12} md={6} className="d-flex py-3">
+                        <Row key={index}>
+                          <Col xs={12} xl={6} className="d-flex py-3">
                             <div>
                               <img
                                 className="w-100"
@@ -43,7 +43,7 @@ const Awards = () => {
                           </Col>
                           {/* Check if there is a next item before rendering the second column */}
                           {awards[index + 1] && (
-                            <Col xs={12} md={6} className="d-flex">
+                            <Col xs={12} xl={6} className="d-flex py-3">
                               <div>
                                 <img
                                   className="w-100"
@@ -71,7 +71,8 @@ const Awards = () => {
             </Row>
           </Col>
           <Col
-            md={4}
+            lg={4}
+            md={5}
             className="d-flex align-items-md-end justify-content-center"
           >
             <img className="laurels" src={images.laurels} alt="laurels" />

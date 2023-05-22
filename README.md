@@ -1,6 +1,6 @@
 # 網頁名稱
 
-- [線上觀看連結]([https://israynotarray.com/](https://restaurant-react-rwd-sf1x.vercel.app/))
+- [線上觀看連結](https://restaurant-react-rwd-sf1x.vercel.app/)
 
 
 ## 畫面

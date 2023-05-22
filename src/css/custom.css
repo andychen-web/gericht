@@ -1,8 +1,5 @@
 .signature-text {
   font-family: "Cormorant Upright", serif;
-}
-
-.signature-text {
   font-size: 2.5rem;
   color: #dcca87;
 }
@@ -95,4 +92,10 @@
 
 .gallery {
   scroll-behavior: smooth;
+}
+
+.social-icon {
+  cursor: pointer;
+  color: white;
+  font-size: 1.5rem;
 }/*# sourceMappingURL=custom.css.map */

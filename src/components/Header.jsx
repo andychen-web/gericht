@@ -7,7 +7,7 @@ import Title from "./Title";
 
 const Header = () => {
   return (
-    <div className="bg">
+    <div className="bg" id="header">
       <Container className="py-5">
         <Row>
           <Col

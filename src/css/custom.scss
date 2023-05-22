@@ -31,6 +31,10 @@
   max-width: 5rem;
   padding: 10px;
   border-radius: 10px;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    opacity: 0.8;
+  }
 }
 .bg {
   background-image: url("../assets/bg.png");

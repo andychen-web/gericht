@@ -10,7 +10,7 @@ const cocktails = data.cocktails;
 
 const Menu = () => {
   return (
-    <div className="bg-black">
+    <div className="bg-black" id="menu">
       <Container className="py-5 d-flex flex-column align-items-center">
         <Row xs={12} md={12}>
           <Col className="d-flex flex-column align-items-center justify-content-center">

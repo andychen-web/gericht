@@ -13,9 +13,9 @@ const Gallery = () => {
     // get current element that scrollRef is attached to
     const { current } = scrollRef;
     if (direction === "left") {
-      current.scrollLeft -= 500;
+      current.scrollLeft -= 260;
     } else {
-      current.scrollLeft += 500;
+      current.scrollLeft += 260;
     }
   };
 
@@ -23,13 +23,14 @@ const Gallery = () => {
     <div className="bg-black">
       <Container>
         <Row className="d-flex align-items-center">
-          <Col md={4} className="d-flex flex-column">
+          <Col xs={10} md={4} className="d-flex flex-column py-5">
             <Title title={"相片"} subTitle={"美食相簿"} />
             <span className="text-white py-3">美味風情，一睹為快</span>
             <button className="custom-btn">了解更多</button>
           </Col>
           <Col
             ref={scrollRef}
+            xs={12}
             md={8}
             className="gallery d-flex overflow-hidden align-items-end justify-content-start"
           >
@@ -38,12 +39,15 @@ const Gallery = () => {
               images.gallery02,
               images.gallery03,
               images.gallery04,
+              images.gallery01,
+              images.gallery02,
             ].map((item, index) => (
-              <div key={index} className="w-100">
+              <div key={index} className="px-1">
                 <img
                   style={{
-                    height: "70vh",
-                    width: "auto",
+                    width: "12rem",
+                    height: "17rem",
+                    objectFit: "cover",
                   }}
                   src={item}
                   alt="gallery01"
@@ -51,13 +55,11 @@ const Gallery = () => {
               </div>
             ))}
             <BsFillCaretLeftFill
-              ref={scrollRef}
               onClick={() => scroll("left")}
               style={{ right: "37%" }}
               className="text-white scrollbar position-absolute me-5 fs-1"
             />
             <BsFillCaretRightFill
-              ref={scrollRef}
               onClick={() => scroll("right")}
               style={{ right: "27%" }}
               className="text-white scrollbar position-absolute ms-5 fs-1"

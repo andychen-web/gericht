@@ -60,7 +60,7 @@ const Menu = () => {
             ))}
           </Col>
         </Row>
-        <button className="custom-btn">了解更多</button>
+        <button className="custom-btn mt-4">了解更多</button>
       </Container>
     </div>
   );

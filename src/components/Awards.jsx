@@ -23,7 +23,7 @@ const Awards = () => {
                     if (index % 2 === 0) {
                       return (
                         <Row key={index} className="py-3">
-                          <Col className="d-flex">
+                          <Col xs={12} md={6} className="d-flex py-3">
                             <div>
                               <img
                                 className="w-100"
@@ -43,7 +43,7 @@ const Awards = () => {
                           </Col>
                           {/* Check if there is a next item before rendering the second column */}
                           {awards[index + 1] && (
-                            <Col className="d-flex">
+                            <Col xs={12} md={6} className="d-flex">
                               <div>
                                 <img
                                   className="w-100"

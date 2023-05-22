@@ -1,7 +1,7 @@
 import React from "react";
 import images from "../data/images";
-import Nav from "react-bootstrap/nav";
-import Navbar from "react-bootstrap/navbar";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
 
 const Navigation = () => {
   return (

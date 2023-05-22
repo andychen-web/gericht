@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Container from "react-bootstrap/container";
-import Row from "react-bootstrap/row";
-import Col from "react-bootstrap/col";
-import Form from "react-bootstrap/form";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
 import Title from "./Title";
 import images from "../data/images";
 import { RxTwitterLogo, RxInstagramLogo } from "react-icons/rx";

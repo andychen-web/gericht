@@ -1,7 +1,7 @@
 import React from "react";
-import Container from "react-bootstrap/container";
-import Row from "react-bootstrap/row";
-import Col from "react-bootstrap/col";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import images from "../data/images";
 import Title from "./Title";
 import { BsFillCaretLeftFill, BsFillCaretRightFill } from "react-icons/bs";

@@ -8,6 +8,9 @@ import Menu from "./components/Menu";
 import Chef from "./components/Chef";
 import IntroVideo from "./components/IntroVideo";
 import Awards from "./components/Awards";
+import Gallery from "./components/Gallery";
+import Contact from "./components/Contact";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -19,6 +22,9 @@ function App() {
       <Chef />
       <IntroVideo />
       <Awards />
+      <Gallery />
+      <Contact />
+      <Footer />
     </>
   );
 }

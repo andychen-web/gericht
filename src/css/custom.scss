@@ -9,7 +9,11 @@
     color: grey;
   }
 }
-
+.custom-nav {
+  @media (max-width: 1200px) {
+    min-width: 110%;
+  }
+}
 .custom-text {
   color: #dcca87;
 }
@@ -22,18 +26,33 @@
     font-size: 4rem;
   }
 }
+.img-animation {
+  animation: fadeIn 1s ease-in;
+  animation-delay: 1s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    margin-top: 1rem;
+  }
+  to {
+    opacity: 1;
+    margin: 0;
+  }
+}
 
 .custom-btn {
   background: #dcca87;
   color: black;
   border: none;
   font-weight: 700;
-  max-width: 5rem;
+  max-width: 6rem;
   padding: 10px;
   border-radius: 10px;
   transition: all 0.3s ease-in-out;
   &:hover {
-    opacity: 0.8;
+    box-shadow: 2px 2px 50px rgba(255, 255, 255, 0.3);
   }
 }
 .bg {
@@ -65,12 +84,12 @@
 }
 .laurels {
   @media (min-width: 300px) {
-    max-width: 40%;
+    max-width: 70%;
   }
   @media (min-width: 800px) {
     max-width: 110%;
     position: relative;
-    bottom: 3rem;
+    bottom: 6rem;
   }
 
   @media (min-width: 1200px) {

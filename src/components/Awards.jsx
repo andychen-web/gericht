@@ -36,7 +36,7 @@ const Awards = () => {
                                 {awards[index].title}
                               </span>
                               <br />
-                              <span className="fs-5 text-white fw-bold">
+                              <span className="fs-5 text-white">
                                 {awards[index].subtitle}
                               </span>
                             </div>
@@ -56,7 +56,7 @@ const Awards = () => {
                                   {awards[index + 1].title}
                                 </span>
                                 <br />
-                                <span className="fs-5 text-white fw-bold">
+                                <span className="fs-5 text-white">
                                   {awards[index + 1].subtitle}
                                 </span>
                               </div>

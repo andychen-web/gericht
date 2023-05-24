@@ -12,7 +12,7 @@ const Navigation = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarNav" />
         <Navbar.Collapse id="navbarNav">
-          <Nav className=" ml-auto">
+          <Nav className="custom-nav">
             <Nav.Link className="custom-link" href="#header">
               首頁
             </Nav.Link>

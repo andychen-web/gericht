@@ -36,7 +36,7 @@ const Footer = () => {
             <Form className="d-flex bg-black" onSubmit={handleSubmit}>
               <input
                 type="email"
-                className="bg-black border-white rounded text-white p-2 pe-5"
+                className="bg-black border-white rounded text-white p-2 pe-5 w-75"
                 placeholder="Enter email"
                 aria-label="Email adress"
                 onChange={handleChange}
@@ -54,9 +54,8 @@ const Footer = () => {
             <div className="text-white pt-3 pt-md-0">
               <div className="fs-3 golden-text">聯絡我們</div>
               <div>新竹市東區美食路33號</div>
-              <div>
-                +1 212-344-1230 <br /> +1 212-555-1230
-              </div>
+              <div>+1 212-344-1230</div>
+              <div>+1 212-555-1230</div>
             </div>
           </Col>
           <Col md={4} className="d-flex flex-column align-items-center py-5">

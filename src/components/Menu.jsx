@@ -10,7 +10,7 @@ const cocktails = data.cocktails;
 
 const Menu = () => {
   return (
-    <div className="bg-black" id="menu">
+    <div className="bg" id="menu">
       <Container className="py-5 d-flex flex-column align-items-center">
         <Row xs={12} md={12} className="pb-3">
           <Col className="d-flex flex-column align-items-center justify-content-center">
@@ -37,7 +37,7 @@ const Menu = () => {
               </>
             ))}
           </Col>
-          <Col xs={8} md={4} className="py-2">
+          <Col xs={8} md={4} className="py-2 hidden">
             <img width={"100%"} src={images.menu} alt="menuImg" />
           </Col>
           <Col md={4} className="fs-2 text-white fw-bold">

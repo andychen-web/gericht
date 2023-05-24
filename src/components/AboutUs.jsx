@@ -23,13 +23,13 @@ const AboutUs = () => {
           </Col>
           <Col xs={3} md={2}>
             <img
-              className="position-relative top-50 "
+              className="position-relative top-50 hidden"
               width={"100%"}
               src={images.G}
               alt="bg"
             />
             <img
-              className="position-relative zindex-sticky "
+              className="position-relative hidden"
               style={{ transform: "translateX(-20%)" }}
               width={"170%"}
               src={images.woodSpoon}

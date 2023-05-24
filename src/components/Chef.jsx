@@ -16,7 +16,7 @@ const Chef = () => {
           <Col
             xs={12}
             md={6}
-            className="d-flex flex-column justify-content-center ps-5 mt-3"
+            className="d-flex flex-column justify-content-center ps-5 mt-3 hidden"
           >
             <Title title={"主廚理念"} subTitle={"我們的堅持"}></Title>
             <div className="py-sm-1 py-md-4">

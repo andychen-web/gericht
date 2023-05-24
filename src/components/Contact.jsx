@@ -13,7 +13,7 @@ const Contact = () => {
           <Col
             xs={12}
             md={6}
-            className="d-flex flex-column justify-content-center py-4"
+            className="d-flex flex-column justify-content-center py-4 hidden"
           >
             <Title title={"聯絡資訊"} subTitle={"聯絡我們"} />
             <h5 className="text-white py-3">新竹市東區美食路33號</h5>

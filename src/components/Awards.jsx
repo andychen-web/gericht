@@ -11,7 +11,7 @@ const Awards = () => {
   return (
     <div className="bg-brown">
       <img className="ps-4 pt-4" width={"150px"} src={images.logo} alt="logo" />
-      <Container className="py-5" id="awards">
+      <Container className="py-5 hidden" id="awards">
         <Row>
           <Col lg={8} md={7} className="d-flex flex-column">
             <Title title={"獲獎"} subTitle={"美食指南獎項"} />

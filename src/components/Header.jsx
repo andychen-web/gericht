@@ -8,7 +8,7 @@ import Title from "./Title";
 const Header = () => {
   return (
     <div className="bg" id="header">
-      <Container className="py-5">
+      <Container style={{ paddingTop: "5rem", paddingBottom: "5rem" }}>
         <Row>
           <Col
             xs={12}
@@ -19,12 +19,12 @@ const Header = () => {
             <h5 className="text-white py-4 pe-3 w-75">
               品嘗菜餚，享受令人嚮往的味覺饗宴， 彷彿探險家在未知的味道中遨遊
             </h5>
-            <button className="custom-btn">菜單</button>
+            <button className="custom-btn mb-5">菜單</button>
           </Col>
           <Col xs={12} md={6}>
             <img
               width={"100%"}
-              className="img-animation"
+              className="hidden"
               src={images.welcome}
               alt="welcome"
             />

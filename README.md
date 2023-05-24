@@ -1,10 +1,27 @@
+# 網頁名稱
 
-  # restaurant
+- [線上觀看連結](https://restaurant-react-rwd-sf1x.vercel.app/)
 
-  Note: Please ensure you have installed <code><a href="https://nodejs.org/en/download/">nodejs</a></code>
 
-  To preview and run the project on your device:
-  1) Open project folder in <a href="https://code.visualstudio.com/download">Visual Studio Code</a>
-  2) In the terminal, run `npm install`
-  3) Run `npm start` to view project in browser
-  
+## 畫面
+<img src="https://github.com/andychen-web/restaurant-react-RWD/assets/79246459/daa5ff9a-acb9-4645-8200-a2d1a38f8346" width="25%">
+<img src="https://github.com/andychen-web/restaurant-react-RWD/assets/79246459/318ce6e3-0c96-4147-b98f-1c485d7370c9" width="70%">
+
+
+## 安裝套件
+
+```bash
+npm install
+```
+
+## 專案技術
+- bootstrap 和 react-bootstrap 用於調整樣式和排版
+- react-icons 用於圖標
+
+
+## 認識作者
+
+歡迎透過以下連結認識我
+
+- [IT邦文章](https://ithelp.ithome.com.tw/users/20151785/articles)
+- [個人履歷](https://www.cakeresume.com/andy-792004)

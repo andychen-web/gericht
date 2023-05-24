@@ -6,12 +6,13 @@ import images from "../data/images";
 
 const AboutUs = () => {
   return (
-    <div className="bg-brown" id="about-us">
+    <div className="bg-brown">
       <Container className="py-5">
         <Row>
           <Col
             xs={12}
             md={5}
+            id="about-us"
             className="d-flex flex-column align-items-end justify-content-center"
           >
             <span className=" fw-bold custom-text">關於我們</span>

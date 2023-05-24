@@ -34,7 +34,6 @@
 
 .img-animation {
   animation: fadeIn 1s ease-in;
-  animation-delay: 1s;
 }
 
 @keyframes fadeIn {

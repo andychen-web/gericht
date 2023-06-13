@@ -5,10 +5,17 @@ import Col from "react-bootstrap/Col";
 import images from "../data/images";
 import data from "../data/data";
 import Title from "./Title";
+import { useNavigate } from "react-router-dom";
 const wines = data.wines;
 const cocktails = data.cocktails;
 
 const Menu = () => {
+  const navigate = useNavigate();
+
+  const handleNavigation = () => {
+    navigate("/products");
+    window.scrollTo(0, 0); // scroll to the top of the page
+  };
   return (
     <div className="bg" id="menu">
       <Container className="py-5 d-flex flex-column align-items-center">
@@ -60,7 +67,9 @@ const Menu = () => {
             ))}
           </Col>
         </Row>
-        <button className="custom-btn mt-4">了解更多</button>
+        <button className="custom-btn mt-4" onClick={handleNavigation}>
+          了解更多
+        </button>
       </Container>
     </div>
   );

@@ -12,33 +12,23 @@ const Navigation = () => {
       className="position-fixed overflow-hidden"
       style={{ zIndex: 3 }}
     >
-      <div
-        className="container-fluid "
-        style={{ width: "100vw" }}
-      >
+      <div className="container-fluid" style={{ width: "100vw" }}>
         <Navbar.Brand className="w-50" href="/">
           <img src={images.gericht} alt="logo" className="w-50" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarNav" />
-        <Navbar.Collapse id="navbarNav">
-          <Nav className="">
-            <Nav.Link className="custom-link" href="#header">
+        <Navbar.Collapse
+          id="navbarNav"
+        >
+          <Nav className="ps-5 ms-5">
+            <Nav.Link className="custom-link" href="/">
               首頁
             </Nav.Link>
-            <Nav.Link className="custom-link" href="#about-us">
-              關於我們
+            <Nav.Link className="custom-link" href="/products">
+              產品列表
             </Nav.Link>
-            <Nav.Link className="custom-link" href="#menu">
-              菜單
-            </Nav.Link>
-            <Nav.Link className="custom-link" href="#chef">
-              認識主廚
-            </Nav.Link>
-            <Nav.Link className="custom-link" href="#awards">
-              獲獎
-            </Nav.Link>
-            <Nav.Link className="custom-link" href="#contact-us">
-              聯絡我們
+            <Nav.Link className="custom-link" href="/cart">
+              購物車
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>

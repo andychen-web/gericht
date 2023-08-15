@@ -73,7 +73,7 @@
     object-fit: cover;
   }
 }
-.play-btn {
+.cursor-pointer {
   cursor: pointer;
 }
 .laurels {
@@ -97,8 +97,34 @@
 .gallery {
   scroll-behavior: smooth;
 }
-.social-icon {
+.custom-icon {
   cursor: pointer;
   color: white;
   font-size: 1.5rem;
+  &:hover {
+    color: #dcca87;
+    transition: all 0.3s ease-in-out;
+  }
+}
+.form-control:focus {
+  box-shadow: none;
+}
+
+.menu-products {
+  width: 130%;
+  height: 80%;
+  object-fit: cover;
+}
+@media screen and (min-width: "1000px") {
+  .menu-products {
+    min-height: 430px;
+  }
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+}
+.checkout-animation {
+  transition: al1 0.3s ease-in;
 }

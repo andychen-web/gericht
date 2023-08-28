@@ -34,7 +34,7 @@ const Header = () => {
           <Col xs={12} md={6}>
             <img
               width={"100%"}
-              className="hidden"
+              className=""
               src={images.welcome}
               alt="welcome"
             />

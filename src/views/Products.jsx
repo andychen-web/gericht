@@ -8,9 +8,10 @@ import { BsFillCartFill } from "react-icons/bs";
 import PropTypes from "prop-types";
 
 const Products = ({ token, products }) => {
+  // 定義proptypes避免eslint警告
   Products.propTypes = {
     token: PropTypes.string,
-    products: PropTypes.array,
+    products: PropTypes.array.isRequired,
   };
 
   const [priceRange, setPriceRange] = useState("全部");
@@ -21,6 +22,18 @@ const Products = ({ token, products }) => {
   };
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
+  };
+
+  let alertMessage;
+  const closeAlert = () => {
+    alertMessage = document.querySelector(".message-alert");
+    alertMessage.classList.remove("show");
+    alertMessage.classList.add("hidden");
+  };
+  const showAlert = () => {
+    alertMessage = document.querySelector(".message-alert");
+    alertMessage.classList.add("show");
+    setTimeout(closeAlert, 2000);
   };
 
   const filterdProducts =
@@ -42,8 +55,6 @@ const Products = ({ token, products }) => {
         categoryMatch = product.category === "燉飯";
       } else if (category === "義大利麵") {
         categoryMatch = product.category === "義大利麵";
-      } else if (category === "披薩") {
-        categoryMatch = product.category === "披薩";
       } else if (category === "烤肉") {
         categoryMatch = product.category === "烤肉";
       } else if (category === "甜點") {
@@ -88,6 +99,20 @@ const Products = ({ token, products }) => {
   return (
     <div className="bg">
       <Navigation />
+      {/* feat to add:喜好清單 */}
+      <div className=" position-fixed top-25 end-0 ">
+        <div className="message-alert alert alert-dark pt-5 mt-5 hidden">
+          已加入購物車
+          <button
+            type="button"
+            aria-label="close"
+            className="close"
+            onClick={() => closeAlert()}
+          >
+            <span aria-hidden="true">x</span>
+          </button>
+        </div>
+      </div>
       <Container style={{ paddingTop: "7rem" }}>
         <Row>
           {/* 篩選品項 */}
@@ -104,7 +129,6 @@ const Products = ({ token, products }) => {
                 >
                   <option>全部</option>
                   <option>燉飯</option>
-                  <option>披薩</option>
                   <option>義大利麵</option>
                   <option>烤肉</option>
                   <option>甜點</option>
@@ -130,9 +154,9 @@ const Products = ({ token, products }) => {
           <Col md={10}>
             <Row className="gap-5">
               {filterdProducts &&
-                filterdProducts.map((product) => (
+                filterdProducts.map((product, key) => (
                   <Col
-                    key={product.id}
+                    key={key}
                     xs={8}
                     sm={4}
                     lg={3}
@@ -149,7 +173,10 @@ const Products = ({ token, products }) => {
                       <BsFillCartFill
                         size={20}
                         className="custom-icon"
-                        onClick={() => addToCart(product)}
+                        onClick={() => {
+                          addToCart(product);
+                          showAlert();
+                        }}
                       ></BsFillCartFill>
                     </div>
                   </Col>

@@ -6,6 +6,7 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
 import { combineReducers } from "@reduxjs/toolkit";
 import { getDefaultMiddleware } from "@reduxjs/toolkit";
+import { persistStore } from "redux-persist";
 const customizedMiddleware = getDefaultMiddleware({
   serializableCheck: false,
 });
@@ -27,3 +28,4 @@ export const store = configureStore({
   reducer: persistedReducer,
   middleware: customizedMiddleware,
 });
+export const persistor = persistStore(store);

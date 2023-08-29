@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 const Loader = ({ isLoading }) => {
   Loader.propTypes = {
-    isLoading: PropTypes.boolean,
+    isLoading: PropTypes.bool,
   };
   return (
     <ColorRing

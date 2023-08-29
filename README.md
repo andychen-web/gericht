@@ -1,6 +1,6 @@
 # 網頁名稱
 
-- [線上觀看連結](https://restaurant-react-rwd-sf1x.vercel.app/)
+- [線上觀看連結](https://restaurant-react-edc0jr8xv-andychen-web.vercel.app/)
 
 
 ## 畫面
@@ -15,9 +15,9 @@ npm install
 ```
 
 ## 專案技術
-- bootstrap 和 react-bootstrap 用於調整樣式和排版
-- react-icons 用於圖標
-
+- bootstrap 和 react 用於調整樣式和排版
+- 串接後端API取得商品
+- Redux 管理訂單資訊
 
 ## 認識作者
 

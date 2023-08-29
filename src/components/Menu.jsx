@@ -28,8 +28,8 @@ const Menu = () => {
           <Col md={4} className="fs-2 text-white fw-bold">
             <Row className="ps-2">葡萄酒與啤酒</Row>
             {wines.map((item, key) => (
-              <>
-                <Row key={key} className="d-flex align-items-center">
+              <div key={key}>
+                <Row className="d-flex align-items-center">
                   <Col xs={7} md={8} className="py-2">
                     <div className="fs-4 golden-text">{item.title}</div>
                   </Col>
@@ -41,7 +41,7 @@ const Menu = () => {
                 <Row>
                   <div className="fs-6">{item.tags}</div>
                 </Row>
-              </>
+              </div>
             ))}
           </Col>
           <Col xs={8} md={4} className="py-2 hidden">
@@ -50,8 +50,8 @@ const Menu = () => {
           <Col md={4} className="fs-2 text-white fw-bold">
             雞尾酒
             {cocktails.map((item, key) => (
-              <>
-                <Row key={key} className="d-flex align-items-center">
+              <div key={key}>
+                <Row  className="d-flex align-items-center">
                   <Col xs={7} md={8} className="py-2">
                     <div className="fs-4 golden-text">{item.title}</div>
                   </Col>
@@ -63,7 +63,7 @@ const Menu = () => {
                 <Row>
                   <div className="fs-6">{item.tags}</div>
                 </Row>
-              </>
+              </div>
             ))}
           </Col>
         </Row>

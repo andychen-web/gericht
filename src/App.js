@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/custom.css";
 import { Route, Routes } from "react-router-dom";
-import Products from "./pages/Products";
-import Cart from "./pages/Cart";
-import Checkout from "./pages/Checkout";
-import Home from "./pages/Home";
+import Products from "./views/Products";
+import Cart from "./views/Cart";
+import Checkout from "./views/Checkout";
+import Home from "./views/Home";
 
 function App() {
   const [products, setProducts] = useState("");
@@ -56,23 +56,6 @@ function App() {
     };
     fetchProducts();
   }, []);
-  // animation on scroll
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("show");
-        } else {
-          entry.target.classList.remove("show");
-        }
-      });
-    });
-    const hiddenElements = document.querySelectorAll(".hidden");
-
-    hiddenElements.forEach((element) => {
-      observer.observe(element);
-    });
-  }, []);
 
   return (
     <Routes>
@@ -81,10 +64,7 @@ function App() {
         path="/products"
         element={<Products token={token} products={products} />}
       />
-      <Route
-        path="/cart"
-        element={<Cart token={token} products={products} />}
-      />
+      <Route path="/cart" element={<Cart token={token} />} />
       <Route path="/checkout" element={<Checkout />} />
     </Routes>
   );

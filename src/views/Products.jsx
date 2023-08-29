@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import Navigation from "../components/Navbar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -6,9 +7,9 @@ import Col from "react-bootstrap/Col";
 import Footer from "../components/Footer";
 import { BsFillCartFill } from "react-icons/bs";
 import PropTypes from "prop-types";
+import Loader from "../components/Loader";
 
 const Products = ({ token, products }) => {
-  // 定義proptypes避免eslint警告
   Products.propTypes = {
     token: PropTypes.string,
     products: PropTypes.array.isRequired,
@@ -16,24 +17,32 @@ const Products = ({ token, products }) => {
 
   const [priceRange, setPriceRange] = useState("全部");
   const [category, setCategory] = useState("全部");
+  const [showAlert, setShowAlert] = useState(false);
+  const location = useLocation();
+
+  let alertMessage;
+
+  const handleAlert = () => {
+    setShowAlert(!showAlert);
+  };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
+  useEffect(() => {
+    alertMessage = document.querySelector(".message-alert");
+    if (showAlert) {
+      alertMessage.classList.remove("hidden");
+    } else {
+      alertMessage.classList.add("hidden");
+    }
+  }, [showAlert]);
 
   const handlePriceRangeChange = (e) => {
     setPriceRange(e.target.value);
   };
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
-  };
-
-  let alertMessage;
-  const closeAlert = () => {
-    alertMessage = document.querySelector(".message-alert");
-    alertMessage.classList.remove("show");
-    alertMessage.classList.add("hidden");
-  };
-  const showAlert = () => {
-    alertMessage = document.querySelector(".message-alert");
-    alertMessage.classList.add("show");
-    setTimeout(closeAlert, 2000);
   };
 
   const filterdProducts =
@@ -98,18 +107,20 @@ const Products = ({ token, products }) => {
 
   return (
     <div className="bg">
+      {products ? null : <Loader />}
       <Navigation />
       {/* feat to add:喜好清單 */}
       <div className=" position-fixed top-25 end-0 ">
-        <div className="message-alert alert alert-dark pt-5 mt-5 hidden">
+        <div className="message-alert alert alert-light pt-5 mt-5 hidden">
           已加入購物車
           <button
             type="button"
             aria-label="close"
-            className="close"
-            onClick={() => closeAlert()}
+            className="close border-0"
+            style={{ background: "#fefefe" }}
+            onClick={() => handleAlert()}
           >
-            <span aria-hidden="true">x</span>
+            x
           </button>
         </div>
       </div>
@@ -175,7 +186,7 @@ const Products = ({ token, products }) => {
                         className="custom-icon"
                         onClick={() => {
                           addToCart(product);
-                          showAlert();
+                          handleAlert();
                         }}
                       ></BsFillCartFill>
                     </div>

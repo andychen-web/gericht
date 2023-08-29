@@ -28,7 +28,7 @@ const IntroVideo = () => {
         Your browser does not support the video tag.
       </video>
       <div
-        className="position-absolute top-50 start-50 play-btn text-white fs-1"
+        className="position-absolute top-50 start-50 cursor-pointer text-white fs-1"
         onClick={handleClick}
       >
         {isPlaying ? <BsPauseCircle /> : <BsPlayCircle />}

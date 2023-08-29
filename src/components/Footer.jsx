@@ -68,9 +68,9 @@ const Footer = () => {
             <div className="text-white">「在服務他人的過程中，找到自己。」</div>
             <img src={images.spoon} alt="spoon" />
             <div>
-              <FaFacebookF className="social-icon" />
-              <RxTwitterLogo className="mx-3 social-icon" />
-              <RxInstagramLogo className="social-icon" />
+              <FaFacebookF className="custom-icon" />
+              <RxTwitterLogo className="mx-3 custom-icon" />
+              <RxInstagramLogo className="custom-icon" />
             </div>
           </Col>
           <Col

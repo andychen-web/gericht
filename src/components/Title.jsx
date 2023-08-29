@@ -1,6 +1,7 @@
 import React from "react";
 import images from "../data/images";
 
+/* eslint-disable react/prop-types */
 const Title = ({ title, subTitle }) => {
   return (
     <>

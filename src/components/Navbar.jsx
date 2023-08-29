@@ -2,7 +2,8 @@ import React from "react";
 import images from "../data/images";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-
+import Container from "react-bootstrap/Container";
+import { Link } from "react-router-dom";
 const Navigation = () => {
   return (
     <Navbar
@@ -10,39 +11,28 @@ const Navigation = () => {
       expand="lg"
       variant="dark"
       className="position-fixed overflow-hidden"
-      style={{ zIndex: 3 }}
+      style={{ zIndex: 3, width: "100vw" }}
     >
-      <div
-        className="container-fluid "
-        style={{ width: "100vw" }}
-      >
-        <Navbar.Brand className="w-50" href="/">
+      <Container>
+        <Navbar.Brand href="/">
           <img src={images.gericht} alt="logo" className="w-50" />
         </Navbar.Brand>
+        {/*創建一個可collapse的toggle btn，aria-controls代表要控制的Navbar.Collapse的id */}
         <Navbar.Toggle aria-controls="navbarNav" />
-        <Navbar.Collapse id="navbarNav">
-          <Nav className="">
-            <Nav.Link className="custom-link" href="#header">
+        <Navbar.Collapse id="navbarNav" className="justify-content-end">
+          <Nav>
+            <Link className="custom-link nav-link" to="/">
               首頁
-            </Nav.Link>
-            <Nav.Link className="custom-link" href="#about-us">
-              關於我們
-            </Nav.Link>
-            <Nav.Link className="custom-link" href="#menu">
-              菜單
-            </Nav.Link>
-            <Nav.Link className="custom-link" href="#chef">
-              認識主廚
-            </Nav.Link>
-            <Nav.Link className="custom-link" href="#awards">
-              獲獎
-            </Nav.Link>
-            <Nav.Link className="custom-link" href="#contact-us">
-              聯絡我們
-            </Nav.Link>
+            </Link>
+            <Link className="custom-link nav-link" to="/products">
+              產品列表
+            </Link>
+            <Link className="custom-link nav-link" to="/cart">
+              購物車
+            </Link>
           </Nav>
         </Navbar.Collapse>
-      </div>
+      </Container>
     </Navbar>
   );
 };

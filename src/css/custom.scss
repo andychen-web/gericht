@@ -28,12 +28,10 @@
 }
 .hidden {
   opacity: 0;
-  padding-top: 1rem;
-  transition: all 1.5s;
+  transition: all 0.7s;
 }
 .show {
   opacity: 1;
-  padding: 0;
 }
 
 .custom-btn {
@@ -73,7 +71,7 @@
     object-fit: cover;
   }
 }
-.play-btn {
+.cursor-pointer {
   cursor: pointer;
 }
 .laurels {
@@ -97,8 +95,37 @@
 .gallery {
   scroll-behavior: smooth;
 }
-.social-icon {
+.custom-icon {
   cursor: pointer;
   color: white;
   font-size: 1.5rem;
+  &:hover {
+    color: #dcca87;
+    transition: all 0.3s ease-in-out;
+  }
+}
+.form-control:focus {
+  box-shadow: none;
+}
+
+.menu-products {
+  width: 130%;
+  height: 80%;
+  object-fit: cover;
+}
+@media screen and (min-width: "1000px") {
+  .menu-products {
+    min-height: 430px;
+  }
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+}
+.checkout-animation {
+  transition: al1 0.3s ease-in;
+}
+.custom-small-font {
+  font-size: 10px;
 }

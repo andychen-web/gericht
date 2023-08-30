@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import Navigation from "../components/Navbar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -18,16 +17,21 @@ const Products = ({ token, products }) => {
   const [priceRange, setPriceRange] = useState("全部");
   const [category, setCategory] = useState("全部");
   const [showAlert, setShowAlert] = useState(false);
-  const location = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
 
   let alertMessage;
-
   const handleAlert = () => {
     setShowAlert(!showAlert);
   };
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [location]);
+
+    if (products) {
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+    }
+  }, [products]);
 
   useEffect(() => {
     alertMessage = document.querySelector(".message-alert");
@@ -107,7 +111,9 @@ const Products = ({ token, products }) => {
 
   return (
     <div className="bg">
-      {products ? null : <Loader />}
+      {/* {products ? null : <Loader />} */}
+      <Loader isLoading={isLoading} />
+
       <Navigation />
       {/* feat to add:喜好清單 */}
       <div className=" position-fixed top-25 end-0 ">

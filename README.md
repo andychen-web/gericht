@@ -1,6 +1,6 @@
 # 網頁名稱
 
-- [線上觀看連結](https://https://restaurant-react-rwd.vercel.app/)
+- [線上觀看連結](https://restaurant-react-rwd.vercel.app/)
 
 
 ## 畫面

@@ -93,6 +93,7 @@ const Cart = ({ token }) => {
         };
         return newCartItems;
       });
+      dispatch(updateItemQuantity({ index, change }));
     } else if (quantity === 1) {
       handleRemove(itemId);
     }
@@ -112,9 +113,18 @@ const Cart = ({ token }) => {
       for (let key in data.products) {
         newCartItems.push(data.products[key]);
       }
-      setCartItems(newCartItems);
+      const combinedCartItems = newCartItems.reduce((acc, item) => {
+        const existingItem = acc.find((i) => i.title === item.title);
+        if (existingItem) {
+          existingItem.quantity += item.quantity;
+        } else {
+          acc.push({ ...item });
+        }
+        return acc;
+      }, []);
+      setCartItems(combinedCartItems);
+      dispatch(setItems(combinedCartItems));
       data.success ? setIsLoading(false) : setIsLoading(true);
-      dispatch(setItems(newCartItems));
     } catch (error) {
       console.log(error);
     }

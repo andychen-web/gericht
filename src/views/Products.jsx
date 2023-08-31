@@ -114,7 +114,6 @@ const Products = ({ token, products }) => {
 
   return (
     <div className="bg">
-      {/* {products ? null : <Loader />} */}
       <Loader isLoading={isLoading} />
 
       <Navigation />

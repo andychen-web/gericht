@@ -27,18 +27,13 @@ const Checkout = () => {
     const transferInput = document.querySelector("#transfer");
 
     if (step === 1) {
-      setStep(step + 1);
+      setStep((prevStep) => prevStep + 1);
     } else if (
       (step === 2) &
       (cashOnDeliveryInput.checked || transferInput.checked)
     ) {
-      const cashOnDeliveryInput = document.querySelector("#cashOnDelivery");
-      const transferInput = document.querySelector("#transfer");
-      console.log(cashOnDeliveryInput.checked || transferInput.checked);
-
       dispatch(setOrderForm({ ...orderForm, paymentMethod: paymentMethod }));
-
-      setStep(step + 1);
+      setStep((prevStep) => prevStep + 1);
     }
   }
 
@@ -46,7 +41,6 @@ const Checkout = () => {
     //  checkout complete, send POST
     const myHeaders = new Headers();
     const apiKEY = process.env.REACT_APP_API_KEY;
-    console.log(apiKEY);
 
     myHeaders.append("apikey", apiKEY);
     const requestOptions = {

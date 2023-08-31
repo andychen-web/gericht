@@ -184,9 +184,7 @@ const Cart = ({ token }) => {
                         >
                           <BsFillTrash3Fill />
                         </button>
-                        <div key={item.id} className="ps-2 pt-1">
-                          {item.title}
-                        </div>
+                        <div className="ps-2 pt-1">{item.title}</div>
                       </td>
                       <td>
                         <div role="group" className="btn-group">

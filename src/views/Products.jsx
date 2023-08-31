@@ -37,6 +37,9 @@ const Products = ({ token, products }) => {
     alertMessage = document.querySelector(".message-alert");
     if (showAlert) {
       alertMessage.classList.remove("hidden");
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 2000);
     } else {
       alertMessage.classList.add("hidden");
     }

@@ -71,7 +71,7 @@ const Cart = ({ token }) => {
     navigate("/checkout");
   };
 
-  const addQuantity = (index, change) => {
+  const incrementQuantity = (index, change) => {
     setCartItems((prevCartItems) => {
       const newCartItems = [...prevCartItems];
       newCartItems[index] = {
@@ -83,7 +83,7 @@ const Cart = ({ token }) => {
 
     dispatch(updateItemQuantity({ index, change }));
   };
-  const subtractQuantity = (index, change, quantity, itemId) => {
+  const decrementQuantity = (index, change, quantity, itemId) => {
     if (quantity >= 2) {
       setCartItems((prevCartItems) => {
         const newCartItems = [...prevCartItems];
@@ -193,7 +193,7 @@ const Cart = ({ token }) => {
                           <button
                             type="button"
                             onClick={() =>
-                              subtractQuantity(key, -1, item.quantity, item.id)
+                              decrementQuantity(key, -1, item.quantity, item.id)
                             }
                             className="btn btn-outline-secondary"
                           >
@@ -207,7 +207,7 @@ const Cart = ({ token }) => {
                           </button>
                           <button
                             type="button"
-                            onClick={() => addQuantity(key, +1)}
+                            onClick={() => incrementQuantity(key, +1)}
                             className="btn btn-outline-secondary"
                           >
                             +

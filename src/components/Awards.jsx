@@ -73,7 +73,7 @@ const Awards = () => {
           <Col
             lg={4}
             md={5}
-            className="d-flex align-items-md-end justify-content-center"
+            className="align-items-md-end d-center"
           >
             <img className="laurels" src={images.laurels} alt="laurels" />
           </Col>

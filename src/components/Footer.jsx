@@ -25,7 +25,7 @@ const Footer = () => {
   return (
     <div className="bg py-5">
       <Container>
-        <Row className="d-flex justify-content-center">
+        <Row className="d-center">
           <Col
             xs={8}
             // Bug: border not showing up #######################################
@@ -50,7 +50,7 @@ const Footer = () => {
           </Col>
         </Row>
         <Row>
-          <Col md={4} className="d-flex justify-content-center">
+          <Col md={4} className="d-center">
             <div className="text-white pt-3 pt-md-0">
               <div className="fs-3 golden-text">聯絡我們</div>
               <div>新竹市東區美食路33號</div>

@@ -20,7 +20,7 @@ const Menu = () => {
     <div className="bg" id="menu">
       <Container className="py-5 d-flex flex-column align-items-center">
         <Row xs={12} md={12} className="pb-3">
-          <Col className="d-flex flex-column align-items-center justify-content-center">
+          <Col className="d-center flex-column align-items-center">
             <Title title={"挑動味蕾"} subTitle={"近期菜單"} />
           </Col>
         </Row>
@@ -51,7 +51,7 @@ const Menu = () => {
             雞尾酒
             {cocktails.map((item, key) => (
               <div key={key}>
-                <Row  className="d-flex align-items-center">
+                <Row className="d-flex align-items-center">
                   <Col xs={7} md={8} className="py-2">
                     <div className="fs-4 golden-text">{item.title}</div>
                   </Col>

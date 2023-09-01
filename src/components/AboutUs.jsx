@@ -13,7 +13,7 @@ const AboutUs = () => {
             xs={12}
             md={5}
             id="about-us"
-            className="d-flex flex-column align-items-end justify-content-center"
+            className="d-center flex-column align-items-end"
           >
             <span className=" fw-bold custom-text">關於我們</span>
             <h5 className="text-white py-1 xs:text-start md:text-end w-75">
@@ -38,7 +38,7 @@ const AboutUs = () => {
           <Col
             xs={9}
             md={5}
-            className="py-3 d-flex flex-column align-items-start justify-content-center"
+            className="py-3 d-center flex-column align-items-start"
           >
             <span className=" fw-bold custom-text">特色料理</span>
             <h5 className="text-white py-1 text-start xs:w-100 md:w-75">

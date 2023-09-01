@@ -21,7 +21,7 @@ const Header = () => {
           <Col
             xs={12}
             md={6}
-            className="d-flex flex-column justify-content-center"
+            className="d-center flex-column"
           >
             <Title title={"追尋新風味"} subTitle={"探索精緻飲食"} />
             <h5 className="text-white py-4 pe-3 w-75">

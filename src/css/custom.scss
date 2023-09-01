@@ -50,7 +50,9 @@
 .bg {
   background-image: url("../assets/bg.png");
 }
-
+.bg-beige {
+  background: #fdfaf6;
+}
 .bg-brown {
   background-image: url("../assets/bg-brown.png");
 }
@@ -121,6 +123,10 @@
 .flex-between {
   display: flex;
   justify-content: space-between;
+}
+.d-center {
+  display: flex;
+  justify-content: center;
 }
 .custom-small-font {
   font-size: 10px;

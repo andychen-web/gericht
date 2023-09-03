@@ -29,8 +29,14 @@ const Home = () => {
     hiddenElements.forEach((element) => {
       observer.observe(element);
     });
-    setIsLoading(false);
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+  }, []);
+
   return (
     <>
       <Loader isLoading={isLoading} />

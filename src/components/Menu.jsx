@@ -45,7 +45,12 @@ const Menu = () => {
             ))}
           </Col>
           <Col xs={8} md={4} className="py-2 hidden">
-            <img width={"100%"} src={images.menu} alt="menuImg" />
+            <img
+              width={"100%"}
+              loading="lazy"
+              src={images.menu}
+              alt="menuImg"
+            />
           </Col>
           <Col md={4} className="fs-2 text-white fw-bold">
             雞尾酒

@@ -44,6 +44,7 @@ const Gallery = () => {
             ].map((item, index) => (
               <div key={index} className="px-1">
                 <img
+                  loading="lazy"
                   style={{
                     width: "12rem",
                     height: "17rem",

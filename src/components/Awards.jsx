@@ -10,7 +10,13 @@ const awards = data.awards;
 const Awards = () => {
   return (
     <div className="bg-brown">
-      <img className="ps-4 pt-4" width={"150px"} src={images.logo} alt="logo" />
+      <img
+        className="ps-4 pt-4"
+        width={"150px"}
+        loading="lazy"
+        src={images.logo}
+        alt="logo"
+      />
       <Container className="py-5 hidden" id="awards">
         <Row>
           <Col lg={8} md={7} className="d-flex flex-column">
@@ -28,6 +34,7 @@ const Awards = () => {
                               <img
                                 className="w-100"
                                 src={item.imgUrl}
+                                loading="lazy"
                                 alt="award"
                               />
                             </div>
@@ -48,6 +55,7 @@ const Awards = () => {
                                 <img
                                   className="w-100"
                                   src={awards[index + 1].imgUrl}
+                                  loading="lazy"
                                   alt="award"
                                 />
                               </div>
@@ -70,12 +78,13 @@ const Awards = () => {
               </Col>
             </Row>
           </Col>
-          <Col
-            lg={4}
-            md={5}
-            className="align-items-md-end d-center"
-          >
-            <img className="laurels" src={images.laurels} alt="laurels" />
+          <Col lg={4} md={5} className="align-items-md-end d-center">
+            <img
+              className="laurels"
+              src={images.laurels}
+              alt="laurels"
+              loading="lazy"
+            />
           </Col>
         </Row>
       </Container>

@@ -25,6 +25,7 @@ const AboutUs = () => {
               className="position-relative top-50 hidden"
               width={"100%"}
               src={images.G}
+              loading="lazy"
               alt="bg"
             />
             <img
@@ -32,6 +33,7 @@ const AboutUs = () => {
               style={{ transform: "translateX(-20%)" }}
               width={"170%"}
               src={images.woodSpoon}
+              loading="lazy"
               alt="spoon"
             />
           </Col>

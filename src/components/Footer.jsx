@@ -60,13 +60,14 @@ const Footer = () => {
           </Col>
           <Col md={4} className="d-flex flex-column align-items-center py-5">
             <img
+              loading="lazy"
               width={"60%"}
               src={images.gericht}
               alt="logo"
               style={{ filter: "sepia(1) hue-rotate(-50deg) saturate(10)" }}
             />
             <div className="text-white">「在服務他人的過程中，找到自己。」</div>
-            <img src={images.spoon} alt="spoon" />
+            <img loading="lazy" src={images.spoon} alt="spoon" />
             <div>
               <FaFacebookF className="custom-icon" />
               <RxTwitterLogo className="mx-3 custom-icon" />

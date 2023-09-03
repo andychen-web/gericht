@@ -17,6 +17,10 @@
   }
 }
 
+.container.custom-paddingTop {
+  padding-top: 7rem;
+}
+
 .custom-text {
   color: #dcca87;
 }
@@ -46,7 +50,7 @@
   color: black;
   border: none;
   font-weight: 700;
-  max-width: 6rem;
+  max-width: 8rem;
   padding: 10px;
   border-radius: 10px;
   transition: all 0.3s ease-in-out;
@@ -155,4 +159,24 @@
 
 .custom-small-font {
   font-size: 10px;
+}
+
+.page-link {
+  color: #000;
+}
+
+.active > .page-link,
+.page-link.active {
+  color: #000;
+  background-color: #dcca87;
+  border: 1px solid #dee2e6;
+}
+
+.page-link:focus {
+  color: #000;
+  box-shadow: 0 0 0 0.25rem rgba(220, 202, 135, 0.5);
+}
+
+.page-link:hover {
+  color: #000;
 }/*# sourceMappingURL=custom.css.map */

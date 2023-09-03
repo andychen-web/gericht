@@ -132,7 +132,7 @@ const Products = ({ token, products }) => {
           </button>
         </div>
       </div>
-      <Container style={{ paddingTop: "7rem" }}>
+      <Container className="custom-paddingTop">
         <Row>
           {/* 篩選品項 */}
           <Col md={2}>

@@ -10,12 +10,12 @@ const Navigation = () => {
       bg="black"
       expand="lg"
       variant="dark"
-      className="position-fixed overflow-hidden"
-      style={{ zIndex: 3, width: "100vw" }}
+      className="position-fixed"
+      style={{ zIndex: 3, width: "100vw", marginBottom: "5rem" }}
     >
-      <Container>
-        <Navbar.Brand href="/">
-          <img src={images.gericht} alt="logo" className="w-50" />
+      <Container className="d-flex">
+        <Navbar.Brand href="/" className="w-50">
+          <img src={images.gericht} alt="logo" width={"40%"} />
         </Navbar.Brand>
         {/*創建一個可collapse的toggle btn，aria-controls代表要控制的Navbar.Collapse的id */}
         <Navbar.Toggle aria-controls="navbarNav" />

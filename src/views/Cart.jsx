@@ -153,9 +153,9 @@ const Cart = ({ token }) => {
   return (
     <div className="bg d-flex flex-column position-relative">
       <Loader isLoading={isLoading} />
-      <div className="d-flex justify-content-center align-items-center"></div>
+      <div className="d-center align-items-center"></div>
       <Navigation />
-      <Container className="pt-5">
+      <Container>
         <Row className="position-relative pt-5 mt-5">
           <Col xs={12} lg={7}>
             <div className="text-white h3 d-flex">

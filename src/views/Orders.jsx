@@ -59,7 +59,7 @@ const Orders = () => {
     <div className="bg-beige">
       <Loader isLoading={isLoading} />
       <Navigation />
-      <Container className="custom-paddingTop">
+      <Container className="custom-padding-top">
         <h2 className="text-center fw-bold">全部訂單</h2>
 
         {/* desktop screen size */}

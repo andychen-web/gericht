@@ -44,7 +44,7 @@ const Order = ({ order }) => {
   return (
     <div className="bg-beige">
       <Navigation />
-      <Container style={{ paddingTop: "8rem" }}>
+      <Container className="custom-padding-top">
         <div className="row d-center mb-1 ">
           <div className="col-md-5">
             <h4 className="fw-bold mb-3">訂單資訊</h4>

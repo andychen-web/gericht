@@ -11,18 +11,13 @@ const Header = () => {
 
   const handleNavigate = () => {
     navigate("/products");
-    window.scrollTo(0, 0); // scroll to the top of the page
   };
 
   return (
     <div className="bg" id="header">
-      <Container style={{ paddingTop: "5rem", paddingBottom: "5rem" }}>
+      <Container className="pb-5 custom-padding-top">
         <Row>
-          <Col
-            xs={12}
-            md={6}
-            className="d-center flex-column"
-          >
+          <Col xs={12} md={6} className="d-center flex-column">
             <Title title={"追尋新風味"} subTitle={"探索精緻飲食"} />
             <h5 className="text-white py-4 pe-3 w-75">
               品嘗菜餚，享受令人嚮往的味覺饗宴， 彷彿探險家在未知的味道中遨遊
@@ -33,7 +28,7 @@ const Header = () => {
           </Col>
           <Col xs={12} md={6}>
             <img
-              width={"100%"}
+              width={"80%"}
               className=""
               src={images.welcome}
               alt="welcome"

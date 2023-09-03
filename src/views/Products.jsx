@@ -132,7 +132,7 @@ const Products = ({ token, products }) => {
           </button>
         </div>
       </div>
-      <Container className="custom-paddingTop">
+      <Container className="custom-padding-top">
         <Row>
           {/* 篩選品項 */}
           <Col md={2}>

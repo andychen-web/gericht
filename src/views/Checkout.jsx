@@ -36,26 +36,30 @@ const Checkout = () => {
       setStep((prevStep) => prevStep + 1);
     }
   }
-
   if (step === 3) {
     //  checkout complete, send POST
     const myHeaders = new Headers();
     const apiKEY = process.env.REACT_APP_API_KEY;
-
     myHeaders.append("apikey", apiKEY);
     const requestOptions = {
       method: "POST",
       redirect: "follow",
       headers: myHeaders,
-      body: JSON.stringify(orderForm),
+      body: JSON.stringify({
+        ...orderForm,
+        total,
+        cartItems,
+      }),
     };
     fetch("https://api.apilayer.com/form_api/form", requestOptions)
       .then((response) => response.text())
       .then((result) => console.log(result))
       .catch((error) => console.log("error", error));
-    //  show toProducts btn
-    const backToProducts = document.querySelector("#toProducts");
-    backToProducts.classList.remove("d-none");
+
+    const toProducts = document.querySelector("#toProducts");
+    const toOrders = document.querySelector("#toOrders");
+    toProducts.classList.remove("d-none");
+    toOrders.classList.remove("d-none");
     const next = document.querySelector("#next");
     next.classList.add("d-none");
   }
@@ -75,8 +79,8 @@ const Checkout = () => {
       <Container className="pt-5">
         <div className="text-white pt-5 text-center">
           <h4 className="pt-5">結帳</h4>
-          <form className="row justify-content-md-center">
-            <Col xs={12} md={5}>
+          <form className="row d-center">
+            <Col xs={12} md={4}>
               {/* 訂單摘要 */}
               <div className="text-white h3 d-flex">
                 <div className="pb-2 fs-5">
@@ -125,7 +129,7 @@ const Checkout = () => {
               </div>
             </Col>
             {/* 結帳 */}
-            <Col xs={12} md={7}>
+            <Col xs={12} md={6}>
               <div className="p-2">
                 <div className="px-3 my-3 fs-5  text-light flex-between">
                   <div>1.確認資料</div>
@@ -260,19 +264,29 @@ const Checkout = () => {
                   )}
                 </div>
 
-                <div
-                  id="next"
-                  onClick={() => handleStep()}
-                  className="btn btn-light fw-bold"
-                >
-                  下一步
-                </div>
-                <div
-                  onClick={() => navigate("/products")}
-                  id="toProducts"
-                  className="btn btn-light fw-bold d-none"
-                >
-                  回到商品列表
+                <div className="d-center">
+                  <div
+                    id="next"
+                    onClick={() => handleStep()}
+                    className="cursor-pointer custom-btn fw-bold"
+                  >
+                    下一步
+                  </div>
+
+                  <button
+                    onClick={() => navigate("/products")}
+                    id="toProducts"
+                    className="cursor-pointer custom-btn fw-bold d-none me-4"
+                  >
+                    回到商品列表
+                  </button>
+                  <button
+                    onClick={() => navigate("/orders")}
+                    id="toOrders"
+                    className="cursor-pointer custom-btn fw-bold d-none"
+                  >
+                    查詢訂單
+                  </button>
                 </div>
               </div>
             </Col>

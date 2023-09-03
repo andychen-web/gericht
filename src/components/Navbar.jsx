@@ -30,6 +30,9 @@ const Navigation = () => {
             <Link className="custom-link nav-link" to="/cart">
               購物車
             </Link>
+            <Link className="custom-link nav-link" to="/orders">
+              訂單查詢
+            </Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

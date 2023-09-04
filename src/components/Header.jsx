@@ -1,15 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import images from "../data/images";
 import Title from "./Title";
 import { useNavigate } from "react-router";
-import Loader from "../components/Loader";
 
 const Header = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleNavigate = () => {
     navigate("/products");
@@ -20,8 +18,6 @@ const Header = () => {
 
     function loaded() {
       div.classList.add("loaded");
-      // setIsLoading(false);
-      console.log(isLoading, setIsLoading);
     }
 
     if (img.complete) {
@@ -32,8 +28,7 @@ const Header = () => {
   });
 
   return (
-    <div className="bg ">
-      <Loader isLoading={isLoading} />
+    <div className="bg">
       <Container className="pb-5 custom-padding-top">
         <Row>
           <Col xs={12} md={6} className="d-center flex-column">

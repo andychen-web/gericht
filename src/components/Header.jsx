@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -12,20 +12,22 @@ const Header = () => {
   const handleNavigate = () => {
     navigate("/products");
   };
-  const blurDivs = document.querySelectorAll(".blur-load");
-  blurDivs.forEach((div) => {
-    const img = div.querySelector("img");
+  useEffect(() => {
+    const blurDivs = document.querySelectorAll(".blur-load");
+    blurDivs.forEach((div) => {
+      const img = div.querySelector("img");
 
-    function loaded() {
-      div.classList.add("loaded");
-    }
+      function loaded() {
+        div.classList.add("loaded");
+      }
 
-    if (img.complete) {
-      loaded();
-    } else {
-      img.addEventListener("load", loaded);
-    }
-  });
+      if (img.complete) {
+        loaded();
+      } else {
+        img.addEventListener("load", loaded);
+      }
+    });
+  }, []);
 
   return (
     <div className="bg">

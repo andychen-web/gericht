@@ -10,14 +10,15 @@ const awards = data.awards;
 const Awards = () => {
   return (
     <div className="bg-brown">
-      <img
-        className="ps-4 pt-4"
-        width={"150px"}
-        loading="lazy"
-        src={images.logo}
-        alt="logo"
-      />
       <Container className="py-5 hidden" id="awards">
+        <img
+          className="ps-4 pb-5"
+          width={"150px"}
+          loading="lazy"
+          src={images.logo}
+          alt="logo"
+        />
+
         <Row>
           <Col lg={8} md={7} className="d-flex flex-column">
             <Title title={"獲獎"} subTitle={"美食指南獎項"} />

@@ -20,7 +20,7 @@ const Contact = () => {
           <Col xs={12} md={6}>
             <img
               loading="lazy"
-              width={"90%"}
+              width={"70%"}
               src={images.findus}
               alt="findUs"
             />

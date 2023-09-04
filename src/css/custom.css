@@ -88,19 +88,20 @@
 
 @media (min-width: 300px) {
   .laurels {
-    max-width: 70%;
+    display: none;
   }
 }
 @media (min-width: 800px) {
   .laurels {
-    max-width: 110%;
+    max-width: 130%;
     position: relative;
-    bottom: 6rem;
+    bottom: 10rem;
+    display: block;
   }
 }
 @media (min-width: 1200px) {
   .laurels {
-    max-width: 105%;
+    max-width: 80%;
     bottom: 0;
   }
 }
@@ -185,6 +186,10 @@
 
 .welcome-blur {
   background-image: url(../assets/welcome_small.png);
+}
+
+.chef-blur {
+  background-image: url(../assets/chef_small.png);
 }
 
 .blur-load {

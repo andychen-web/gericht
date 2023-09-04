@@ -1,4 +1,3 @@
-import bg from "../assets/bg.png";
 import award01 from "../assets/award01.png";
 import award02 from "../assets/award02.png";
 import award03 from "../assets/award03.png";
@@ -23,10 +22,7 @@ import welcome from "../assets/welcome.png";
 import bgBrown from "../assets/bg-brown.png";
 import woodSpoon from "../assets/cooking-spoon.png";
 import meal from "../assets/meal.mp4";
-import bgSmall from "../assets/bg_small.png";
 export default {
-  bg,
-  bgSmall,
   award01,
   award02,
   award03,

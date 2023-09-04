@@ -6,7 +6,7 @@ import images from "../data/images";
 
 const AboutUs = () => {
   return (
-    <div className="blur-load bg-brown-blur">
+    <div className="bg-brown">
       <Container className="py-5">
         <Row>
           <Col

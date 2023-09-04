@@ -144,24 +144,17 @@
 .page-link:hover {
   color: #000;
 }
+.bg {
+  background-image: url(../assets/bg_small.png);
+  background-size: cover;
+}
+.bg-brown {
+  background-image: url(../assets/bg-brown.png);
+  background-size: cover;
+}
 .welcome-blur {
   background-image: url(../assets/welcome_small.png);
 }
-
-.bg-brown-blur {
-  background-image: url(../assets/bg-brown_small.png);
-  &.loaded {
-    background-image: url(../assets/bg-brown.png);
-  }
-}
-
-.bg-blur {
-  background-image: url(../assets/bg_small.png);
-  &.loaded {
-    background-image: url(../assets/bg.png);
-  }
-}
-
 .blur-load {
   background-size: cover;
   background-position: center;

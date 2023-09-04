@@ -7,7 +7,7 @@ import Title from "./Title";
 
 const Chef = () => {
   return (
-    <div className="bg-brown" id="chef">
+    <div className="bg-brown">
       <Container className="py-5">
         <Row>
           <Col xs={12} md={6}>

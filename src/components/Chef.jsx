@@ -10,8 +10,15 @@ const Chef = () => {
     <div className="bg-brown">
       <Container className="py-5">
         <Row>
-          <Col xs={12} md={6}>
-            <img width={"100%"} loading="lazy" src={images.chef} alt="chef" />
+          <Col xs={12} md={5}>
+            <div className="blur-load chef-blur rounded">
+              <img
+                width={"100%"}
+                src={images.chef}
+                className="rounded"
+                alt="chef"
+              />
+            </div>
           </Col>
           <Col xs={12} md={6} className="flex-column d-center ps-5 mt-3 hidden">
             <Title title={"主廚理念"} subTitle={"我們的堅持"}></Title>

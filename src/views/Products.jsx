@@ -114,7 +114,6 @@ const Products = ({ token, products }) => {
 
   return (
     <div className="bg">
-      {/* {products ? null : <Loader />} */}
       <Loader isLoading={isLoading} />
 
       <Navigation />
@@ -133,7 +132,7 @@ const Products = ({ token, products }) => {
           </button>
         </div>
       </div>
-      <Container style={{ paddingTop: "7rem" }}>
+      <Container className="custom-padding-top">
         <Row>
           {/* 篩選品項 */}
           <Col md={2}>

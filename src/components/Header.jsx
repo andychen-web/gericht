@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -11,18 +11,29 @@ const Header = () => {
 
   const handleNavigate = () => {
     navigate("/products");
-    window.scrollTo(0, 0); // scroll to the top of the page
   };
+  useEffect(() => {
+    const blurDivs = document.querySelectorAll(".blur-load");
+    blurDivs.forEach((div) => {
+      const img = div.querySelector("img");
+
+      function loaded() {
+        div.classList.add("loaded");
+      }
+
+      if (img.complete) {
+        loaded();
+      } else {
+        img.addEventListener("load", loaded);
+      }
+    });
+  }, []);
 
   return (
-    <div className="bg" id="header">
-      <Container style={{ paddingTop: "5rem", paddingBottom: "5rem" }}>
+    <div className="bg">
+      <Container className="pb-5 custom-padding-top">
         <Row>
-          <Col
-            xs={12}
-            md={6}
-            className="d-flex flex-column justify-content-center"
-          >
+          <Col xs={12} md={6} className="d-center flex-column">
             <Title title={"追尋新風味"} subTitle={"探索精緻飲食"} />
             <h5 className="text-white py-4 pe-3 w-75">
               品嘗菜餚，享受令人嚮往的味覺饗宴， 彷彿探險家在未知的味道中遨遊
@@ -32,12 +43,14 @@ const Header = () => {
             </button>
           </Col>
           <Col xs={12} md={6}>
-            <img
-              width={"100%"}
-              className=""
-              src={images.welcome}
-              alt="welcome"
-            />
+            <div className="blur-load welcome-blur w-75 rounded">
+              <img
+                width={"100%"}
+                className="loaded-img rounded"
+                src={images.welcome}
+                alt="welcome"
+              />
+            </div>
           </Col>
         </Row>
       </Container>

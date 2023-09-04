@@ -28,7 +28,7 @@ const Home = () => {
       observer.observe(element);
     });
   }, []);
-  
+
   return (
     <>
       <Navigation />

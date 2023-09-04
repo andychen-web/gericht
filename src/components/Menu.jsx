@@ -17,10 +17,10 @@ const Menu = () => {
     window.scrollTo(0, 0); // scroll to the top of the page
   };
   return (
-    <div className="bg" id="menu">
+    <div className="bg">
       <Container className="py-5 d-flex flex-column align-items-center">
         <Row xs={12} md={12} className="pb-3">
-          <Col className="d-flex flex-column align-items-center justify-content-center">
+          <Col className="d-center flex-column align-items-center">
             <Title title={"挑動味蕾"} subTitle={"近期菜單"} />
           </Col>
         </Row>
@@ -45,13 +45,18 @@ const Menu = () => {
             ))}
           </Col>
           <Col xs={8} md={4} className="py-2 hidden">
-            <img width={"100%"} src={images.menu} alt="menuImg" />
+            <img
+              width={"100%"}
+              loading="lazy"
+              src={images.menu}
+              alt="menuImg"
+            />
           </Col>
           <Col md={4} className="fs-2 text-white fw-bold">
             雞尾酒
             {cocktails.map((item, key) => (
               <div key={key}>
-                <Row  className="d-flex align-items-center">
+                <Row className="d-flex align-items-center">
                   <Col xs={7} md={8} className="py-2">
                     <div className="fs-4 golden-text">{item.title}</div>
                   </Col>

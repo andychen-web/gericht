@@ -71,7 +71,7 @@ const Cart = ({ token }) => {
     navigate("/checkout");
   };
 
-  const addQuantity = (index, change) => {
+  const incrementQuantity = (index, change) => {
     setCartItems((prevCartItems) => {
       const newCartItems = [...prevCartItems];
       newCartItems[index] = {
@@ -83,7 +83,7 @@ const Cart = ({ token }) => {
 
     dispatch(updateItemQuantity({ index, change }));
   };
-  const subtractQuantity = (index, change, quantity, itemId) => {
+  const decrementQuantity = (index, change, quantity, itemId) => {
     if (quantity >= 2) {
       setCartItems((prevCartItems) => {
         const newCartItems = [...prevCartItems];
@@ -153,9 +153,9 @@ const Cart = ({ token }) => {
   return (
     <div className="bg d-flex flex-column position-relative">
       <Loader isLoading={isLoading} />
-      <div className="d-flex justify-content-center align-items-center"></div>
+      <div className="d-center align-items-center"></div>
       <Navigation />
-      <Container className="pt-5">
+      <Container className="pt-2">
         <Row className="position-relative pt-5 mt-5">
           <Col xs={12} lg={7}>
             <div className="text-white h3 d-flex">
@@ -184,16 +184,14 @@ const Cart = ({ token }) => {
                         >
                           <BsFillTrash3Fill />
                         </button>
-                        <div key={item.id} className="ps-2 pt-1">
-                          {item.title}
-                        </div>
+                        <div className="ps-2 pt-1">{item.title}</div>
                       </td>
                       <td>
                         <div role="group" className="btn-group">
                           <button
                             type="button"
                             onClick={() =>
-                              subtractQuantity(key, -1, item.quantity, item.id)
+                              decrementQuantity(key, -1, item.quantity, item.id)
                             }
                             className="btn btn-outline-secondary"
                           >
@@ -207,7 +205,7 @@ const Cart = ({ token }) => {
                           </button>
                           <button
                             type="button"
-                            onClick={() => addQuantity(key, +1)}
+                            onClick={() => incrementQuantity(key, +1)}
                             className="btn btn-outline-secondary"
                           >
                             +

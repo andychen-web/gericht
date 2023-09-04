@@ -6,10 +6,14 @@ import Products from "./views/Products";
 import Cart from "./views/Cart";
 import Checkout from "./views/Checkout";
 import Home from "./views/Home";
+import Orders from "./views/Orders";
+import Order from "./components/Order";
+import { useSelector } from "react-redux";
 
 function App() {
   const [products, setProducts] = useState("");
   const [token, setToken] = useState("");
+  const orderArray = useSelector((state) => state.orderForm.orderArray);
 
   useEffect(() => {
     // 先登入測試帳號取得token，取得後續POST request權限
@@ -66,6 +70,15 @@ function App() {
       />
       <Route path="/cart" element={<Cart token={token} />} />
       <Route path="/checkout" element={<Checkout />} />
+      <Route path="/orders" element={<Orders />} />
+      {orderArray.map((order) => (
+        <Route
+          key={order.id}
+          path={`/order/${order.id}`}
+          // test below
+          element={<Order order={order} />}
+        />
+      ))}
     </Routes>
   );
 }

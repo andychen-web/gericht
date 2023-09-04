@@ -12,9 +12,23 @@ const Header = () => {
   const handleNavigate = () => {
     navigate("/products");
   };
+  const blurDivs = document.querySelectorAll(".blur-load");
+  blurDivs.forEach((div) => {
+    const img = div.querySelector("img");
+
+    function loaded() {
+      div.classList.add("loaded");
+    }
+
+    if (img.complete) {
+      loaded();
+    } else {
+      img.addEventListener("load", loaded);
+    }
+  });
 
   return (
-    <div className="bg" id="header">
+    <div className="blur-load bg-blur">
       <Container className="pb-5 custom-padding-top">
         <Row>
           <Col xs={12} md={6} className="d-center flex-column">
@@ -27,12 +41,14 @@ const Header = () => {
             </button>
           </Col>
           <Col xs={12} md={6}>
-            <img
-              width={"80%"}
-              className=""
-              src={images.welcome}
-              alt="welcome"
-            />
+            <div className="blur-load welcome-blur w-75 rounded">
+              <img
+                width={"100%"}
+                className="loaded-img rounded"
+                src={images.welcome}
+                alt="welcome"
+              />
+            </div>
           </Col>
         </Row>
       </Container>

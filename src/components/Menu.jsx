@@ -17,7 +17,7 @@ const Menu = () => {
     window.scrollTo(0, 0); // scroll to the top of the page
   };
   return (
-    <div className="bg" id="menu">
+    <div className="blur-load bg-blur">
       <Container className="py-5 d-flex flex-column align-items-center">
         <Row xs={12} md={12} className="pb-3">
           <Col className="d-center flex-column align-items-center">

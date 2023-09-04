@@ -59,16 +59,8 @@
   box-shadow: 2px 2px 50px rgba(255, 255, 255, 0.3);
 }
 
-.bg {
-  background-image: url("../assets/bg.png");
-}
-
 .bg-beige {
   background: #fdfaf6;
-}
-
-.bg-brown {
-  background-image: url("../assets/bg-brown.png");
 }
 
 .white-line {
@@ -179,4 +171,34 @@
 
 .page-link:hover {
   color: #000;
+}
+
+.welcome-blur {
+  background-image: url(../assets/welcome_small.png);
+}
+
+.bg-brown-blur {
+  background-image: url(../assets/bg-brown_small.png);
+}
+.bg-brown-blur.loaded {
+  background-image: url(../assets/bg-brown.png);
+}
+
+.bg-blur {
+  background-image: url(../assets/bg_small.png);
+}
+.bg-blur.loaded {
+  background-image: url(../assets/bg.png);
+}
+
+.blur-load {
+  background-size: cover;
+  background-position: center;
+}
+.blur-load > img {
+  opacity: 0;
+}
+.blur-load.loaded > img {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
 }/*# sourceMappingURL=custom.css.map */

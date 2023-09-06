@@ -3,6 +3,7 @@ import cartReducer from "./slices/cartSlice";
 import priceReducer from "./slices/priceSlice";
 import productReducer from "./slices/productSlice";
 import orderFormReducer from "./slices/orderFormSlice";
+import tokenReducer from "./slices/tokenSlice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
 import { combineReducers } from "@reduxjs/toolkit";
@@ -18,6 +19,7 @@ const reducer = combineReducers({
   price: priceReducer,
   orderForm: orderFormReducer,
   product: productReducer,
+  token: tokenReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

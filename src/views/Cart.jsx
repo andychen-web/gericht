@@ -9,8 +9,7 @@ import { BsFillCartFill } from "react-icons/bs";
 import { FaPencilAlt } from "react-icons/fa";
 import { BsFillTrash3Fill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateItemQuantity, setItems } from "../slices/cartSlice";
 import { setSum, setShippingFee, setTotal } from "../slices/priceSlice";
 import { setOrderForm } from "../slices/orderFormSlice";
@@ -28,13 +27,11 @@ const validationSchema = Yup.object().shape({
   address: Yup.string().required("地址為必填"),
 });
 
-const Cart = ({ token }) => {
+const Cart = () => {
   window.scrollTo(0, 0);
-  Cart.propTypes = {
-    token: PropTypes.string,
-  };
 
   const navigate = useNavigate();
+  const token = useSelector((state) => state.token.token);
   const [cartItems, setCartItems] = useState([]);
   const [showCheckout, setShowCheckout] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

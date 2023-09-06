@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/custom.css";
 import { Route, Routes } from "react-router-dom";
@@ -11,9 +11,9 @@ import Orders from "./views/Orders";
 import Order from "./components/Order";
 import { useDispatch, useSelector } from "react-redux";
 import { setProducts } from "./slices/productSlice";
+import { setToken } from "./slices/tokenSlice";
 
 function App() {
-  const [token, setToken] = useState("");
   const dispatch = useDispatch();
   const orders = useSelector((state) => state.orderForm.orderArray);
   const products = useSelector((state) => state.product.productArray);
@@ -34,7 +34,7 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         authorize(data.token);
-        setToken(data.token);
+        dispatch(setToken(data.token));
       })
       .catch((error) => console.error(error));
 
@@ -67,11 +67,8 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route
-        path="/products"
-        element={<Products token={token} products={products} />}
-      />
-      <Route path="/cart" element={<Cart token={token} />} />
+      <Route path="/products" element={<Products products={products} />} />
+      <Route path="/cart" element={<Cart />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/orders" element={<Orders />} />
       {orders.map((order) => (
@@ -85,9 +82,7 @@ function App() {
         <Route
           key={product.id}
           path={`product/${product.id}`}
-          element={
-            <Product token={token} product={product} products={products} />
-          }
+          element={<Product product={product} products={products} />}
         />
       ))}
     </Routes>

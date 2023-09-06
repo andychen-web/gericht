@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Container from "react-bootstrap/Container";
-import Navigation from "../components/Navbar";
+import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";

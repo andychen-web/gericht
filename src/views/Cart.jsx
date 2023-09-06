@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Navigation from "../components/Navbar";
+import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";

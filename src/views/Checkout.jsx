@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Navigation from "../components/Navbar";
+import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import Container from "react-bootstrap/Container";
 import { FaPencilAlt } from "react-icons/fa";

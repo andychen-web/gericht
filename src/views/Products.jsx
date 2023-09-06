@@ -7,17 +7,19 @@ import Footer from "../components/Footer";
 import { BsFillCartFill } from "react-icons/bs";
 import PropTypes from "prop-types";
 import Loader from "../components/Loader";
-
+import { useNavigate } from "react-router-dom";
 const Products = ({ token, products }) => {
   Products.propTypes = {
     token: PropTypes.string,
-    products: PropTypes.array.isRequired,
+    products: PropTypes.array,
   };
-
+  const navigate = useNavigate();
   const [priceRange, setPriceRange] = useState("全部");
   const [category, setCategory] = useState("全部");
   const [showAlert, setShowAlert] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const categoryTypes = ["全部", "燉飯", "義大利麵", "烤肉", "甜點"];
+  const priceRangeArr = ["全部", "$99~$199", "$200~$399"];
 
   let alertMessage;
   const handleAlert = () => {
@@ -32,7 +34,6 @@ const Products = ({ token, products }) => {
       setIsLoading(true);
     }
   }, [products]);
-
   useEffect(() => {
     alertMessage = document.querySelector(".message-alert");
     if (showAlert) {
@@ -46,10 +47,16 @@ const Products = ({ token, products }) => {
   }, [showAlert]);
 
   const handlePriceRangeChange = (e) => {
-    setPriceRange(e.target.value);
+    const priceDivs = document.querySelectorAll(".price-range");
+    priceDivs.forEach((div) => div.classList.remove("clicked"));
+    setPriceRange(e.target.innerHTML);
+    e.target.classList.add("clicked");
   };
   const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
+    const categoryDivs = document.querySelectorAll(".category");
+    categoryDivs.forEach((div) => div.classList.remove("clicked"));
+    setCategory(e.target.innerHTML);
+    e.target.classList.add("clicked");
   };
 
   const filterdProducts =
@@ -135,42 +142,37 @@ const Products = ({ token, products }) => {
       <Container className="custom-padding-top">
         <Row>
           {/* 篩選品項 */}
-          <Col md={2}>
-            <form className="text-white">
-              <div className="form-group pb-3">
-                <label htmlFor="formCategory" className="h5">
-                  種類
-                </label>
-                <select
-                  className="form-control"
-                  id="formCategory"
-                  onChange={handleCategoryChange}
-                >
-                  <option>全部</option>
-                  <option>燉飯</option>
-                  <option>義大利麵</option>
-                  <option>烤肉</option>
-                  <option>甜點</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label htmlFor="formPriceRange" className="h5">
-                  價格區間
-                </label>
-                <select
-                  className="form-control"
-                  id="formPriceRange"
-                  onChange={handlePriceRangeChange}
-                >
-                  <option>全部</option>
-                  <option>$99~$199</option>
-                  <option>$200~$399</option>
-                </select>
-              </div>
-            </form>
+          <Col md={3}>
+            <label className="h3 special-text fw-bold">種類</label>
+            <ul className="category-wrap bg-dark list-unstyled border">
+              {categoryTypes.map((categoryType, key) => (
+                <li key={key}>
+                  <div
+                    className="category text-center ps-2 py-1 py-lg-2 cursor-pointer"
+                    onClick={(event) => handleCategoryChange(event)}
+                  >
+                    {categoryType}
+                  </div>
+                </li>
+              ))}
+            </ul>
+
+            <label className="h3 special-text fw-bold">價格區間</label>
+            <ul className="bg-dark list-unstyled border">
+              {priceRangeArr.map((priceRange, key) => (
+                <li key={key}>
+                  <div
+                    className="price-range text-center ps-2 py-1 py-lg-2 cursor-pointer"
+                    onClick={(event) => handlePriceRangeChange(event)}
+                  >
+                    {priceRange}
+                  </div>
+                </li>
+              ))}
+            </ul>
           </Col>
           {/* 展示品項*/}
-          <Col md={10}>
+          <Col md={9}>
             <Row className="gap-5">
               {filterdProducts &&
                 filterdProducts.map((product, key) => (
@@ -186,8 +188,8 @@ const Products = ({ token, products }) => {
                       className="menu-products rounded pb-2"
                       alt="menu-products"
                     />
-                    <h5 style={{ width: "120%" }}>{product.title}</h5>
-                    <div className="d-flex align-items-top">
+                    <div>{product.title}</div>
+                    <div className="d-flex">
                       <h5 className="pe-2">${product.price}</h5>
                       <BsFillCartFill
                         size={20}
@@ -196,8 +198,14 @@ const Products = ({ token, products }) => {
                           addToCart(product);
                           handleAlert();
                         }}
-                      ></BsFillCartFill>
+                      />
                     </div>
+                    <button
+                      className="custom-btn"
+                      onClick={() => navigate(`/product/${product.id}`)}
+                    >
+                      查看更多
+                    </button>
                   </Col>
                 ))}
             </Row>

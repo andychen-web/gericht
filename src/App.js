@@ -3,17 +3,20 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/custom.css";
 import { Route, Routes } from "react-router-dom";
 import Products from "./views/Products";
+import Product from "./views/Product";
 import Cart from "./views/Cart";
 import Checkout from "./views/Checkout";
 import Home from "./views/Home";
 import Orders from "./views/Orders";
 import Order from "./components/Order";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setProducts } from "./slices/productSlice";
 
 function App() {
-  const [products, setProducts] = useState("");
   const [token, setToken] = useState("");
-  const orderArray = useSelector((state) => state.orderForm.orderArray);
+  const dispatch = useDispatch();
+  const orders = useSelector((state) => state.orderForm.orderArray);
+  const products = useSelector((state) => state.product.productArray);
 
   useEffect(() => {
     // 先登入測試帳號取得token，取得後續POST request權限
@@ -53,7 +56,7 @@ function App() {
           { method: "GET" }
         );
         const data = await response.json();
-        setProducts(data.products);
+        dispatch(setProducts(data.products));
       } catch (error) {
         console.log(error);
       }
@@ -71,12 +74,20 @@ function App() {
       <Route path="/cart" element={<Cart token={token} />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/orders" element={<Orders />} />
-      {orderArray.map((order) => (
+      {orders.map((order) => (
         <Route
           key={order.id}
           path={`/order/${order.id}`}
-          // test below
           element={<Order order={order} />}
+        />
+      ))}
+      {products.map((product) => (
+        <Route
+          key={product.id}
+          path={`product/${product.id}`}
+          element={
+            <Product token={token} product={product} products={products} />
+          }
         />
       ))}
     </Routes>

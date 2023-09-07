@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Container from "react-bootstrap/Container";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
@@ -37,9 +37,6 @@ const Order = ({ order }) => {
   ]);
   const productImgArr = order.cartItems.map((item) => item.imageUrl);
 
-  useEffect(() => {
-    console.log(order.cartItems);
-  }, [order]);
 
   return (
     <div className="bg-beige">

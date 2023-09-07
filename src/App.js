@@ -44,9 +44,7 @@ function App() {
         headers: { Authorization: token },
       })
         .then((res) => res.json())
-        .then((data) => {
-          return data;
-        })
+        // .then((data) => {})
         .catch((err) => console.log(err));
     }
     const fetchProducts = async () => {

@@ -49,7 +49,6 @@ const Orders = () => {
     window.scrollTo(0, 0);
 
     if (orders.length > 0) {
-      console.log(orders);
       // save orders in redux to use in Order component, reduce server load
       dispatch(setOrderArray(orders));
     }

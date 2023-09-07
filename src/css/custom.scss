@@ -171,6 +171,11 @@
     transition: opacity 0.5s ease-in-out;
   }
 }
+.custom-nav {
+  z-index: 3;
+  width: 100vw;
+  margin-bottom: 5rem;
+}
 // products page styling
 .category,
 .price-range {
@@ -185,7 +190,7 @@
   color: #dcca87;
   background: #171819 !important;
 }
-@media (max-width: 576px) {
+@media (max-width: 768px) {
   .category-wrap {
     display: flex;
     flex-wrap: wrap;
@@ -198,6 +203,11 @@
   .category {
     text-align: left;
     padding-left: 15px;
+  }
+}
+.custom-max-width {
+  @media (min-width: 991px) {
+    max-width: 160px;
   }
 }
 // product page styling

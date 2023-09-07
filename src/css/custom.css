@@ -204,6 +204,12 @@
   transition: opacity 0.5s ease-in-out;
 }
 
+.custom-nav {
+  z-index: 3;
+  width: 100vw;
+  margin-bottom: 5rem;
+}
+
 .category,
 .price-range {
   color: #fdfaf6;
@@ -220,7 +226,7 @@
   background: #171819 !important;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
   .category-wrap {
     display: flex;
     flex-wrap: wrap;
@@ -233,6 +239,12 @@
     padding-left: 15px;
   }
 }
+@media (min-width: 991px) {
+  .custom-max-width {
+    max-width: 160px;
+  }
+}
+
 .col-height {
   max-height: 30rem;
 }

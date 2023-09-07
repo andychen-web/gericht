@@ -174,7 +174,22 @@ const Products = ({ products }) => {
       }
     }
   };
+  useEffect(() => {
+    const blurDivs = document.querySelectorAll(".blur-load");
+    blurDivs.forEach((div) => {
+      const img = div.querySelector("img");
 
+      function loaded() {
+        div.classList.add("loaded");
+      }
+
+      if (img.complete) {
+        loaded();
+      } else {
+        img.addEventListener("load", loaded);
+      }
+    });
+  }, []);
   return (
     <div className="bg">
       <Loader isLoading={isLoading} />
@@ -249,13 +264,14 @@ const Products = ({ products }) => {
                     xs={8}
                     sm={4}
                     lg={3}
-                    className="text-white mx-2 mt-3 "
+                    className="text-white mx-2 mt-3 blur-load rounded"
                   >
                     <img
-                      src={product.image}
                       className="menu-products rounded pb-2"
-                      alt="menu-products"
+                      src={product.image}
+                      alt={product.title}
                     />
+
                     <div>{product.title}</div>
                     <div className="d-flex">
                       <h5 className="pe-2">${product.price}</h5>

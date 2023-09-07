@@ -62,6 +62,23 @@ const Product = ({ product, products }) => {
     window.scrollTo(0, 0);
   }, [product]);
 
+  useEffect(() => {
+    const blurDivs = document.querySelectorAll(".blur-load");
+    blurDivs.forEach((div) => {
+      const img = div.querySelector("img");
+
+      function loaded() {
+        div.classList.add("loaded");
+      }
+
+      if (img.complete) {
+        loaded();
+      } else {
+        img.addEventListener("load", loaded);
+      }
+    });
+  }, []);
+
   const addToCart = async (product) => {
     const duplicate = cartItems.filter(
       (item) => item.title === product.title
@@ -162,7 +179,12 @@ const Product = ({ product, products }) => {
       </div>
       <Container className="custom-padding-top">
         <Row>
-          <Col xs={12} md={8} lg={8} className="product-img-wrap">
+          <Col
+            xs={12}
+            md={8}
+            lg={8}
+            className="product-img-wrap blur-load rounded"
+          >
             <img
               src={product.image}
               className="product-img rounded obj-contain"
@@ -236,7 +258,12 @@ const Product = ({ product, products }) => {
             <Row>
               {uniqueRelatedProducts &&
                 uniqueRelatedProducts.map((product) => (
-                  <Col key={product.id} md={4} xs={4} className="mb-4">
+                  <Col
+                    key={product.id}
+                    md={4}
+                    xs={4}
+                    className="mb-4 blur-load"
+                  >
                     <img
                       width={"95%"}
                       className="rounded cursor-pointer"

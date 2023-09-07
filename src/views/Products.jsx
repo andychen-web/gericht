@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Navigation from "../components/Navbar";
+import Navigation from "../components/Navigation";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -8,14 +8,16 @@ import { BsFillCartFill } from "react-icons/bs";
 import PropTypes from "prop-types";
 import Loader from "../components/Loader";
 import { useNavigate } from "react-router-dom";
-const Products = ({ token, products }) => {
+import { useSelector } from "react-redux";
+const Products = ({ products }) => {
   Products.propTypes = {
-    token: PropTypes.string,
     products: PropTypes.array,
   };
   const navigate = useNavigate();
+  const token = useSelector((state) => state.token.token);
   const [priceRange, setPriceRange] = useState("全部");
   const [category, setCategory] = useState("全部");
+  const [updateCount, setUpdateCount] = useState(0);
   const [showAlert, setShowAlert] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const categoryTypes = ["全部", "燉飯", "義大利麵", "烤肉", "甜點"];
@@ -113,7 +115,10 @@ const Products = ({ token, products }) => {
         }
       );
       const data = await response.json();
-      console.log("data", data);
+      setUpdateCount((prevState) => prevState + 1);
+      if (data.success) {
+        handleAlert();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -123,7 +128,7 @@ const Products = ({ token, products }) => {
     <div className="bg">
       <Loader isLoading={isLoading} />
 
-      <Navigation />
+      <Navigation updateCount={updateCount} />
       {/* feat to add:喜好清單 */}
       <div className=" position-fixed top-25 end-0 ">
         <div className="message-alert alert alert-light pt-5 mt-5 hidden">
@@ -142,7 +147,7 @@ const Products = ({ token, products }) => {
       <Container className="custom-padding-top">
         <Row>
           {/* 篩選品項 */}
-          <Col md={3}>
+          <Col md={3} className="custom-max-width">
             <label className="h3 special-text fw-bold">種類</label>
             <ul className="category-wrap bg-dark list-unstyled border">
               {categoryTypes.map((categoryType, key) => (
@@ -196,7 +201,6 @@ const Products = ({ token, products }) => {
                         className="custom-icon"
                         onClick={() => {
                           addToCart(product);
-                          handleAlert();
                         }}
                       />
                     </div>

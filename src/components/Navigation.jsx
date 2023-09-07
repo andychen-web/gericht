@@ -6,9 +6,13 @@ import Container from "react-bootstrap/Container";
 import { Link } from "react-router-dom";
 import { setItems } from "../slices/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
+import PropTypes from "prop-types";
 
-// eslint-disable-next-line react/prop-types
 const Navigation = ({ updateCount }) => {
+  Navigation.propTypes = {
+    updateCount: PropTypes.number,
+  };
+
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token.token);
   let cartItems = useSelector((state) => state.cart.cartItems);
@@ -43,7 +47,7 @@ const Navigation = ({ updateCount }) => {
       }
     };
     fetchCart(token);
-  }, [updateCount]);
+  }, [token, updateCount]);
 
   return (
     <Navbar
@@ -68,7 +72,9 @@ const Navigation = ({ updateCount }) => {
             </Link>
             <Link className="custom-link nav-link" to="/cart">
               購物車
-              <span className="badge badge-danger">{cartItems.length}</span>
+              <span className="badge badge-danger">
+                {cartItems.length === 0 ? null : cartItems.length}
+              </span>
             </Link>
             <Link className="custom-link nav-link" to="/orders">
               訂單查詢

@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
-import Navigation from "../components/Navbar";
+import Navigation from "../components/Navigation";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Footer from "../components/Footer";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const Product = ({ token, product, products }) => {
+const Product = ({ product, products }) => {
   Product.propTypes = {
-    token: PropTypes.string,
     product: PropTypes.object,
     products: PropTypes.array,
   };
+  const token = useSelector((state) => state.token.token);
+  const [updateCount, setUpdateCount] = useState(0);
+
   const relatedProducts = products.filter(
     (item) => item.category === product.category
   );
@@ -38,6 +41,9 @@ const Product = ({ token, product, products }) => {
       alertMessage.classList.add("hidden");
     }
   }, [showAlert]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [product]);
 
   const addToCart = async (product) => {
     try {
@@ -64,7 +70,10 @@ const Product = ({ token, product, products }) => {
         }
       );
       const data = await response.json();
-      console.log(data);
+      setUpdateCount((prevState) => prevState + 1);
+      if (data.success) {
+        handleAlert();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -72,7 +81,7 @@ const Product = ({ token, product, products }) => {
 
   return (
     <div className="bg">
-      <Navigation />
+      <Navigation updateCount={updateCount} />
       <div className=" position-fixed top-25 end-0 ">
         <div className="message-alert alert alert-light pt-5 mt-5 hidden">
           已加入購物車
@@ -143,7 +152,6 @@ const Product = ({ token, product, products }) => {
             <button
               onClick={() => {
                 addToCart(product);
-                handleAlert();
               }}
               className="custom-btn my-3"
             >

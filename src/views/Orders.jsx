@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Loader from "../components/Loader";
-import Navigation from "../components/Navbar";
+import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import { AiFillFileText } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
@@ -49,7 +49,6 @@ const Orders = () => {
     window.scrollTo(0, 0);
 
     if (orders.length > 0) {
-      console.log(orders);
       // save orders in redux to use in Order component, reduce server load
       dispatch(setOrderArray(orders));
     }

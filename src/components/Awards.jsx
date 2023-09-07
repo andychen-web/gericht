@@ -40,7 +40,7 @@ const Awards = () => {
                               />
                             </div>
                             <div className="ps-3">
-                              <span className="golden-text fs-4">
+                              <span className="special-text fs-4 fw-bold">
                                 {awards[index].title}
                               </span>
                               <br />
@@ -61,7 +61,7 @@ const Awards = () => {
                                 />
                               </div>
                               <div className="ps-3">
-                                <span className="golden-text fs-4">
+                                <span className="special-text fs-4 fw-bold">
                                   {awards[index + 1].title}
                                 </span>
                                 <br />

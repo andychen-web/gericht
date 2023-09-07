@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Navigation from "../components/Navbar";
+import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -9,8 +9,7 @@ import { BsFillCartFill } from "react-icons/bs";
 import { FaPencilAlt } from "react-icons/fa";
 import { BsFillTrash3Fill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateItemQuantity, setItems } from "../slices/cartSlice";
 import { setSum, setShippingFee, setTotal } from "../slices/priceSlice";
 import { setOrderForm } from "../slices/orderFormSlice";
@@ -28,16 +27,17 @@ const validationSchema = Yup.object().shape({
   address: Yup.string().required("地址為必填"),
 });
 
-const Cart = ({ token }) => {
+const Cart = () => {
   window.scrollTo(0, 0);
-  Cart.propTypes = {
-    token: PropTypes.string,
-  };
 
   const navigate = useNavigate();
-  const [cartItems, setCartItems] = useState([]);
+  const token = useSelector((state) => state.token.token);
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const [showCheckout, setShowCheckout] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(null);
+  const [changeCounter, setChangeCounter] = useState(0);
+
   const dispatch = useDispatch();
   const initFormValues = {
     email: "",
@@ -47,7 +47,7 @@ const Cart = ({ token }) => {
     message: "",
     paymentMethod: "",
   };
-
+  let updatedProduct;
   const sum = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -71,29 +71,45 @@ const Cart = ({ token }) => {
     navigate("/checkout");
   };
 
-  const incrementQuantity = (index, change) => {
-    setCartItems((prevCartItems) => {
-      const newCartItems = [...prevCartItems];
-      newCartItems[index] = {
-        ...newCartItems[index],
-        quantity: newCartItems[index].quantity + change,
-      };
-      return newCartItems;
-    });
+  const putQuantity = async (updatedProduct) => {
+    try {
+      const response = await fetch(
+        `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${updatedProduct.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+          body: JSON.stringify({
+            data: updatedProduct,
+          }),
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  useEffect(() => {
+    if (currentIndex !== null) {
+      updatedProduct = cartItems[currentIndex];
+      putQuantity(updatedProduct);
+    }
+  }, [currentIndex, changeCounter]);
+
+  const incrementQuantity = async (index, change) => {
     dispatch(updateItemQuantity({ index, change }));
+    setCurrentIndex(index);
+    setChangeCounter((prevState) => prevState + 1);
   };
   const decrementQuantity = (index, change, quantity, itemId) => {
     if (quantity >= 2) {
-      setCartItems((prevCartItems) => {
-        const newCartItems = [...prevCartItems];
-        newCartItems[index] = {
-          ...newCartItems[index],
-          quantity: newCartItems[index].quantity + change,
-        };
-        return newCartItems;
-      });
       dispatch(updateItemQuantity({ index, change }));
+      setCurrentIndex(index);
+      setChangeCounter((prevState) => prevState + 1);
     } else if (quantity === 1) {
       handleRemove(itemId);
     }
@@ -113,17 +129,7 @@ const Cart = ({ token }) => {
       for (let key in data.products) {
         newCartItems.push(data.products[key]);
       }
-      const combinedCartItems = newCartItems.reduce((acc, item) => {
-        const existingItem = acc.find((i) => i.title === item.title);
-        if (existingItem) {
-          existingItem.quantity += item.quantity;
-        } else {
-          acc.push({ ...item });
-        }
-        return acc;
-      }, []);
-      setCartItems(combinedCartItems);
-      dispatch(setItems(combinedCartItems));
+      dispatch(setItems(newCartItems));
       data.success ? setIsLoading(false) : setIsLoading(true);
     } catch (error) {
       console.log(error);

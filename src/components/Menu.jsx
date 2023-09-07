@@ -21,7 +21,7 @@ const Menu = () => {
       <Container className="py-5 d-flex flex-column align-items-center">
         <Row xs={12} md={12} className="pb-3">
           <Col className="d-center flex-column align-items-center">
-            <Title title={"挑動味蕾"} subTitle={"近期菜單"} />
+            <Title title={"挑動味蕾"} subTitle={"近期酒單"} />
           </Col>
         </Row>
         <Row md={12} className="d-flex">
@@ -31,10 +31,10 @@ const Menu = () => {
               <div key={key}>
                 <Row className="d-flex align-items-center">
                   <Col xs={7} md={8} className="py-2">
-                    <div className="fs-4 golden-text">{item.title}</div>
+                    <div className="fs-4 special-text">{item.title}</div>
                   </Col>
                   <Col xs={3} md={2} className="white-line"></Col>
-                  <Col xs={2} md={2} className="golden-text">
+                  <Col xs={2} md={2} className="special-text">
                     {item.price}
                   </Col>
                 </Row>
@@ -58,10 +58,10 @@ const Menu = () => {
               <div key={key}>
                 <Row className="d-flex align-items-center">
                   <Col xs={7} md={8} className="py-2">
-                    <div className="fs-4 golden-text">{item.title}</div>
+                    <div className="fs-4 special-text">{item.title}</div>
                   </Col>
                   <Col xs={3} md={2} className="white-line"></Col>
-                  <Col xs={2} md={2} className="golden-text">
+                  <Col xs={2} md={2} className="special-text">
                     {item.price}
                   </Col>
                 </Row>

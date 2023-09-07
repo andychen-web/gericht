@@ -46,7 +46,7 @@ const Header = () => {
             <div className="blur-load welcome-blur w-75 rounded">
               <img
                 width={"100%"}
-                className="loaded-img rounded"
+                className="rounded"
                 src={images.welcome}
                 alt="welcome"
               />

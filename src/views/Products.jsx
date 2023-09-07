@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Navigation from "../components/Navbar";
+import Navigation from "../components/Navigation";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -7,21 +7,30 @@ import Footer from "../components/Footer";
 import { BsFillCartFill } from "react-icons/bs";
 import PropTypes from "prop-types";
 import Loader from "../components/Loader";
-
-const Products = ({ token, products }) => {
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+const Products = ({ products }) => {
   Products.propTypes = {
-    token: PropTypes.string,
-    products: PropTypes.array.isRequired,
+    products: PropTypes.array,
   };
-
+  const navigate = useNavigate();
+  const token = useSelector((state) => state.token.token);
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const [priceRange, setPriceRange] = useState("全部");
   const [category, setCategory] = useState("全部");
-  const [showAlert, setShowAlert] = useState(false);
+  const [updateCount, setUpdateCount] = useState(0);
+  const [showAddAlert, setShowAddAlert] = useState(false);
+  const [showUpdateAlert, setShowUpdateAlert] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const categoryTypes = ["全部", "燉飯", "義大利麵", "烤肉", "甜點"];
+  const priceRangeArr = ["全部", "$99~$199", "$200~$399"];
 
   let alertMessage;
-  const handleAlert = () => {
-    setShowAlert(!showAlert);
+  const handleAddAlert = () => {
+    setShowAddAlert(!showAddAlert);
+  };
+  const handleUpdateAlert = () => {
+    setShowUpdateAlert(!showUpdateAlert);
   };
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -32,24 +41,40 @@ const Products = ({ token, products }) => {
       setIsLoading(true);
     }
   }, [products]);
-
   useEffect(() => {
-    alertMessage = document.querySelector(".message-alert");
-    if (showAlert) {
+    alertMessage = document.querySelector(".add-cart-alert");
+    if (showAddAlert) {
       alertMessage.classList.remove("hidden");
       setTimeout(() => {
-        setShowAlert(false);
+        setShowAddAlert(false);
       }, 2000);
     } else {
       alertMessage.classList.add("hidden");
     }
-  }, [showAlert]);
+  }, [showAddAlert]);
+  useEffect(() => {
+    alertMessage = document.querySelector(".update-cart-alert");
+    if (showUpdateAlert) {
+      alertMessage.classList.remove("hidden");
+      setTimeout(() => {
+        setShowUpdateAlert(false);
+      }, 2000);
+    } else {
+      alertMessage.classList.add("hidden");
+    }
+  }, [showUpdateAlert]);
 
   const handlePriceRangeChange = (e) => {
-    setPriceRange(e.target.value);
+    const priceDivs = document.querySelectorAll(".price-range");
+    priceDivs.forEach((div) => div.classList.remove("clicked"));
+    setPriceRange(e.target.innerHTML);
+    e.target.classList.add("clicked");
   };
   const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
+    const categoryDivs = document.querySelectorAll(".category");
+    categoryDivs.forEach((div) => div.classList.remove("clicked"));
+    setCategory(e.target.innerHTML);
+    e.target.classList.add("clicked");
   };
 
   const filterdProducts =
@@ -82,51 +107,116 @@ const Products = ({ token, products }) => {
     });
 
   const addToCart = async (product) => {
-    try {
-      const response = await fetch(
-        "https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-
-          body: JSON.stringify({
-            data: {
-              title: product.title,
-              origin_price: product.origin_price,
-              price: product.price,
-              unit: product.unit,
-              quantity: product.quantity,
-              category: product.category,
-              imageUrl: product.image,
+    const duplicate = cartItems.filter(
+      (item) => item.title === product.title
+    )[0];
+    if (duplicate) {
+      try {
+        const response = await fetch(
+          `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${duplicate.id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
             },
-          }),
+            body: JSON.stringify({
+              data: {
+                title: product.title,
+                origin_price: product.origin_price,
+                price: product.price,
+                unit: product.unit,
+                quantity: duplicate.quantity + 1,
+                category: product.category,
+                imageUrl: product.image,
+              },
+            }),
+          }
+        );
+        const data = await response.json();
+        setUpdateCount((prevState) => prevState + 1);
+        if (data.success) {
+          handleUpdateAlert();
         }
-      );
-      const data = await response.json();
-      console.log("data", data);
-    } catch (error) {
-      console.log(error);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        const response = await fetch(
+          "https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+            body: JSON.stringify({
+              data: {
+                title: product.title,
+                origin_price: product.origin_price,
+                price: product.price,
+                unit: product.unit,
+                quantity: product.quantity,
+                category: product.category,
+                imageUrl: product.image,
+              },
+            }),
+          }
+        );
+        const data = await response.json();
+        setUpdateCount((prevState) => prevState + 1);
+        if (data.success) {
+          handleAddAlert();
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
+  useEffect(() => {
+    const blurDivs = document.querySelectorAll(".blur-load");
+    blurDivs.forEach((div) => {
+      const img = div.querySelector("img");
 
+      function loaded() {
+        div.classList.add("loaded");
+      }
+
+      if (img.complete) {
+        loaded();
+      } else {
+        img.addEventListener("load", loaded);
+      }
+    });
+  }, []);
   return (
     <div className="bg">
       <Loader isLoading={isLoading} />
 
-      <Navigation />
+      <Navigation updateCount={updateCount} />
       {/* feat to add:喜好清單 */}
-      <div className=" position-fixed top-25 end-0 ">
-        <div className="message-alert alert alert-light pt-5 mt-5 hidden">
+      <div className=" position-fixed custom-top end-0 me-2">
+        <div className="add-cart-alert alert alert-light mt-5 hidden">
           已加入購物車
           <button
             type="button"
             aria-label="close"
             className="close border-0"
             style={{ background: "#fefefe" }}
-            onClick={() => handleAlert()}
+            onClick={() => handleAddAlert()}
+          >
+            x
+          </button>
+        </div>
+        <div className="update-cart-alert alert alert-light  hidden">
+          已更新購物車
+          <button
+            type="button"
+            aria-label="close"
+            className="close border-0"
+            style={{ background: "#fefefe" }}
+            onClick={() => handleUpdateAlert()}
           >
             x
           </button>
@@ -135,42 +225,37 @@ const Products = ({ token, products }) => {
       <Container className="custom-padding-top">
         <Row>
           {/* 篩選品項 */}
-          <Col md={2}>
-            <form className="text-white">
-              <div className="form-group pb-3">
-                <label htmlFor="formCategory" className="h5">
-                  種類
-                </label>
-                <select
-                  className="form-control"
-                  id="formCategory"
-                  onChange={handleCategoryChange}
-                >
-                  <option>全部</option>
-                  <option>燉飯</option>
-                  <option>義大利麵</option>
-                  <option>烤肉</option>
-                  <option>甜點</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label htmlFor="formPriceRange" className="h5">
-                  價格區間
-                </label>
-                <select
-                  className="form-control"
-                  id="formPriceRange"
-                  onChange={handlePriceRangeChange}
-                >
-                  <option>全部</option>
-                  <option>$99~$199</option>
-                  <option>$200~$399</option>
-                </select>
-              </div>
-            </form>
+          <Col md={3} className="custom-max-width">
+            <label className="h3 special-text fw-bold">種類</label>
+            <ul className="category-wrap bg-dark list-unstyled border">
+              {categoryTypes.map((categoryType, key) => (
+                <li key={key}>
+                  <div
+                    className="category text-center ps-2 py-1 py-lg-2 cursor-pointer"
+                    onClick={(event) => handleCategoryChange(event)}
+                  >
+                    {categoryType}
+                  </div>
+                </li>
+              ))}
+            </ul>
+
+            <label className="h3 special-text fw-bold">價格區間</label>
+            <ul className="bg-dark list-unstyled border">
+              {priceRangeArr.map((priceRange, key) => (
+                <li key={key}>
+                  <div
+                    className="price-range text-center ps-2 py-1 py-lg-2 cursor-pointer"
+                    onClick={(event) => handlePriceRangeChange(event)}
+                  >
+                    {priceRange}
+                  </div>
+                </li>
+              ))}
+            </ul>
           </Col>
           {/* 展示品項*/}
-          <Col md={10}>
+          <Col md={9}>
             <Row className="gap-5">
               {filterdProducts &&
                 filterdProducts.map((product, key) => (
@@ -179,25 +264,31 @@ const Products = ({ token, products }) => {
                     xs={8}
                     sm={4}
                     lg={3}
-                    className="text-white mx-2 mt-3 "
+                    className="text-white mx-2 mt-3 blur-load rounded"
                   >
                     <img
-                      src={product.image}
                       className="menu-products rounded pb-2"
-                      alt="menu-products"
+                      src={product.image}
+                      alt={product.title}
                     />
-                    <h5 style={{ width: "120%" }}>{product.title}</h5>
-                    <div className="d-flex align-items-top">
+
+                    <div>{product.title}</div>
+                    <div className="d-flex">
                       <h5 className="pe-2">${product.price}</h5>
                       <BsFillCartFill
                         size={20}
                         className="custom-icon"
                         onClick={() => {
                           addToCart(product);
-                          handleAlert();
                         }}
-                      ></BsFillCartFill>
+                      />
                     </div>
+                    <button
+                      className="custom-btn"
+                      onClick={() => navigate(`/product/${product.id}`)}
+                    >
+                      查看更多
+                    </button>
                   </Col>
                 ))}
             </Row>

@@ -210,6 +210,10 @@
   margin-bottom: 5rem;
 }
 
+.custom-top {
+  top: 4rem;
+}
+
 .category,
 .price-range {
   color: #fdfaf6;

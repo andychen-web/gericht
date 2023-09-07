@@ -13,8 +13,14 @@ const Product = ({ product, products }) => {
     product: PropTypes.object,
     products: PropTypes.array,
   };
+  const [showAddAlert, setShowAddAlert] = useState(false);
+  const [showUpdateAlert, setShowUpdateAlert] = useState(false);
   const token = useSelector((state) => state.token.token);
   const [updateCount, setUpdateCount] = useState(0);
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const [quantity, setQuantity] = useState(1);
+  const navigate = useNavigate();
+  let alertMessage;
 
   const relatedProducts = products.filter(
     (item) => item.category === product.category
@@ -23,74 +29,132 @@ const Product = ({ product, products }) => {
     (item) => item.id !== product.id
   );
 
-  const [quantity, setQuantity] = useState(1);
-  const [showAlert, setShowAlert] = useState(false);
-  const navigate = useNavigate();
-
-  const handleAlert = () => {
-    setShowAlert(!showAlert);
+  const handleAddAlert = () => {
+    setShowAddAlert(!showAddAlert);
+  };
+  const handleUpdateAlert = () => {
+    setShowUpdateAlert(!showUpdateAlert);
   };
   useEffect(() => {
-    const alertMessage = document.querySelector(".message-alert");
-    if (showAlert) {
+    alertMessage = document.querySelector(".add-cart-alert");
+    if (showAddAlert) {
       alertMessage.classList.remove("hidden");
       setTimeout(() => {
-        setShowAlert(false);
+        setShowAddAlert(false);
       }, 2000);
     } else {
       alertMessage.classList.add("hidden");
     }
-  }, [showAlert]);
+  }, [showAddAlert]);
+  useEffect(() => {
+    alertMessage = document.querySelector(".update-cart-alert");
+    if (showUpdateAlert) {
+      alertMessage.classList.remove("hidden");
+      setTimeout(() => {
+        setShowUpdateAlert(false);
+      }, 2000);
+    } else {
+      alertMessage.classList.add("hidden");
+    }
+  }, [showUpdateAlert]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [product]);
 
   const addToCart = async (product) => {
-    try {
-      const response = await fetch(
-        "https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-
-          body: JSON.stringify({
-            data: {
-              title: product.title,
-              origin_price: product.origin_price,
-              price: product.price,
-              unit: product.unit,
-              quantity: quantity,
-              category: product.category,
-              imageUrl: product.image,
+    const duplicate = cartItems.filter(
+      (item) => item.title === product.title
+    )[0];
+    if (duplicate) {
+      try {
+        const response = await fetch(
+          `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${duplicate.id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
             },
-          }),
+            body: JSON.stringify({
+              data: {
+                title: product.title,
+                origin_price: product.origin_price,
+                price: product.price,
+                unit: product.unit,
+                quantity: duplicate.quantity + 1,
+                category: product.category,
+                imageUrl: product.image,
+              },
+            }),
+          }
+        );
+        const data = await response.json();
+        setUpdateCount((prevState) => prevState + 1);
+        if (data.success) {
+          handleUpdateAlert();
         }
-      );
-      const data = await response.json();
-      setUpdateCount((prevState) => prevState + 1);
-      if (data.success) {
-        handleAlert();
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
+    } else {
+      try {
+        const response = await fetch(
+          "https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+            body: JSON.stringify({
+              data: {
+                title: product.title,
+                origin_price: product.origin_price,
+                price: product.price,
+                unit: product.unit,
+                quantity: product.quantity,
+                category: product.category,
+                imageUrl: product.image,
+              },
+            }),
+          }
+        );
+        const data = await response.json();
+        setUpdateCount((prevState) => prevState + 1);
+        if (data.success) {
+          handleAddAlert();
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
   return (
     <div className="bg">
       <Navigation updateCount={updateCount} />
-      <div className=" position-fixed top-25 end-0 ">
-        <div className="message-alert alert alert-light pt-5 mt-5 hidden">
+      <div className=" position-fixed custom-top end-0 me-2">
+        <div className="add-cart-alert alert alert-light mt-5 hidden">
           已加入購物車
           <button
             type="button"
             aria-label="close"
             className="close border-0"
             style={{ background: "#fefefe" }}
-            onClick={() => handleAlert()}
+            onClick={() => handleAddAlert()}
+          >
+            x
+          </button>
+        </div>
+        <div className="update-cart-alert alert alert-light hidden">
+          已更新購物車
+          <button
+            type="button"
+            aria-label="close"
+            className="close border-0"
+            style={{ background: "#fefefe" }}
+            onClick={() => handleUpdateAlert()}
           >
             x
           </button>

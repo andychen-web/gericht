@@ -1,9 +1,4 @@
-// homepage styling
-.signature-text {
-  font-family: "Cormorant Upright", serif;
-  font-size: 2.5rem;
-  color: #dcca87;
-}
+// nav styling
 .nav-link.custom-link {
   color: white;
   &:hover {
@@ -14,6 +9,20 @@
   @media (max-width: 1200px) {
     min-width: 110%;
   }
+}
+.custom-brand {
+  @media (min-width: 600px) {
+    width: 50%;
+  }
+  @media (max-width: 600px) {
+    width: 100%;
+  }
+}
+// homepage styling
+.signature-text {
+  font-family: "Cormorant Upright", serif;
+  font-size: 2.5rem;
+  color: #dcca87;
 }
 .container.custom-padding-top {
   padding-top: 7rem;

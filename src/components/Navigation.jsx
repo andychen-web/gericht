@@ -57,9 +57,9 @@ const Navigation = ({ updateCount }) => {
       className="position-fixed custom-nav"
     >
       <Container className="d-flex">
-        <Navbar.Brand href="/" className="w-50">
+        <a href="/" className="custom-brand ">
           <img src={images.gericht} alt="logo" width={"40%"} />
-        </Navbar.Brand>
+        </a>
         {/*創建一個可collapse的toggle btn，aria-controls代表要控制的Navbar.Collapse的id */}
         <Navbar.Toggle aria-controls="navbarNav" />
         <Navbar.Collapse id="navbarNav" className="justify-content-end">

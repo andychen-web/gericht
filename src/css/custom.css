@@ -5,6 +5,11 @@
   color: grey;
 }
 
+.custom-nav {
+  z-index: 3;
+  width: 100vw;
+  margin-bottom: 5rem;
+}
 @media (max-width: 1200px) {
   .custom-nav {
     min-width: 110%;
@@ -83,14 +88,6 @@
 .special-text {
   font-family: "Cormorant Upright", serif;
   color: #dcca87;
-}
-
-.vid-container {
-  height: 100vh;
-}
-.vid-container video {
-  -o-object-fit: cover;
-     object-fit: cover;
 }
 
 .cursor-pointer {
@@ -215,10 +212,20 @@
   transition: opacity 0.5s ease-in-out;
 }
 
-.custom-nav {
-  z-index: 3;
-  width: 100vw;
-  margin-bottom: 5rem;
+.videobox {
+  position: relative;
+  width: 80%;
+  height: 100%;
+  margin: auto;
+  padding-bottom: 56.25%;
+}
+
+.videobox iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .custom-top {

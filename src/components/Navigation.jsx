@@ -56,8 +56,8 @@ const Navigation = ({ updateCount }) => {
       variant="dark"
       className="position-fixed custom-nav"
     >
-      <Container className="d-flex">
-        <a href="/" className="custom-brand ">
+      <Container>
+        <a href="/" className="custom-brand">
           <img src={images.gericht} alt="logo" width={'40%'} />
         </a>
         {/* 創建一個可collapse的toggle btn，aria-controls代表要控制的Navbar.Collapse的id */}

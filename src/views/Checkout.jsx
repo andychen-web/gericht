@@ -1,76 +1,76 @@
-import React, { useState } from "react";
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
-import Container from "react-bootstrap/Container";
-import { FaPencilAlt } from "react-icons/fa";
-import { BsFillCartFill } from "react-icons/bs";
-import { Col } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
-import { setOrderForm } from "../slices/orderFormSlice";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react'
+import Navigation from '../components/Navigation'
+import Footer from '../components/Footer'
+import Container from 'react-bootstrap/Container'
+import { FaPencilAlt } from 'react-icons/fa'
+import { BsFillCartFill } from 'react-icons/bs'
+import { Col } from 'react-bootstrap'
+import { useSelector, useDispatch } from 'react-redux'
+import { setOrderForm } from '../slices/orderFormSlice'
+import { useNavigate } from 'react-router-dom'
 
 const Checkout = () => {
-  const cartItems = useSelector((state) => state.cart.cartItems);
-  const sum = useSelector((state) => state.price.sum);
-  const shippingFee = useSelector((state) => state.price.shippingFee);
-  const total = useSelector((state) => state.price.total);
-  const orderForm = useSelector((state) => state.orderForm.orderFormValue);
-  const [step, setStep] = useState(1);
-  const [paymentMethod, setPaymentMethod] = useState("");
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const cartItems = useSelector((state) => state.cart.cartItems)
+  const sum = useSelector((state) => state.price.sum)
+  const shippingFee = useSelector((state) => state.price.shippingFee)
+  const total = useSelector((state) => state.price.total)
+  const orderForm = useSelector((state) => state.orderForm.orderFormValue)
+  const [step, setStep] = useState(1)
+  const [paymentMethod, setPaymentMethod] = useState('')
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  const progressWidth = (step / 3) * 100;
+  const progressWidth = (step / 3) * 100
 
-  function handleStep() {
-    const cashOnDeliveryInput = document.querySelector("#cashOnDelivery");
-    const transferInput = document.querySelector("#transfer");
+  function handleStep () {
+    const cashOnDeliveryInput = document.querySelector('#cashOnDelivery')
+    const transferInput = document.querySelector('#transfer')
 
     if (step === 1) {
-      setStep((prevStep) => prevStep + 1);
+      setStep((prevStep) => prevStep + 1)
     } else if (
       (step === 2) &
       (cashOnDeliveryInput.checked || transferInput.checked)
     ) {
-      dispatch(setOrderForm({ ...orderForm, paymentMethod: paymentMethod }));
-      setStep((prevStep) => prevStep + 1);
+      dispatch(setOrderForm({ ...orderForm, paymentMethod }))
+      setStep((prevStep) => prevStep + 1)
     }
   }
   if (step === 3) {
     //  checkout complete, send POST
-    const myHeaders = new Headers();
-    const apiKEY = process.env.REACT_APP_API_KEY;
-    myHeaders.append("apikey", apiKEY);
+    const myHeaders = new Headers()
+    const apiKEY = process.env.REACT_APP_API_KEY
+    myHeaders.append('apikey', apiKEY)
     const requestOptions = {
-      method: "POST",
-      redirect: "follow",
+      method: 'POST',
+      redirect: 'follow',
       headers: myHeaders,
       body: JSON.stringify({
         ...orderForm,
         total,
-        cartItems,
-      }),
-    };
-    fetch("https://api.apilayer.com/form_api/form", requestOptions)
+        cartItems
+      })
+    }
+    fetch('https://api.apilayer.com/form_api/form', requestOptions)
       .then((response) => response.text())
       .then((result) => console.log(result))
-      .catch((error) => console.log("error", error));
+      .catch((error) => console.log('error', error))
 
-    const toProducts = document.querySelector("#toProducts");
-    const toOrders = document.querySelector("#toOrders");
-    toProducts.classList.remove("d-none");
-    toOrders.classList.remove("d-none");
-    const next = document.querySelector("#next");
-    next.classList.add("d-none");
+    const toProducts = document.querySelector('#toProducts')
+    const toOrders = document.querySelector('#toOrders')
+    toProducts.classList.remove('d-none')
+    toOrders.classList.remove('d-none')
+    const next = document.querySelector('#next')
+    next.classList.add('d-none')
   }
 
-  function showTransferInfo() {
-    const transferInfo = document.querySelector(".transfer-info");
-    transferInfo.classList.remove("d-none");
+  function showTransferInfo () {
+    const transferInfo = document.querySelector('.transfer-info')
+    transferInfo.classList.remove('d-none')
   }
-  function hideTransferInfo() {
-    const transferInfo = document.querySelector(".transfer-info");
-    transferInfo.classList.add("d-none");
+  function hideTransferInfo () {
+    const transferInfo = document.querySelector('.transfer-info')
+    transferInfo.classList.add('d-none')
   }
 
   return (
@@ -91,14 +91,14 @@ const Checkout = () => {
               <div className="border bg-white rounded p-2">
                 <h6 className="flex-between p-xs-1 p-md-2 text-black">
                   <div>小計:</div>
-                  <div>{"NT$" + sum}</div>
+                  <div>{'NT$' + sum}</div>
                 </h6>
                 <h6 className="flex-between p-sm-1 p-md-2 pt-0 text-black">
                   <div>運費: </div>
-                  <div>{"NT$" + shippingFee}</div>
+                  <div>{'NT$' + shippingFee}</div>
                 </h6>
                 <h4 className="flex-between border-top p-sm-1 p-md-2 text-black fs-5">
-                  <div>總計</div> <div>{"NT$" + total}</div>
+                  <div>總計</div> <div>{'NT$' + total}</div>
                 </h4>
               </div>
               {/*  購物車內容 */}
@@ -110,7 +110,7 @@ const Checkout = () => {
                   <span className="fs-5">購物車內容</span>
                 </div>
                 <div className="border bg-white rounded p-2">
-                  <table width={"100%"}>
+                  <table width={'100%'}>
                     <tbody className="w-100 p-3">
                       {cartItems.map((item, key) => {
                         return (
@@ -121,7 +121,7 @@ const Checkout = () => {
                               {item.unit}
                             </td>
                           </tr>
-                        );
+                        )
                       })}
                     </tbody>
                   </table>
@@ -179,8 +179,8 @@ const Checkout = () => {
                             type="radio"
                             value="cash"
                             onClick={() => {
-                              hideTransferInfo();
-                              setPaymentMethod("cash");
+                              hideTransferInfo()
+                              setPaymentMethod('cash')
                             }}
                           />
                           <label htmlFor="cashOnDelivery">取貨付款</label>
@@ -192,8 +192,8 @@ const Checkout = () => {
                             type="radio"
                             value="transfer"
                             onClick={() => {
-                              showTransferInfo();
-                              setPaymentMethod("transfer");
+                              showTransferInfo()
+                              setPaymentMethod('transfer')
                             }}
                           />
                           <label htmlFor="transfer">銀行轉帳</label>
@@ -253,9 +253,9 @@ const Checkout = () => {
                           <tr>
                             <th>付款方式 :</th>
                             <td>
-                              {orderForm.paymentMethod === "cash"
-                                ? "貨到付款"
-                                : "銀行轉帳"}
+                              {orderForm.paymentMethod === 'cash'
+                                ? '貨到付款'
+                                : '銀行轉帳'}
                             </td>
                           </tr>
                         </tbody>
@@ -274,14 +274,14 @@ const Checkout = () => {
                   </div>
 
                   <button
-                    onClick={() => navigate("/products")}
+                    onClick={() => navigate('/products')}
                     id="toProducts"
                     className="cursor-pointer custom-btn fw-bold d-none me-4"
                   >
                     回到商品列表
                   </button>
                   <button
-                    onClick={() => navigate("/orders")}
+                    onClick={() => navigate('/orders')}
                     id="toOrders"
                     className="cursor-pointer custom-btn fw-bold d-none"
                   >
@@ -295,7 +295,7 @@ const Checkout = () => {
       </Container>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Checkout;
+export default Checkout

@@ -1,11 +1,11 @@
-import React from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import images from "../data/images";
-import data from "../data/data";
-import Title from "./Title";
-const awards = data.awards;
+import React from 'react'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import images from '../data/images'
+import data from '../data/data'
+import Title from './Title'
+const awards = data.awards
 
 const Awards = () => {
   return (
@@ -13,7 +13,7 @@ const Awards = () => {
       <Container className="py-5 hidden" id="awards">
         <img
           className="ps-4 pb-5"
-          width={"150px"}
+          width={'150px'}
           loading="lazy"
           src={images.logo}
           alt="logo"
@@ -21,8 +21,8 @@ const Awards = () => {
 
         <Row>
           <Col lg={8} md={7} className="d-flex flex-column">
-            <Title title={"獲獎"} subTitle={"美食指南獎項"} />
-            <Row className={"pt-5"}>
+            <Title title={'獲獎'} subTitle={'美食指南獎項'} />
+            <Row className={'pt-5'}>
               <Col>
                 <>
                   {awards.map((item, index) => {
@@ -72,8 +72,9 @@ const Awards = () => {
                             </Col>
                           )}
                         </Row>
-                      );
+                      )
                     }
+                    return null
                   })}
                 </>
               </Col>
@@ -90,7 +91,7 @@ const Awards = () => {
         </Row>
       </Container>
     </div>
-  );
-};
+  )
+}
 
-export default Awards;
+export default Awards

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 const IntroVideo = () => {
   return (
@@ -14,7 +14,7 @@ const IntroVideo = () => {
         ></iframe>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default IntroVideo;
+export default IntroVideo

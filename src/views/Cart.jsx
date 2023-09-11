@@ -1,144 +1,144 @@
-import React, { useEffect, useState } from "react";
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Table from "react-bootstrap/Table";
-import { BsFillCartFill } from "react-icons/bs";
-import { FaPencilAlt } from "react-icons/fa";
-import { BsFillTrash3Fill } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { updateItemQuantity, setItems } from "../slices/cartSlice";
-import { setSum, setShippingFee, setTotal } from "../slices/priceSlice";
-import { setOrderForm } from "../slices/orderFormSlice";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import Modal from "react-bootstrap/Modal";
-import * as Yup from "yup";
-import Loader from "../components/Loader";
+import React, { useEffect, useState } from 'react'
+import Navigation from '../components/Navigation'
+import Footer from '../components/Footer'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Table from 'react-bootstrap/Table'
+import { BsFillCartFill, BsFillTrash3Fill } from 'react-icons/bs'
+import { FaPencilAlt } from 'react-icons/fa'
+
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateItemQuantity, setItems } from '../slices/cartSlice'
+import { setSum, setShippingFee, setTotal } from '../slices/priceSlice'
+import { setOrderForm } from '../slices/orderFormSlice'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import Modal from 'react-bootstrap/Modal'
+import * as Yup from 'yup'
+import Loader from '../components/Loader'
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
-    .email("需為有效的電子信箱")
-    .required("需為有效的電子信箱"),
-  name: Yup.string().required("姓名為必填"),
-  mobile: Yup.number().typeError("電話號碼需為數字").required("電話號碼為必填"),
-  address: Yup.string().required("地址為必填"),
-});
+    .email('需為有效的電子信箱')
+    .required('需為有效的電子信箱'),
+  name: Yup.string().required('姓名為必填'),
+  mobile: Yup.number().typeError('電話號碼需為數字').required('電話號碼為必填'),
+  address: Yup.string().required('地址為必填')
+})
 
 const Cart = () => {
-  window.scrollTo(0, 0);
+  window.scrollTo(0, 0)
 
-  const navigate = useNavigate();
-  const token = useSelector((state) => state.token.token);
-  const cartItems = useSelector((state) => state.cart.cartItems);
-  const [showCheckout, setShowCheckout] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(null);
-  const [changeCounter, setChangeCounter] = useState(0);
+  const navigate = useNavigate()
+  const token = useSelector((state) => state.token.token)
+  const cartItems = useSelector((state) => state.cart.cartItems)
+  const [showCheckout, setShowCheckout] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [currentIndex, setCurrentIndex] = useState(null)
+  const [changeCounter, setChangeCounter] = useState(0)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const initFormValues = {
-    email: "",
-    name: "",
-    address: "",
-    mobile: "",
-    message: "",
-    paymentMethod: "",
-  };
-  let updatedProduct;
+    email: '',
+    name: '',
+    address: '',
+    mobile: '',
+    message: '',
+    paymentMethod: ''
+  }
+  let updatedProduct
   const sum = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
-  );
-  let shippingFee = (sum / 20).toFixed(0);
-  shippingFee = Number(shippingFee);
+  )
+  let shippingFee = (sum / 20).toFixed(0)
+  shippingFee = Number(shippingFee)
 
-  const total = (sum + shippingFee).toLocaleString("zh-TW", {
-    style: "currency",
-    currency: "NTD",
-    currencyDisplay: "code",
-  });
+  const total = (sum + shippingFee).toLocaleString('zh-TW', {
+    style: 'currency',
+    currency: 'NTD',
+    currencyDisplay: 'code'
+  })
 
   const handleSubmit = (values) => {
     // price
-    dispatch(setSum(sum));
-    dispatch(setShippingFee(shippingFee));
-    dispatch(setTotal(total));
+    dispatch(setSum(sum))
+    dispatch(setShippingFee(shippingFee))
+    dispatch(setTotal(total))
     // orderForm
-    dispatch(setOrderForm(values));
-    navigate("/checkout");
-  };
+    dispatch(setOrderForm(values))
+    navigate('/checkout')
+  }
 
   const putQuantity = async (updatedProduct) => {
     try {
       const response = await fetch(
         `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${updatedProduct.id}`,
         {
-          method: "PUT",
+          method: 'PUT',
           headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
+            'Content-Type': 'application/json',
+            Authorization: token
           },
           body: JSON.stringify({
-            data: updatedProduct,
-          }),
+            data: updatedProduct
+          })
         }
-      );
-      const data = await response.json();
-      console.log(data);
+      )
+      const data = await response.json()
+      console.log(data)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   useEffect(() => {
     if (currentIndex !== null) {
-      updatedProduct = cartItems[currentIndex];
-      putQuantity(updatedProduct);
+      updatedProduct = cartItems[currentIndex]
+      putQuantity(updatedProduct)
     }
-  }, [currentIndex, changeCounter]);
+  }, [currentIndex, changeCounter])
 
   const incrementQuantity = async (index, change) => {
-    dispatch(updateItemQuantity({ index, change }));
-    setCurrentIndex(index);
-    setChangeCounter((prevState) => prevState + 1);
-  };
+    dispatch(updateItemQuantity({ index, change }))
+    setCurrentIndex(index)
+    setChangeCounter((prevState) => prevState + 1)
+  }
   const decrementQuantity = (index, change, quantity, itemId) => {
     if (quantity >= 2) {
-      dispatch(updateItemQuantity({ index, change }));
-      setCurrentIndex(index);
-      setChangeCounter((prevState) => prevState + 1);
+      dispatch(updateItemQuantity({ index, change }))
+      setCurrentIndex(index)
+      setChangeCounter((prevState) => prevState + 1)
     } else if (quantity === 1) {
-      handleRemove(itemId);
+      handleRemove(itemId)
     }
-  };
+  }
   const fetchCart = async (token) => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
       const response = await fetch(
-        "https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/products/all",
+        'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/products/all',
         {
           headers: { Authorization: token },
-          method: "GET",
+          method: 'GET'
         }
-      );
-      const data = await response.json();
-      const newCartItems = [];
-      for (let key in data.products) {
-        newCartItems.push(data.products[key]);
+      )
+      const data = await response.json()
+      const newCartItems = []
+      for (const key in data.products) {
+        newCartItems.push(data.products[key])
       }
-      dispatch(setItems(newCartItems));
-      data.success ? setIsLoading(false) : setIsLoading(true);
+      dispatch(setItems(newCartItems))
+      data.success ? setIsLoading(false) : setIsLoading(true)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchCart(token);
-  }, [token, dispatch]);
+    fetchCart(token)
+  }, [token, dispatch])
 
   const handleRemove = async (id) => {
     try {
@@ -146,16 +146,16 @@ const Cart = () => {
         `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${id}`,
         {
           headers: { Authorization: token },
-          method: "DELETE",
+          method: 'DELETE'
         }
-      );
-      const data = await res.json();
-      console.log(data.message);
-      fetchCart(token);
+      )
+      const data = await res.json()
+      console.log(data.message)
+      fetchCart(token)
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  };
+  }
   return (
     <div className="bg d-flex flex-column position-relative">
       <Loader isLoading={isLoading} />
@@ -218,9 +218,9 @@ const Cart = () => {
                           </button>
                         </div>
                       </td>
-                      <td> {"$" + item.price * item.quantity}</td>
+                      <td> {'$' + item.price * item.quantity}</td>
                     </tr>
-                  );
+                  )
                 })}
               </tbody>
             </Table>
@@ -233,10 +233,10 @@ const Cart = () => {
             <div className="border bg-white rounded p-2">
               <h6 className="flex-between p-xs-1 p-md-2 text-black">
                 <div>小計:</div>
-                <div>{"$" + sum}</div>
+                <div>{'$' + sum}</div>
               </h6>
               <h6 className="flex-between p-sm-1 p-md-2 pt-0 text-black">
-                <div>運費:</div> <div>{"$" + shippingFee}</div>
+                <div>運費:</div> <div>{'$' + shippingFee}</div>
               </h6>
               <h4 className="flex-between border-top p-sm-1 p-md-2 text-black fs-5">
                 <div>總計</div> <div>{total}</div>
@@ -367,7 +367,7 @@ const Cart = () => {
       </Container>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Cart;
+export default Cart

@@ -1,124 +1,124 @@
-import React, { useEffect, useState } from "react";
-import Navigation from "../components/Navigation";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Footer from "../components/Footer";
-import { BsFillCartFill } from "react-icons/bs";
-import PropTypes from "prop-types";
-import Loader from "../components/Loader";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react'
+import Navigation from '../components/Navigation'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Footer from '../components/Footer'
+import { BsFillCartFill } from 'react-icons/bs'
+import PropTypes from 'prop-types'
+import Loader from '../components/Loader'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 const Products = ({ products }) => {
   Products.propTypes = {
-    products: PropTypes.array,
-  };
-  const navigate = useNavigate();
-  const token = useSelector((state) => state.token.token);
-  const cartItems = useSelector((state) => state.cart.cartItems);
-  const [priceRange, setPriceRange] = useState("全部");
-  const [category, setCategory] = useState("全部");
-  const [updateCount, setUpdateCount] = useState(0);
-  const [showAddAlert, setShowAddAlert] = useState(false);
-  const [showUpdateAlert, setShowUpdateAlert] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const categoryTypes = ["全部", "燉飯", "義大利麵", "烤肉", "甜點"];
-  const priceRangeArr = ["全部", "$99~$199", "$200~$399"];
+    products: PropTypes.array
+  }
+  const navigate = useNavigate()
+  const token = useSelector((state) => state.token.token)
+  const cartItems = useSelector((state) => state.cart.cartItems)
+  const [priceRange, setPriceRange] = useState('全部')
+  const [category, setCategory] = useState('全部')
+  const [updateCount, setUpdateCount] = useState(0)
+  const [showAddAlert, setShowAddAlert] = useState(false)
+  const [showUpdateAlert, setShowUpdateAlert] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const categoryTypes = ['全部', '燉飯', '義大利麵', '烤肉', '甜點']
+  const priceRangeArr = ['全部', '$99~$199', '$200~$399']
 
-  let alertMessage;
+  let alertMessage
   const handleAddAlert = () => {
-    setShowAddAlert(!showAddAlert);
-  };
+    setShowAddAlert(!showAddAlert)
+  }
   const handleUpdateAlert = () => {
-    setShowUpdateAlert(!showUpdateAlert);
-  };
+    setShowUpdateAlert(!showUpdateAlert)
+  }
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 0)
 
     if (products) {
-      setIsLoading(false);
+      setIsLoading(false)
     } else {
-      setIsLoading(true);
+      setIsLoading(true)
     }
-  }, [products]);
+  }, [products])
   useEffect(() => {
-    alertMessage = document.querySelector(".add-cart-alert");
+    alertMessage = document.querySelector('.add-cart-alert')
     if (showAddAlert) {
-      alertMessage.classList.remove("hidden");
+      alertMessage.classList.remove('hidden')
       setTimeout(() => {
-        setShowAddAlert(false);
-      }, 2000);
+        setShowAddAlert(false)
+      }, 2000)
     } else {
-      alertMessage.classList.add("hidden");
+      alertMessage.classList.add('hidden')
     }
-  }, [showAddAlert]);
+  }, [showAddAlert])
   useEffect(() => {
-    alertMessage = document.querySelector(".update-cart-alert");
+    alertMessage = document.querySelector('.update-cart-alert')
     if (showUpdateAlert) {
-      alertMessage.classList.remove("hidden");
+      alertMessage.classList.remove('hidden')
       setTimeout(() => {
-        setShowUpdateAlert(false);
-      }, 2000);
+        setShowUpdateAlert(false)
+      }, 2000)
     } else {
-      alertMessage.classList.add("hidden");
+      alertMessage.classList.add('hidden')
     }
-  }, [showUpdateAlert]);
+  }, [showUpdateAlert])
 
   const handlePriceRangeChange = (e) => {
-    const priceDivs = document.querySelectorAll(".price-range");
-    priceDivs.forEach((div) => div.classList.remove("clicked"));
-    setPriceRange(e.target.innerHTML);
-    e.target.classList.add("clicked");
-  };
+    const priceDivs = document.querySelectorAll('.price-range')
+    priceDivs.forEach((div) => div.classList.remove('clicked'))
+    setPriceRange(e.target.innerHTML)
+    e.target.classList.add('clicked')
+  }
   const handleCategoryChange = (e) => {
-    const categoryDivs = document.querySelectorAll(".category");
-    categoryDivs.forEach((div) => div.classList.remove("clicked"));
-    setCategory(e.target.innerHTML);
-    e.target.classList.add("clicked");
-  };
+    const categoryDivs = document.querySelectorAll('.category')
+    categoryDivs.forEach((div) => div.classList.remove('clicked'))
+    setCategory(e.target.innerHTML)
+    e.target.classList.add('clicked')
+  }
 
   const filterdProducts =
     products &&
     products.filter((product) => {
-      let priceMatch = false;
-      if (priceRange === "全部") {
-        priceMatch = true;
-      } else if (priceRange === "$99~$199") {
-        priceMatch = product.price >= 99 && product.price <= 199;
-      } else if (priceRange === "$200~$399") {
-        priceMatch = product.price >= 200 && product.price <= 399;
+      let priceMatch = false
+      if (priceRange === '全部') {
+        priceMatch = true
+      } else if (priceRange === '$99~$199') {
+        priceMatch = product.price >= 99 && product.price <= 199
+      } else if (priceRange === '$200~$399') {
+        priceMatch = product.price >= 200 && product.price <= 399
       }
 
-      let categoryMatch = false;
-      if (category === "全部") {
-        categoryMatch = true;
-      } else if (category === "燉飯") {
-        categoryMatch = product.category === "燉飯";
-      } else if (category === "義大利麵") {
-        categoryMatch = product.category === "義大利麵";
-      } else if (category === "烤肉") {
-        categoryMatch = product.category === "烤肉";
-      } else if (category === "甜點") {
-        categoryMatch = product.category === "甜點";
+      let categoryMatch = false
+      if (category === '全部') {
+        categoryMatch = true
+      } else if (category === '燉飯') {
+        categoryMatch = product.category === '燉飯'
+      } else if (category === '義大利麵') {
+        categoryMatch = product.category === '義大利麵'
+      } else if (category === '烤肉') {
+        categoryMatch = product.category === '烤肉'
+      } else if (category === '甜點') {
+        categoryMatch = product.category === '甜點'
       }
 
       // return products that match both filters
-      return priceMatch && categoryMatch;
-    });
+      return priceMatch && categoryMatch
+    })
 
   const addToCart = async (product) => {
     const duplicate = cartItems.filter(
       (item) => item.title === product.title
-    )[0];
+    )[0]
     if (duplicate) {
       try {
         const response = await fetch(
           `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${duplicate.id}`,
           {
-            method: "PUT",
+            method: 'PUT',
             headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
+              'Content-Type': 'application/json',
+              Authorization: token
             },
             body: JSON.stringify({
               data: {
@@ -128,28 +128,28 @@ const Products = ({ products }) => {
                 unit: product.unit,
                 quantity: duplicate.quantity + 1,
                 category: product.category,
-                imageUrl: product.image,
-              },
-            }),
+                imageUrl: product.image
+              }
+            })
           }
-        );
-        const data = await response.json();
-        setUpdateCount((prevState) => prevState + 1);
+        )
+        const data = await response.json()
+        setUpdateCount((prevState) => prevState + 1)
         if (data.success) {
-          handleUpdateAlert();
+          handleUpdateAlert()
         }
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     } else {
       try {
         const response = await fetch(
-          "https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product",
+          'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product',
           {
-            method: "POST",
+            method: 'POST',
             headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
+              'Content-Type': 'application/json',
+              Authorization: token
             },
             body: JSON.stringify({
               data: {
@@ -159,37 +159,37 @@ const Products = ({ products }) => {
                 unit: product.unit,
                 quantity: product.quantity,
                 category: product.category,
-                imageUrl: product.image,
-              },
-            }),
+                imageUrl: product.image
+              }
+            })
           }
-        );
-        const data = await response.json();
-        setUpdateCount((prevState) => prevState + 1);
+        )
+        const data = await response.json()
+        setUpdateCount((prevState) => prevState + 1)
         if (data.success) {
-          handleAddAlert();
+          handleAddAlert()
         }
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     }
-  };
+  }
   useEffect(() => {
-    const blurDivs = document.querySelectorAll(".blur-load");
+    const blurDivs = document.querySelectorAll('.blur-load')
     blurDivs.forEach((div) => {
-      const img = div.querySelector("img");
+      const img = div.querySelector('img')
 
-      function loaded() {
-        div.classList.add("loaded");
+      function loaded () {
+        div.classList.add('loaded')
       }
 
       if (img.complete) {
-        loaded();
+        loaded()
       } else {
-        img.addEventListener("load", loaded);
+        img.addEventListener('load', loaded)
       }
-    });
-  }, []);
+    })
+  }, [])
   return (
     <div className="bg">
       <Loader isLoading={isLoading} />
@@ -203,7 +203,7 @@ const Products = ({ products }) => {
             type="button"
             aria-label="close"
             className="close border-0"
-            style={{ background: "#fefefe" }}
+            style={{ background: '#fefefe' }}
             onClick={() => handleAddAlert()}
           >
             x
@@ -215,7 +215,7 @@ const Products = ({ products }) => {
             type="button"
             aria-label="close"
             className="close border-0"
-            style={{ background: "#fefefe" }}
+            style={{ background: '#fefefe' }}
             onClick={() => handleUpdateAlert()}
           >
             x
@@ -254,7 +254,7 @@ const Products = ({ products }) => {
               ))}
             </ul>
           </Col>
-          {/* 展示品項*/}
+          {/* 展示品項 */}
           <Col md={9}>
             <Row className="gap-5">
               {filterdProducts &&
@@ -279,7 +279,7 @@ const Products = ({ products }) => {
                         size={20}
                         className="custom-icon"
                         onClick={() => {
-                          addToCart(product);
+                          addToCart(product)
                         }}
                       />
                     </div>
@@ -297,7 +297,7 @@ const Products = ({ products }) => {
       </Container>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Products;
+export default Products

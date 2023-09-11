@@ -1,27 +1,27 @@
-import React from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import images from "../data/images";
-import data from "../data/data";
-import Title from "./Title";
-import { useNavigate } from "react-router-dom";
-const wines = data.wines;
-const cocktails = data.cocktails;
+import React from 'react'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import images from '../data/images'
+import data from '../data/data'
+import Title from './Title'
+import { useNavigate } from 'react-router-dom'
+const wines = data.wines
+const cocktails = data.cocktails
 
 const Menu = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const handleNavigation = () => {
-    navigate("/products");
-    window.scrollTo(0, 0); // scroll to the top of the page
-  };
+    navigate('/products')
+    window.scrollTo(0, 0) // scroll to the top of the page
+  }
   return (
     <div className="bg">
       <Container className="py-5 d-flex flex-column align-items-center">
         <Row xs={12} md={12} className="pb-3">
           <Col className="d-center flex-column align-items-center">
-            <Title title={"挑動味蕾"} subTitle={"近期酒單"} />
+            <Title title={'挑動味蕾'} subTitle={'近期酒單'} />
           </Col>
         </Row>
         <Row md={12} className="d-flex">
@@ -46,7 +46,7 @@ const Menu = () => {
           </Col>
           <Col xs={8} md={4} className="py-2 hidden">
             <img
-              width={"100%"}
+              width={'100%'}
               loading="lazy"
               src={images.menu}
               alt="menuImg"
@@ -77,7 +77,7 @@ const Menu = () => {
         </button>
       </Container>
     </div>
-  );
-};
+  )
+}
 
-export default Menu;
+export default Menu

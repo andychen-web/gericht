@@ -1,9 +1,9 @@
-import React from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import images from "../data/images";
-import Title from "./Title";
+import React from 'react'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import images from '../data/images'
+import Title from './Title'
 
 const Contact = () => {
   return (
@@ -11,7 +11,7 @@ const Contact = () => {
       <Container>
         <Row>
           <Col xs={12} md={6} className="d-center flex-column py-4 hidden">
-            <Title title={"聯絡資訊"} subTitle={"聯絡我們"} />
+            <Title title={'聯絡資訊'} subTitle={'聯絡我們'} />
             <h5 className="text-white py-3">新竹市東區美食路33號</h5>
             <span className="golden-text fs-3"> 營業時間</span>
             <span className="text-white">Mon - Fri: 10:00 am - 02:00 am</span>
@@ -20,7 +20,7 @@ const Contact = () => {
           <Col xs={12} md={6}>
             <img
               loading="lazy"
-              width={"70%"}
+              width={'70%'}
               src={images.findus}
               alt="findUs"
             />
@@ -28,7 +28,7 @@ const Contact = () => {
         </Row>
       </Container>
     </div>
-  );
-};
+  )
+}
 
-export default Contact;
+export default Contact

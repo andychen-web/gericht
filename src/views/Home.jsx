@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
-import Navigation from "../components/Navigation";
-import Header from "../components/Header";
-import AboutUs from "../components/AboutUs";
-import Menu from "../components/Menu";
-import Chef from "../components/Chef";
-import IntroVideo from "../components/IntroVideo";
-import Awards from "../components/Awards";
-import Gallery from "../components/Gallery";
-import Contact from "../components/Contact";
-import Footer from "../components/Footer";
+import React, { useEffect } from 'react'
+import Navigation from '../components/Navigation'
+import Header from '../components/Header'
+import AboutUs from '../components/AboutUs'
+import Menu from '../components/Menu'
+import Chef from '../components/Chef'
+import IntroVideo from '../components/IntroVideo'
+import Awards from '../components/Awards'
+import Gallery from '../components/Gallery'
+import Contact from '../components/Contact'
+import Footer from '../components/Footer'
 
 const Home = () => {
   // animation on scroll
@@ -16,18 +16,18 @@ const Home = () => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add("show");
+          entry.target.classList.add('show')
         } else {
-          entry.target.classList.remove("show");
+          entry.target.classList.remove('show')
         }
-      });
-    });
-    const hiddenElements = document.querySelectorAll(".hidden");
+      })
+    })
+    const hiddenElements = document.querySelectorAll('.hidden')
 
     hiddenElements.forEach((element) => {
-      observer.observe(element);
-    });
-  }, []);
+      observer.observe(element)
+    })
+  }, [])
 
   return (
     <>
@@ -42,7 +42,7 @@ const Home = () => {
       <Contact />
       <Footer />
     </>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

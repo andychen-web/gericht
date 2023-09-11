@@ -1,26 +1,26 @@
-import React, { useState } from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import Title from "./Title";
-import images from "../data/images";
-import { RxTwitterLogo, RxInstagramLogo } from "react-icons/rx";
-import { FaFacebookF } from "react-icons/fa";
+import React, { useState } from 'react'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Form from 'react-bootstrap/Form'
+import Title from './Title'
+import images from '../data/images'
+import { RxTwitterLogo, RxInstagramLogo } from 'react-icons/rx'
+import { FaFacebookF } from 'react-icons/fa'
 const Footer = () => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('')
 
   const handleChange = (e) => {
-    setEmail(e.target.value);
-  };
+    setEmail(e.target.value)
+  }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (email) {
-      setEmail("");
+      setEmail('')
       // send post request to backend
     }
-  };
+  }
 
   return (
     <div className="bg py-5">
@@ -31,7 +31,7 @@ const Footer = () => {
             // Bug: border not showing up #######################################
             className="d-flex flex-column align-items-center border-5 border-white "
           >
-            <Title title={"電子報"} subTitle={"訂閱電子報"} />
+            <Title title={'電子報'} subTitle={'訂閱電子報'} />
             <span className="text-white py-3">永遠不會錯過最新消息</span>
             <Form className="d-flex bg-black" onSubmit={handleSubmit}>
               <input
@@ -61,10 +61,10 @@ const Footer = () => {
           <Col md={4} className="d-flex flex-column align-items-center py-5">
             <img
               loading="lazy"
-              width={"60%"}
+              width={'60%'}
               src={images.gericht}
               alt="logo"
-              style={{ filter: "sepia(1) hue-rotate(-50deg) saturate(10)" }}
+              style={{ filter: 'sepia(1) hue-rotate(-50deg) saturate(10)' }}
             />
             <div className="text-white">「在服務他人的過程中，找到自己。」</div>
             <img loading="lazy" src={images.spoon} alt="spoon" />
@@ -87,7 +87,7 @@ const Footer = () => {
         </Row>
       </Container>
     </div>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

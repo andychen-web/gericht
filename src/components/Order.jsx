@@ -1,42 +1,41 @@
-import React from "react";
-import Container from "react-bootstrap/Container";
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
-import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
+import React from 'react'
+import Container from 'react-bootstrap/Container'
+import Navigation from '../components/Navigation'
+import Footer from '../components/Footer'
+import { useNavigate } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 const Order = ({ order }) => {
   Order.propTypes = {
-    order: PropTypes.object,
-  };
-  const navigate = useNavigate();
+    order: PropTypes.object
+  }
+  const navigate = useNavigate()
   const orderDetails = [
-    { label: "訂單編號", value: order.id },
-    { label: "訂購人", value: order.name },
-    { label: "訂單金額", value: "NT$" + order.total },
+    { label: '訂單編號', value: order.id },
+    { label: '訂購人', value: order.name },
+    { label: '訂單金額', value: 'NT$' + order.total },
     {
-      label: "付款方式",
-      value: order.paymentMethod === "cash" ? "貨到付款" : "銀行轉帳",
+      label: '付款方式',
+      value: order.paymentMethod === 'cash' ? '貨到付款' : '銀行轉帳'
     },
-    { label: "付款狀態", value: "未付款" },
-    { label: "付款日期", value: "未付款" },
-    { label: "訂單狀態", value: "確認中" },
-    { label: "出貨日期", value: "未出貨" },
-  ];
+    { label: '付款狀態', value: '未付款' },
+    { label: '付款日期', value: '未付款' },
+    { label: '訂單狀態', value: '確認中' },
+    { label: '出貨日期', value: '未出貨' }
+  ]
   const buyerDetails = [
-    { label: "買家姓名", value: order.name },
-    { label: "買家手機", value: order.mobile },
-    { label: "買家信箱", value: order.email },
-    { label: "買家地址", value: order.address },
-    { label: "買家備註", value: order.message ? order.message : "無" },
-  ];
+    { label: '買家姓名', value: order.name },
+    { label: '買家手機', value: order.mobile },
+    { label: '買家信箱', value: order.email },
+    { label: '買家地址', value: order.address },
+    { label: '買家備註', value: order.message ? order.message : '無' }
+  ]
   const productArr = order.cartItems.map((item) => [
-    { label: "商品名稱", value: item.title },
-    { label: "商品數量", value: item.quantity },
-    { label: "商品總價", value: "NT$" + item.price * item.quantity },
-  ]);
-  const productImgArr = order.cartItems.map((item) => item.imageUrl);
-
+    { label: '商品名稱', value: item.title },
+    { label: '商品數量', value: item.quantity },
+    { label: '商品總價', value: 'NT$' + item.price * item.quantity }
+  ])
+  const productImgArr = order.cartItems.map((item) => item.imageUrl)
 
   return (
     <div className="bg-beige">
@@ -55,7 +54,7 @@ const Order = ({ order }) => {
                         <div>{detail.value}</div>
                       </div>
                     </li>
-                  );
+                  )
                 })}
               </ul>
             </div>
@@ -70,7 +69,7 @@ const Order = ({ order }) => {
                         <div>{detail.value}</div>
                       </div>
                     </li>
-                  );
+                  )
                 })}
               </ul>
             </div>
@@ -89,8 +88,8 @@ const Order = ({ order }) => {
                     <div className="row align-items-center g-0 mt-2 mt-md-3">
                       <div className="col-4">
                         <img
-                          width={"100%"}
-                          height={"auto"}
+                          width={'100%'}
+                          height={'auto'}
                           className="rounded"
                           src={productImgArr[key]}
                         ></img>
@@ -108,20 +107,20 @@ const Order = ({ order }) => {
                                     <div className="">{detail.value}</div>
                                   </div>
                                 </li>
-                              );
+                              )
                             })}
                           </ul>
                         </div>
                       </div>
                     </div>
                   </div>
-                );
+                )
               })}
           </div>
         </div>
         <div className="d-center">
           <button
-            onClick={() => navigate("/orders")}
+            onClick={() => navigate('/orders')}
             className="cursor-pointer custom-btn mb-5"
           >
             返回列表
@@ -130,7 +129,7 @@ const Order = ({ order }) => {
       </Container>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Order;
+export default Order

@@ -1,58 +1,58 @@
-import React, { useEffect, useState } from "react";
-import Container from "react-bootstrap/Container";
-import Loader from "../components/Loader";
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
-import { AiFillFileText } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setOrderArray } from "../slices/orderFormSlice";
+import React, { useEffect, useState } from 'react'
+import Container from 'react-bootstrap/Container'
+import Loader from '../components/Loader'
+import Navigation from '../components/Navigation'
+import Footer from '../components/Footer'
+import { AiFillFileText } from 'react-icons/ai'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { setOrderArray } from '../slices/orderFormSlice'
 
 const Orders = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
-  const [orders, setOrders] = useState([]);
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [isLoading, setIsLoading] = useState(false)
+  const [orders, setOrders] = useState([])
 
   const parseOrders = (data) => {
-    const newArr = [];
-    for (let item of data) {
-      const id = item.id.split("-")[0];
-      const parsedItem = JSON.parse(item.name);
-      newArr.push({ ...parsedItem, id });
+    const newArr = []
+    for (const item of data) {
+      const id = item.id.split('-')[0]
+      const parsedItem = JSON.parse(item.name)
+      newArr.push({ ...parsedItem, id })
     }
-    setOrders(newArr);
-  };
+    setOrders(newArr)
+  }
 
   useEffect(() => {
     const fetchOrders = async () => {
-      setIsLoading(true);
+      setIsLoading(true)
       try {
-        const myHeaders = new Headers();
-        myHeaders.append("apikey", process.env.REACT_APP_API_KEY);
-        const res = await fetch("https://api.apilayer.com/form_api/forms", {
-          method: "GET",
-          redirect: "follow",
-          headers: myHeaders,
-        });
-        const data = await res.json();
-        parseOrders(data);
-        data ? setIsLoading(false) : setIsLoading(true);
+        const myHeaders = new Headers()
+        myHeaders.append('apikey', process.env.REACT_APP_API_KEY)
+        const res = await fetch('https://api.apilayer.com/form_api/forms', {
+          method: 'GET',
+          redirect: 'follow',
+          headers: myHeaders
+        })
+        const data = await res.json()
+        parseOrders(data)
+        data ? setIsLoading(false) : setIsLoading(true)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       }
-    };
-    fetchOrders();
-  }, []);
+    }
+    fetchOrders()
+  }, [])
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 0)
 
     if (orders.length > 0) {
       // save orders in redux to use in Order component, reduce server load
-      dispatch(setOrderArray(orders));
+      dispatch(setOrderArray(orders))
     }
-  }, [orders]);
+  }, [orders])
 
   return (
     <div className="bg-beige">
@@ -98,7 +98,7 @@ const Orders = () => {
                     </div>
                   </td>
                 </tr>
-              );
+              )
             })}
           </tbody>
         </table>
@@ -143,7 +143,7 @@ const Orders = () => {
                   </div>
                 </div>
               </li>
-            );
+            )
           })}
         </ul>
 
@@ -155,7 +155,7 @@ const Orders = () => {
                   上一頁
                 </a>
               </li>
-              <li className="page-item active" style={{ zIndex: "0" }}>
+              <li className="page-item active" style={{ zIndex: '0' }}>
                 <a className="page-link" href="#">
                   1
                 </a>
@@ -181,7 +181,7 @@ const Orders = () => {
       </Container>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Orders;
+export default Orders

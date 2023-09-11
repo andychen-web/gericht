@@ -1,8 +1,8 @@
-import React from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import images from "../data/images";
+import React from 'react'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import images from '../data/images'
 
 const AboutUs = () => {
   return (
@@ -23,15 +23,15 @@ const AboutUs = () => {
           <Col xs={3} md={2}>
             <img
               className="position-relative top-50 hidden"
-              width={"100%"}
+              width={'100%'}
               src={images.G}
               loading="lazy"
               alt="bg"
             />
             <img
               className="position-relative hidden"
-              style={{ transform: "translateX(-20%)" }}
-              width={"170%"}
+              style={{ transform: 'translateX(-20%)' }}
+              width={'170%'}
               src={images.woodSpoon}
               loading="lazy"
               alt="spoon"
@@ -50,7 +50,7 @@ const AboutUs = () => {
         </Row>
       </Container>
     </div>
-  );
-};
+  )
+}
 
-export default AboutUs;
+export default AboutUs

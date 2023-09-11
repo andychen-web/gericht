@@ -1,97 +1,97 @@
-import React, { useEffect, useState } from "react";
-import Navigation from "../components/Navigation";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Footer from "../components/Footer";
-import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react'
+import Navigation from '../components/Navigation'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Footer from '../components/Footer'
+import PropTypes from 'prop-types'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const Product = ({ product, products }) => {
   Product.propTypes = {
     product: PropTypes.object,
-    products: PropTypes.array,
-  };
-  const [showAddAlert, setShowAddAlert] = useState(false);
-  const [showUpdateAlert, setShowUpdateAlert] = useState(false);
-  const token = useSelector((state) => state.token.token);
-  const [updateCount, setUpdateCount] = useState(0);
-  const cartItems = useSelector((state) => state.cart.cartItems);
-  const [quantity, setQuantity] = useState(1);
-  const navigate = useNavigate();
-  let alertMessage;
+    products: PropTypes.array
+  }
+  const [showAddAlert, setShowAddAlert] = useState(false)
+  const [showUpdateAlert, setShowUpdateAlert] = useState(false)
+  const token = useSelector((state) => state.token.token)
+  const [updateCount, setUpdateCount] = useState(0)
+  const cartItems = useSelector((state) => state.cart.cartItems)
+  const [quantity, setQuantity] = useState(1)
+  const navigate = useNavigate()
+  let alertMessage
 
   const relatedProducts = products.filter(
     (item) => item.category === product.category
-  );
+  )
   const uniqueRelatedProducts = relatedProducts.filter(
     (item) => item.id !== product.id
-  );
+  )
 
   const handleAddAlert = () => {
-    setShowAddAlert(!showAddAlert);
-  };
+    setShowAddAlert(!showAddAlert)
+  }
   const handleUpdateAlert = () => {
-    setShowUpdateAlert(!showUpdateAlert);
-  };
+    setShowUpdateAlert(!showUpdateAlert)
+  }
   useEffect(() => {
-    alertMessage = document.querySelector(".add-cart-alert");
+    alertMessage = document.querySelector('.add-cart-alert')
     if (showAddAlert) {
-      alertMessage.classList.remove("hidden");
+      alertMessage.classList.remove('hidden')
       setTimeout(() => {
-        setShowAddAlert(false);
-      }, 2000);
+        setShowAddAlert(false)
+      }, 2000)
     } else {
-      alertMessage.classList.add("hidden");
+      alertMessage.classList.add('hidden')
     }
-  }, [showAddAlert]);
+  }, [showAddAlert])
   useEffect(() => {
-    alertMessage = document.querySelector(".update-cart-alert");
+    alertMessage = document.querySelector('.update-cart-alert')
     if (showUpdateAlert) {
-      alertMessage.classList.remove("hidden");
+      alertMessage.classList.remove('hidden')
       setTimeout(() => {
-        setShowUpdateAlert(false);
-      }, 2000);
+        setShowUpdateAlert(false)
+      }, 2000)
     } else {
-      alertMessage.classList.add("hidden");
+      alertMessage.classList.add('hidden')
     }
-  }, [showUpdateAlert]);
+  }, [showUpdateAlert])
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [product]);
+    window.scrollTo(0, 0)
+  }, [product])
 
   useEffect(() => {
-    const blurDivs = document.querySelectorAll(".blur-load");
+    const blurDivs = document.querySelectorAll('.blur-load')
     blurDivs.forEach((div) => {
-      const img = div.querySelector("img");
+      const img = div.querySelector('img')
 
-      function loaded() {
-        div.classList.add("loaded");
+      function loaded () {
+        div.classList.add('loaded')
       }
 
       if (img.complete) {
-        loaded();
+        loaded()
       } else {
-        img.addEventListener("load", loaded);
+        img.addEventListener('load', loaded)
       }
-    });
-  }, []);
+    })
+  }, [])
 
   const addToCart = async (product) => {
     const duplicate = cartItems.filter(
       (item) => item.title === product.title
-    )[0];
+    )[0]
     if (duplicate) {
       try {
         const response = await fetch(
           `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${duplicate.id}`,
           {
-            method: "PUT",
+            method: 'PUT',
             headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
+              'Content-Type': 'application/json',
+              Authorization: token
             },
             body: JSON.stringify({
               data: {
@@ -101,28 +101,28 @@ const Product = ({ product, products }) => {
                 unit: product.unit,
                 quantity: duplicate.quantity + 1,
                 category: product.category,
-                imageUrl: product.image,
-              },
-            }),
+                imageUrl: product.image
+              }
+            })
           }
-        );
-        const data = await response.json();
-        setUpdateCount((prevState) => prevState + 1);
+        )
+        const data = await response.json()
+        setUpdateCount((prevState) => prevState + 1)
         if (data.success) {
-          handleUpdateAlert();
+          handleUpdateAlert()
         }
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     } else {
       try {
         const response = await fetch(
-          "https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product",
+          'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product',
           {
-            method: "POST",
+            method: 'POST',
             headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
+              'Content-Type': 'application/json',
+              Authorization: token
             },
             body: JSON.stringify({
               data: {
@@ -132,21 +132,21 @@ const Product = ({ product, products }) => {
                 unit: product.unit,
                 quantity: product.quantity,
                 category: product.category,
-                imageUrl: product.image,
-              },
-            }),
+                imageUrl: product.image
+              }
+            })
           }
-        );
-        const data = await response.json();
-        setUpdateCount((prevState) => prevState + 1);
+        )
+        const data = await response.json()
+        setUpdateCount((prevState) => prevState + 1)
         if (data.success) {
-          handleAddAlert();
+          handleAddAlert()
         }
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
     }
-  };
+  }
 
   return (
     <div className="bg">
@@ -158,7 +158,7 @@ const Product = ({ product, products }) => {
             type="button"
             aria-label="close"
             className="close border-0"
-            style={{ background: "#fefefe" }}
+            style={{ background: '#fefefe' }}
             onClick={() => handleAddAlert()}
           >
             x
@@ -170,7 +170,7 @@ const Product = ({ product, products }) => {
             type="button"
             aria-label="close"
             className="close border-0"
-            style={{ background: "#fefefe" }}
+            style={{ background: '#fefefe' }}
             onClick={() => handleUpdateAlert()}
           >
             x
@@ -237,7 +237,7 @@ const Product = ({ product, products }) => {
             </div>
             <button
               onClick={() => {
-                addToCart(product);
+                addToCart(product)
               }}
               className="custom-btn my-3"
             >
@@ -265,7 +265,7 @@ const Product = ({ product, products }) => {
                     className="mb-4 blur-load"
                   >
                     <img
-                      width={"95%"}
+                      width={'95%'}
                       className="rounded cursor-pointer"
                       src={product.image}
                       alt={product.title}
@@ -280,7 +280,7 @@ const Product = ({ product, products }) => {
       </Container>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Product;
+export default Product

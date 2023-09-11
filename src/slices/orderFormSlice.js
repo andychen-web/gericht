@@ -1,29 +1,29 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   orderFormValue: {
-    email: "",
-    name: "",
-    address: "",
-    mobile: "",
-    message: "",
-    paymentMethod: "",
+    email: '',
+    name: '',
+    address: '',
+    mobile: '',
+    message: '',
+    paymentMethod: ''
   },
-  orderArray: [],
-};
+  orderArray: []
+}
 
 const orderFormSlice = createSlice({
-  name: "orderForm",
+  name: 'orderForm',
   initialState,
   reducers: {
     setOrderForm: (state, action) => {
-      state.orderFormValue = action.payload;
+      state.orderFormValue = action.payload
     },
     setOrderArray: (state, action) => {
-      state.orderArray = action.payload;
-    },
-  },
-});
+      state.orderArray = action.payload
+    }
+  }
+})
 
-export const { setOrderForm, setOrderArray } = orderFormSlice.actions;
-export default orderFormSlice.reducer;
+export const { setOrderForm, setOrderArray } = orderFormSlice.actions
+export default orderFormSlice.reducer

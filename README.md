@@ -4,9 +4,8 @@
 
 
 ## 畫面
-<img src="https://github.com/andychen-web/restaurant-react-RWD/assets/79246459/daa5ff9a-acb9-4645-8200-a2d1a38f8346" width="25%">
-<img src="https://github.com/andychen-web/restaurant-react-RWD/assets/79246459/318ce6e3-0c96-4147-b98f-1c485d7370c9" width="70%">
-
+<img src="https://github.com/andychen-web/restaurant-react-RWD/assets/79246459/7f314889-f137-463e-9e7b-73650e0a5b9e" width="17%">
+<img src="https://github.com/andychen-web/restaurant-react-RWD/assets/79246459/9d971ff3-3e67-44a2-99e3-b42eca82cce3" width="70%">
 
 ## 安裝套件
 
@@ -18,6 +17,7 @@ npm install
 - bootstrap 和 react 用於調整樣式和排版
 - 串接後端API取得商品
 - Redux & Redux persist管理訂單資訊
+- 使用ESlint(standard)
 
 ## 認識作者
 

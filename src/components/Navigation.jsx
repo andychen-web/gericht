@@ -6,16 +6,12 @@ import Container from 'react-bootstrap/Container'
 import { Link } from 'react-router-dom'
 import { setItems } from '../slices/cartSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import PropTypes from 'prop-types'
 
-const Navigation = ({ updateCount }) => {
-  Navigation.propTypes = {
-    updateCount: PropTypes.number
-  }
-
+const Navigation = () => {
   const dispatch = useDispatch()
   const token = useSelector((state) => state.token.token)
   const cartItems = useSelector((state) => state.cart.cartItems)
+  const cartUpdate = useSelector((state) => state.cart.cartUpdateCount)
 
   useEffect(() => {
     const fetchCart = async (token) => {
@@ -47,7 +43,7 @@ const Navigation = ({ updateCount }) => {
       }
     }
     fetchCart(token)
-  }, [token, updateCount])
+  }, [cartUpdate])
 
   return (
     <Navbar

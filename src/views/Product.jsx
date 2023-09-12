@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import Navigation from '../components/Navigation'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Footer from '../components/Footer'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { setCartUpdate } from '../slices/cartSlice'
+import Loader from '../components/Loader'
 
 const Product = ({ product, products }) => {
   Product.propTypes = {
     product: PropTypes.object,
     products: PropTypes.array
   }
+  const dispatch = useDispatch()
   const [showAddAlert, setShowAddAlert] = useState(false)
   const [showUpdateAlert, setShowUpdateAlert] = useState(false)
   const token = useSelector((state) => state.token.token)
-  const [updateCount, setUpdateCount] = useState(0)
   const cartItems = useSelector((state) => state.cart.cartItems)
+  const [isLoading, setIsLoading] = useState(false)
   const [quantity, setQuantity] = useState(1)
   const navigate = useNavigate()
   let alertMessage
@@ -80,10 +82,29 @@ const Product = ({ product, products }) => {
   }, [])
 
   const addToCart = async (product) => {
-    const duplicate = cartItems.filter(
+    let duplicate
+    const res = await fetch(
+      'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/products',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: token
+        }
+      }
+    )
+    const updatedProducts = await res.json()
+    // const updatedProductsLength = updatedProducts.products.length
+    const updatedProduct = updatedProducts.products.find(
       (item) => item.title === product.title
-    )[0]
+    )
+    if (updatedProduct) {
+      duplicate = { ...updatedProduct }
+    } else if (cartItems) {
+      duplicate = cartItems.find((item) => item.title === product.title)
+    }
+
     if (duplicate) {
+      setIsLoading(true)
       try {
         const response = await fetch(
           `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${duplicate.id}`,
@@ -107,14 +128,16 @@ const Product = ({ product, products }) => {
           }
         )
         const data = await response.json()
-        setUpdateCount((prevState) => prevState + 1)
         if (data.success) {
           handleUpdateAlert()
+          dispatch(setCartUpdate(1))
         }
       } catch (error) {
         console.log(error)
       }
+      setIsLoading(false)
     } else {
+      setIsLoading(true)
       try {
         const response = await fetch(
           'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product',
@@ -138,19 +161,21 @@ const Product = ({ product, products }) => {
           }
         )
         const data = await response.json()
-        setUpdateCount((prevState) => prevState + 1)
         if (data.success) {
           handleAddAlert()
+          dispatch(setCartUpdate(1))
         }
       } catch (error) {
         console.log(error)
       }
+      setIsLoading(false)
     }
   }
 
   return (
     <div className="bg">
-      <Navigation updateCount={updateCount} />
+      <Loader isLoading={isLoading} />
+
       <div className=" position-fixed custom-top end-0 me-2">
         <div className="add-cart-alert alert alert-light mt-5 hidden">
           已加入購物車

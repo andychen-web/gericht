@@ -12,6 +12,7 @@ import Order from './components/Order'
 import { useDispatch, useSelector } from 'react-redux'
 import { setProducts } from './slices/productSlice'
 import { setToken } from './slices/tokenSlice'
+import Navigation from './components/Navigation'
 
 function App () {
   const dispatch = useDispatch()
@@ -63,27 +64,30 @@ function App () {
   }, [])
 
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/products" element={<Products products={products} />} />
-      <Route path="/cart" element={<Cart />} />
-      <Route path="/checkout" element={<Checkout />} />
-      <Route path="/orders" element={<Orders />} />
-      {orders.map((order) => (
-        <Route
-          key={order.id}
-          path={`/order/${order.id}`}
-          element={<Order order={order} />}
-        />
-      ))}
-      {products.map((product) => (
-        <Route
-          key={product.id}
-          path={`product/${product.id}`}
-          element={<Product product={product} products={products} />}
-        />
-      ))}
-    </Routes>
+    <>
+      <Navigation />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/products" element={<Products products={products} />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/orders" element={<Orders />} />
+        {orders.map((order) => (
+          <Route
+            key={order.id}
+            path={`/order/${order.id}`}
+            element={<Order order={order} />}
+          />
+        ))}
+        {products.map((product) => (
+          <Route
+            key={product.id}
+            path={`product/${product.id}`}
+            element={<Product product={product} products={products} />}
+          />
+        ))}
+      </Routes>
+    </>
   )
 }
 export default App

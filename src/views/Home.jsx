@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import Navigation from '../components/Navigation'
 import Header from '../components/Header'
 import AboutUs from '../components/AboutUs'
 import Menu from '../components/Menu'
@@ -31,7 +30,6 @@ const Home = () => {
 
   return (
     <>
-      <Navigation />
       <Header />
       <AboutUs />
       <Menu />

@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Navigation from '../components/Navigation'
 import Footer from '../components/Footer'
 import Container from 'react-bootstrap/Container'
 import { FaPencilAlt } from 'react-icons/fa'
@@ -75,7 +74,6 @@ const Checkout = () => {
 
   return (
     <div className="bg">
-      <Navigation />
       <Container className="pt-5">
         <div className="text-white pt-5 text-center">
           <h4 className="pt-5">結帳</h4>

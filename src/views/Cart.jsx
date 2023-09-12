@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Navigation from '../components/Navigation'
 import Footer from '../components/Footer'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
@@ -7,10 +6,12 @@ import Col from 'react-bootstrap/Col'
 import Table from 'react-bootstrap/Table'
 import { BsFillCartFill, BsFillTrash3Fill } from 'react-icons/bs'
 import { FaPencilAlt } from 'react-icons/fa'
-
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateItemQuantity, setItems } from '../slices/cartSlice'
+import {
+  updateItemQuantity,
+  setItems
+} from '../slices/cartSlice'
 import { setSum, setShippingFee, setTotal } from '../slices/priceSlice'
 import { setOrderForm } from '../slices/orderFormSlice'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
@@ -48,10 +49,11 @@ const Cart = () => {
     paymentMethod: ''
   }
   let updatedProduct
-  const sum = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  )
+
+  const sum =
+    Array.isArray(cartItems) &&
+    cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
+
   let shippingFee = (sum / 20).toFixed(0)
   shippingFee = Number(shippingFee)
 
@@ -129,8 +131,12 @@ const Cart = () => {
       for (const key in data.products) {
         newCartItems.push(data.products[key])
       }
-      dispatch(setItems(newCartItems))
-      data.success ? setIsLoading(false) : setIsLoading(true)
+      if (data.success) {
+        dispatch(setItems(newCartItems))
+        setIsLoading(false)
+      } else {
+        setIsLoading(true)
+      }
     } catch (error) {
       console.log(error)
     }
@@ -138,7 +144,7 @@ const Cart = () => {
 
   useEffect(() => {
     fetchCart(token)
-  }, [token, dispatch])
+  }, [token])
 
   const handleRemove = async (id) => {
     try {
@@ -159,10 +165,8 @@ const Cart = () => {
   return (
     <div className="bg d-flex flex-column position-relative">
       <Loader isLoading={isLoading} />
-      <div className="d-center align-items-center"></div>
-      <Navigation />
-      <Container className="pt-2">
-        <Row className="position-relative pt-5 mt-5">
+      <Container className="custom-padding-top">
+        <Row className="position-relative custom-pt-md">
           <Col xs={12} lg={7}>
             <div className="text-white h3 d-flex">
               <BsFillCartFill />
@@ -179,49 +183,55 @@ const Cart = () => {
               </thead>
 
               <tbody>
-                {cartItems.map((item, key) => {
-                  return (
-                    <tr key={key} className="align-middle text-center">
-                      <td className="d-flex justify-content-start">
-                        <button
-                          type="button"
-                          onClick={() => handleRemove(item.id)}
-                          className="btn btn-warning btn-sm"
-                        >
-                          <BsFillTrash3Fill />
-                        </button>
-                        <div className="ps-2 pt-1">{item.title}</div>
-                      </td>
-                      <td>
-                        <div role="group" className="btn-group">
+                {Array.isArray(cartItems) &&
+                  cartItems.map((item, key) => {
+                    return (
+                      <tr key={key} className="align-middle text-center">
+                        <td className="d-flex justify-content-start">
                           <button
                             type="button"
-                            onClick={() =>
-                              decrementQuantity(key, -1, item.quantity, item.id)
-                            }
-                            className="btn btn-outline-secondary"
+                            onClick={() => handleRemove(item.id)}
+                            className="btn btn-warning btn-sm"
                           >
-                            -
+                            <BsFillTrash3Fill />
                           </button>
-                          <button
-                            disabled="disabled"
-                            className="btn btn-outline-secondary"
-                          >
-                            {item.quantity}
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => incrementQuantity(key, +1)}
-                            className="btn btn-outline-secondary"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </td>
-                      <td> {'$' + item.price * item.quantity}</td>
-                    </tr>
-                  )
-                })}
+                          <div className="ps-2 pt-1">{item.title}</div>
+                        </td>
+                        <td>
+                          <div role="group" className="btn-group">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                decrementQuantity(
+                                  key,
+                                  -1,
+                                  item.quantity,
+                                  item.id
+                                )
+                              }
+                              className="btn btn-outline-secondary"
+                            >
+                              -
+                            </button>
+                            <button
+                              disabled="disabled"
+                              className="btn btn-outline-secondary"
+                            >
+                              {item.quantity}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => incrementQuantity(key, +1)}
+                              className="btn btn-outline-secondary"
+                            >
+                              +
+                            </button>
+                          </div>
+                        </td>
+                        <td> {'$' + item.price * item.quantity}</td>
+                      </tr>
+                    )
+                  })}
               </tbody>
             </Table>
           </Col>
@@ -369,5 +379,4 @@ const Cart = () => {
     </div>
   )
 }
-
 export default Cart

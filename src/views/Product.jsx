@@ -56,23 +56,6 @@ const Product = ({ product, products }) => {
     window.scrollTo(0, 0)
   }, [product])
 
-  useEffect(() => {
-    const blurDivs = document.querySelectorAll('.blur-load')
-    blurDivs.forEach((div) => {
-      const img = div.querySelector('img')
-
-      function loaded() {
-        div.classList.add('loaded')
-      }
-
-      if (img.complete) {
-        loaded()
-      } else {
-        img.addEventListener('load', loaded)
-      }
-    })
-  }, [])
-
   const addToCart = async (product) => {
     let duplicate
     const res = await fetch(
@@ -176,12 +159,7 @@ const Product = ({ product, products }) => {
       )}
       <Container className="custom-padding-top">
         <Row>
-          <Col
-            xs={12}
-            md={8}
-            lg={8}
-            className="product-img-wrap blur-load rounded"
-          >
+          <Col xs={12} md={8} lg={8} className="product-img-wrap rounded">
             <img
               src={product.image}
               className="product-img rounded obj-contain"

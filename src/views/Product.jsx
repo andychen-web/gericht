@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { setCartUpdate } from '../slices/cartSlice'
 import Loader from '../components/Loader'
+import CartAlert from '../components/CartAlert'
 
 const Product = ({ product, products }) => {
   Product.propTypes = {
@@ -15,14 +16,14 @@ const Product = ({ product, products }) => {
     products: PropTypes.array
   }
   const dispatch = useDispatch()
-  const [showAddAlert, setShowAddAlert] = useState(false)
-  const [showUpdateAlert, setShowUpdateAlert] = useState(false)
+
+  const [alertQueue, setAlertQueue] = useState([])
+  const [currentAlert, setCurrentAlert] = useState(null)
   const token = useSelector((state) => state.token.token)
   const cartItems = useSelector((state) => state.cart.cartItems)
   const [isLoading, setIsLoading] = useState(false)
   const [quantity, setQuantity] = useState(1)
   const navigate = useNavigate()
-  let alertMessage
 
   const relatedProducts = products.filter(
     (item) => item.category === product.category
@@ -32,33 +33,24 @@ const Product = ({ product, products }) => {
   )
 
   const handleAddAlert = () => {
-    setShowAddAlert(!showAddAlert)
+    setAlertQueue((prevQueue) => [...prevQueue, { message: '已新增至購物車' }])
+    setTimeout(() => {
+      setCurrentAlert(null)
+    }, 2000)
   }
   const handleUpdateAlert = () => {
-    setShowUpdateAlert(!showUpdateAlert)
+    setAlertQueue((prevQueue) => [...prevQueue, { message: '已更新購物車' }])
+    setTimeout(() => {
+      setCurrentAlert(null)
+    }, 2000)
   }
   useEffect(() => {
-    alertMessage = document.querySelector('.add-cart-alert')
-    if (showAddAlert) {
-      alertMessage.classList.remove('hidden')
-      setTimeout(() => {
-        setShowAddAlert(false)
-      }, 2000)
-    } else {
-      alertMessage.classList.add('hidden')
+    if (!currentAlert && alertQueue.length > 0) {
+      setCurrentAlert(alertQueue[0])
+      // 回傳一個新的array，包括所有從index 1往後的所有值，把他設定新的alert queue
+      setAlertQueue((prevQueue) => prevQueue.slice(1))
     }
-  }, [showAddAlert])
-  useEffect(() => {
-    alertMessage = document.querySelector('.update-cart-alert')
-    if (showUpdateAlert) {
-      alertMessage.classList.remove('hidden')
-      setTimeout(() => {
-        setShowUpdateAlert(false)
-      }, 2000)
-    } else {
-      alertMessage.classList.add('hidden')
-    }
-  }, [showUpdateAlert])
+  }, [currentAlert, alertQueue])
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -69,7 +61,7 @@ const Product = ({ product, products }) => {
     blurDivs.forEach((div) => {
       const img = div.querySelector('img')
 
-      function loaded () {
+      function loaded() {
         div.classList.add('loaded')
       }
 
@@ -176,32 +168,12 @@ const Product = ({ product, products }) => {
     <div className="bg">
       <Loader isLoading={isLoading} />
 
-      <div className=" position-fixed custom-top end-0 me-2">
-        <div className="add-cart-alert alert alert-light mt-5 hidden">
-          已加入購物車
-          <button
-            type="button"
-            aria-label="close"
-            className="close border-0"
-            style={{ background: '#fefefe' }}
-            onClick={() => handleAddAlert()}
-          >
-            x
-          </button>
-        </div>
-        <div className="update-cart-alert alert alert-light hidden">
-          已更新購物車
-          <button
-            type="button"
-            aria-label="close"
-            className="close border-0"
-            style={{ background: '#fefefe' }}
-            onClick={() => handleUpdateAlert()}
-          >
-            x
-          </button>
-        </div>
-      </div>
+      {currentAlert && (
+        <CartAlert
+          message={currentAlert.message}
+          onClose={() => setCurrentAlert(null)}
+        />
+      )}
       <Container className="custom-padding-top">
         <Row>
           <Col
@@ -283,12 +255,7 @@ const Product = ({ product, products }) => {
             <Row>
               {uniqueRelatedProducts &&
                 uniqueRelatedProducts.map((product) => (
-                  <Col
-                    key={product.id}
-                    md={4}
-                    xs={4}
-                    className="mb-4 blur-load"
-                  >
+                  <Col key={product.id} md={4} xs={4} className="mb-4">
                     <img
                       width={'95%'}
                       className="rounded cursor-pointer"

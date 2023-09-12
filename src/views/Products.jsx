@@ -9,6 +9,7 @@ import Loader from '../components/Loader'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { setCartUpdate } from '../slices/cartSlice'
+import CartAlert from '../components/CartAlert'
 
 const Products = ({ products }) => {
   Products.propTypes = {
@@ -20,19 +21,32 @@ const Products = ({ products }) => {
   const cartItems = useSelector((state) => state.cart.cartItems)
   const [priceRange, setPriceRange] = useState('全部')
   const [category, setCategory] = useState('全部')
-  const [showAddAlert, setShowAddAlert] = useState(false)
-  const [showUpdateAlert, setShowUpdateAlert] = useState(false)
+  const [alertQueue, setAlertQueue] = useState([])
+  const [currentAlert, setCurrentAlert] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const categoryTypes = ['全部', '燉飯', '義大利麵', '烤肉', '甜點']
   const priceRangeArr = ['全部', '$99~$199', '$200~$399']
 
-  let alertMessage
   const handleAddAlert = () => {
-    setShowAddAlert(!showAddAlert)
+    setAlertQueue((prevQueue) => [...prevQueue, { message: '已新增至購物車' }])
+    setTimeout(() => {
+      setCurrentAlert(null)
+    }, 2000)
   }
   const handleUpdateAlert = () => {
-    setShowUpdateAlert(!showUpdateAlert)
+    setAlertQueue((prevQueue) => [...prevQueue, { message: '已更新購物車' }])
+    setTimeout(() => {
+      setCurrentAlert(null)
+    }, 2000)
   }
+  useEffect(() => {
+    if (!currentAlert && alertQueue.length > 0) {
+      setCurrentAlert(alertQueue[0])
+      // 回傳一個新的array，包括所有從index 1往後的所有值，把他設定新的alert queue
+      setAlertQueue((prevQueue) => prevQueue.slice(1))
+    }
+  }, [currentAlert, alertQueue])
+
   useEffect(() => {
     window.scrollTo(0, 0)
 
@@ -42,28 +56,6 @@ const Products = ({ products }) => {
       setIsLoading(true)
     }
   }, [products])
-  useEffect(() => {
-    alertMessage = document.querySelector('.add-cart-alert')
-    if (showAddAlert) {
-      alertMessage.classList.remove('hidden')
-      setTimeout(() => {
-        setShowAddAlert(false)
-      }, 2000)
-    } else {
-      alertMessage.classList.add('hidden')
-    }
-  }, [showAddAlert])
-  useEffect(() => {
-    alertMessage = document.querySelector('.update-cart-alert')
-    if (showUpdateAlert) {
-      alertMessage.classList.remove('hidden')
-      setTimeout(() => {
-        setShowUpdateAlert(false)
-      }, 2000)
-    } else {
-      alertMessage.classList.add('hidden')
-    }
-  }, [showUpdateAlert])
 
   const handlePriceRangeChange = (e) => {
     const priceDivs = document.querySelectorAll('.price-range')
@@ -119,8 +111,7 @@ const Products = ({ products }) => {
       }
     )
     const updatedProducts = await res.json()
-    // const updatedProductsLength = updatedProducts.products.length
-    const updatedProduct = updatedProducts.products.find(
+    const updatedProduct = await updatedProducts.products.find(
       (item) => item.title === product.title
     )
     if (updatedProduct) {
@@ -197,12 +188,13 @@ const Products = ({ products }) => {
       setIsLoading(false)
     }
   }
+
   useEffect(() => {
     const blurDivs = document.querySelectorAll('.blur-load')
     blurDivs.forEach((div) => {
       const img = div.querySelector('img')
 
-      function loaded () {
+      function loaded() {
         div.classList.add('loaded')
       }
 
@@ -217,33 +209,12 @@ const Products = ({ products }) => {
     <div className="bg">
       <Loader isLoading={isLoading} />
 
-      {/* feat to add:喜好清單 */}
-      <div className=" position-fixed custom-top end-0 me-2">
-        <div className="add-cart-alert alert alert-light mt-5 hidden">
-          已加入購物車
-          <button
-            type="button"
-            aria-label="close"
-            className="close border-0"
-            style={{ background: '#fefefe' }}
-            onClick={() => handleAddAlert()}
-          >
-            x
-          </button>
-        </div>
-        <div className="update-cart-alert alert alert-light  hidden">
-          已更新購物車
-          <button
-            type="button"
-            aria-label="close"
-            className="close border-0"
-            style={{ background: '#fefefe' }}
-            onClick={() => handleUpdateAlert()}
-          >
-            x
-          </button>
-        </div>
-      </div>
+      {currentAlert && (
+        <CartAlert
+          message={currentAlert.message}
+          onClose={() => setCurrentAlert(null)}
+        />
+      )}
       <Container className="custom-padding-top">
         <Row>
           {/* 篩選品項 */}

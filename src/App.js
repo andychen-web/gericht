@@ -14,7 +14,7 @@ import { setProducts } from './slices/productSlice'
 import { setToken } from './slices/tokenSlice'
 import Navigation from './components/Navigation'
 
-function App () {
+function App() {
   const dispatch = useDispatch()
   const orders = useSelector((state) => state.orderForm.orderArray)
   const products = useSelector((state) => state.product.productArray)
@@ -39,7 +39,7 @@ function App () {
       })
       .catch((error) => console.error(error))
 
-    function authorize (token) {
+    function authorize(token) {
       fetch('https://vue3-course-api.hexschool.io/v2/api/user/check', {
         method: 'POST',
         headers: { Authorization: token }
@@ -66,6 +66,8 @@ function App () {
   return (
     <>
       <Navigation />
+      {/* feat to add:喜好清單 */}
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products products={products} />} />

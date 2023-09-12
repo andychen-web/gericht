@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Container from 'react-bootstrap/Container'
 import Loader from '../components/Loader'
-import Navigation from '../components/Navigation'
 import Footer from '../components/Footer'
 import { AiFillFileText } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
@@ -57,7 +56,6 @@ const Orders = () => {
   return (
     <div className="bg-beige">
       <Loader isLoading={isLoading} />
-      <Navigation />
       <Container className="custom-padding-top">
         <h2 className="text-center fw-bold">全部訂單</h2>
 

@@ -8,12 +8,6 @@
 .custom-nav {
   z-index: 3;
   width: 100vw;
-  margin-bottom: 5rem;
-}
-@media (max-width: 1200px) {
-  .custom-nav {
-    min-width: 110%;
-  }
 }
 
 @media (min-width: 600px) {
@@ -33,8 +27,15 @@
   color: #dcca87;
 }
 
-.container.custom-padding-top {
-  padding-top: 7rem;
+@media (max-width: 600px) {
+  .container.custom-padding-top {
+    padding-top: 8rem;
+  }
+}
+@media (min-width: 601px) {
+  .container.custom-padding-top {
+    padding-top: 6rem;
+  }
 }
 
 .custom-text {

@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from 'react'
-import Navigation from '../components/Navigation'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Footer from '../components/Footer'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { setCartUpdate } from '../slices/cartSlice'
+import Loader from '../components/Loader'
+import CartAlert from '../components/CartAlert'
 
 const Product = ({ product, products }) => {
   Product.propTypes = {
     product: PropTypes.object,
     products: PropTypes.array
   }
-  const [showAddAlert, setShowAddAlert] = useState(false)
-  const [showUpdateAlert, setShowUpdateAlert] = useState(false)
+  const dispatch = useDispatch()
+
+  const [alertQueue, setAlertQueue] = useState([])
+  const [currentAlert, setCurrentAlert] = useState(null)
   const token = useSelector((state) => state.token.token)
-  const [updateCount, setUpdateCount] = useState(0)
   const cartItems = useSelector((state) => state.cart.cartItems)
+  const [isLoading, setIsLoading] = useState(false)
   const [quantity, setQuantity] = useState(1)
   const navigate = useNavigate()
-  let alertMessage
 
   const relatedProducts = products.filter(
     (item) => item.category === product.category
@@ -30,60 +33,53 @@ const Product = ({ product, products }) => {
   )
 
   const handleAddAlert = () => {
-    setShowAddAlert(!showAddAlert)
+    setAlertQueue((prevQueue) => [...prevQueue, { message: '已新增至購物車' }])
+    setTimeout(() => {
+      setCurrentAlert(null)
+    }, 2000)
   }
   const handleUpdateAlert = () => {
-    setShowUpdateAlert(!showUpdateAlert)
+    setAlertQueue((prevQueue) => [...prevQueue, { message: '已更新購物車' }])
+    setTimeout(() => {
+      setCurrentAlert(null)
+    }, 2000)
   }
   useEffect(() => {
-    alertMessage = document.querySelector('.add-cart-alert')
-    if (showAddAlert) {
-      alertMessage.classList.remove('hidden')
-      setTimeout(() => {
-        setShowAddAlert(false)
-      }, 2000)
-    } else {
-      alertMessage.classList.add('hidden')
+    if (!currentAlert && alertQueue.length > 0) {
+      setCurrentAlert(alertQueue[0])
+      // 回傳一個新的array，包括所有從index 1往後的所有值，把他設定新的alert queue
+      setAlertQueue((prevQueue) => prevQueue.slice(1))
     }
-  }, [showAddAlert])
-  useEffect(() => {
-    alertMessage = document.querySelector('.update-cart-alert')
-    if (showUpdateAlert) {
-      alertMessage.classList.remove('hidden')
-      setTimeout(() => {
-        setShowUpdateAlert(false)
-      }, 2000)
-    } else {
-      alertMessage.classList.add('hidden')
-    }
-  }, [showUpdateAlert])
+  }, [currentAlert, alertQueue])
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [product])
 
-  useEffect(() => {
-    const blurDivs = document.querySelectorAll('.blur-load')
-    blurDivs.forEach((div) => {
-      const img = div.querySelector('img')
-
-      function loaded () {
-        div.classList.add('loaded')
-      }
-
-      if (img.complete) {
-        loaded()
-      } else {
-        img.addEventListener('load', loaded)
-      }
-    })
-  }, [])
-
   const addToCart = async (product) => {
-    const duplicate = cartItems.filter(
+    let duplicate
+    const res = await fetch(
+      'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/products',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: token
+        }
+      }
+    )
+    const updatedProducts = await res.json()
+    // const updatedProductsLength = updatedProducts.products.length
+    const updatedProduct = updatedProducts.products.find(
       (item) => item.title === product.title
-    )[0]
+    )
+    if (updatedProduct) {
+      duplicate = { ...updatedProduct }
+    } else if (cartItems) {
+      duplicate = cartItems.find((item) => item.title === product.title)
+    }
+
     if (duplicate) {
+      setIsLoading(true)
       try {
         const response = await fetch(
           `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${duplicate.id}`,
@@ -107,14 +103,16 @@ const Product = ({ product, products }) => {
           }
         )
         const data = await response.json()
-        setUpdateCount((prevState) => prevState + 1)
         if (data.success) {
           handleUpdateAlert()
+          dispatch(setCartUpdate(1))
         }
       } catch (error) {
         console.log(error)
       }
+      setIsLoading(false)
     } else {
+      setIsLoading(true)
       try {
         const response = await fetch(
           'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product',
@@ -138,53 +136,30 @@ const Product = ({ product, products }) => {
           }
         )
         const data = await response.json()
-        setUpdateCount((prevState) => prevState + 1)
         if (data.success) {
           handleAddAlert()
+          dispatch(setCartUpdate(1))
         }
       } catch (error) {
         console.log(error)
       }
+      setIsLoading(false)
     }
   }
 
   return (
     <div className="bg">
-      <Navigation updateCount={updateCount} />
-      <div className=" position-fixed custom-top end-0 me-2">
-        <div className="add-cart-alert alert alert-light mt-5 hidden">
-          已加入購物車
-          <button
-            type="button"
-            aria-label="close"
-            className="close border-0"
-            style={{ background: '#fefefe' }}
-            onClick={() => handleAddAlert()}
-          >
-            x
-          </button>
-        </div>
-        <div className="update-cart-alert alert alert-light hidden">
-          已更新購物車
-          <button
-            type="button"
-            aria-label="close"
-            className="close border-0"
-            style={{ background: '#fefefe' }}
-            onClick={() => handleUpdateAlert()}
-          >
-            x
-          </button>
-        </div>
-      </div>
+      <Loader isLoading={isLoading} />
+
+      {currentAlert && (
+        <CartAlert
+          message={currentAlert.message}
+          onClose={() => setCurrentAlert(null)}
+        />
+      )}
       <Container className="custom-padding-top">
         <Row>
-          <Col
-            xs={12}
-            md={8}
-            lg={8}
-            className="product-img-wrap blur-load rounded"
-          >
+          <Col xs={12} md={8} lg={8} className="product-img-wrap rounded">
             <img
               src={product.image}
               className="product-img rounded obj-contain"
@@ -258,12 +233,7 @@ const Product = ({ product, products }) => {
             <Row>
               {uniqueRelatedProducts &&
                 uniqueRelatedProducts.map((product) => (
-                  <Col
-                    key={product.id}
-                    md={4}
-                    xs={4}
-                    className="mb-4 blur-load"
-                  >
+                  <Col key={product.id} md={4} xs={4} className="mb-4">
                     <img
                       width={'95%'}
                       className="rounded cursor-pointer"

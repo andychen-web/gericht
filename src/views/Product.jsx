@@ -158,19 +158,17 @@ const Product = ({ product, products }) => {
         />
       )}
       <Container className="custom-padding-top">
-        <Row>
-          <Col xs={12} md={8} lg={8} className="product-img-wrap rounded">
-            <img
-              src={product.image}
-              className="product-img rounded obj-contain"
-              alt={product.title}
-            />
-          </Col>
+        <Row className="position-relative d-flex">
           <Col
-            xs={6}
+            md={6}
+            className="product-img position-right"
+            style={{
+              backgroundImage: `url(${product.image})`
+            }}
+          ></Col>
+          <Col
             md={3}
-            lg={3}
-            className="product-card h-75 text-dark mt-3 py-3 bg-beige rounded d-flex flex-column"
+            className="col-md-3 col-lg-2 product-card h-75 text-dark mt-4 py-3 bg-beige rounded d-flex flex-column"
           >
             <h4>{product.title}</h4>
             <div className="custom-small-font">【Gericht季節特選】</div>

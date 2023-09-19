@@ -155,7 +155,9 @@ const Product = ({ product }) => {
             <h5 className="fw-bold">{product.title}</h5>
             <div className="custom-small-font">【Gericht季節特選】</div>
             <div className="pt-3">
-              <span> 原價 {product.origin_price}</span>
+              <span className="text-muted">
+                <s> 原價 {product.origin_price}</s>
+              </span>
             </div>
             <div>
               <span className="text-danger fw-bold h5">

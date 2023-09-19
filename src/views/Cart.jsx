@@ -8,16 +8,14 @@ import { BsFillCartFill, BsFillTrash3Fill } from 'react-icons/bs'
 import { FaPencilAlt } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  updateItemQuantity,
-  setItems
-} from '../slices/cartSlice'
+import { updateItemQuantity, setItems } from '../slices/cartSlice'
 import { setSum, setShippingFee, setTotal } from '../slices/priceSlice'
 import { setOrderForm } from '../slices/orderFormSlice'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import Modal from 'react-bootstrap/Modal'
 import * as Yup from 'yup'
 import Loader from '../components/Loader'
+import Alert from '../components/Alert'
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -38,6 +36,7 @@ const Cart = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(null)
   const [changeCounter, setChangeCounter] = useState(0)
+  const [alertQueue, setAlertQueue] = useState([])
 
   const dispatch = useDispatch()
   const initFormValues = {
@@ -62,6 +61,16 @@ const Cart = () => {
     currency: 'NTD',
     currencyDisplay: 'code'
   })
+  const confirmCheckout = () => {
+    if (cartItems.length > 0) {
+      setShowCheckout(true)
+    } else {
+      handleAlert('購物車內無商品無法結帳')
+    }
+  }
+  const handleAlert = (message) => {
+    setAlertQueue((prevQueue) => [...prevQueue, { message }])
+  }
 
   const handleSubmit = (values) => {
     // price
@@ -163,10 +172,12 @@ const Cart = () => {
     }
   }
   return (
-    <div className="bg d-flex flex-column position-relative">
+    <div className="bg vh-md-100 d-flex flex-column">
       <Loader isLoading={isLoading} />
+      {<Alert alertQueue={alertQueue} setAlertQueue={setAlertQueue} />}
+
       <Container className="custom-padding-top">
-        <Row className="position-relative custom-pt-md">
+        <Row className="custom-pt-md">
           <Col xs={12} lg={7}>
             <div className="text-white h3 d-flex">
               <BsFillCartFill />
@@ -191,14 +202,14 @@ const Cart = () => {
                           <button
                             type="button"
                             onClick={() => handleRemove(item.id)}
-                            className="btn btn-warning btn-sm"
+                            className="btn btn-warning btn-sm sm-font"
                           >
                             <BsFillTrash3Fill />
                           </button>
-                          <div className="ps-2 pt-1">{item.title}</div>
+                          <div className="ps-2 pt-1 sm-font">{item.title}</div>
                         </td>
                         <td>
-                          <div role="group" className="btn-group">
+                          <div className="btn-group sm-height">
                             <button
                               type="button"
                               onClick={() =>
@@ -253,7 +264,7 @@ const Cart = () => {
               </h4>
               <button
                 className="btn fw-bold w-100 px-5 my-1 btn-danger"
-                onClick={() => setShowCheckout(true)}
+                onClick={() => confirmCheckout()}
               >
                 確認結帳
               </button>

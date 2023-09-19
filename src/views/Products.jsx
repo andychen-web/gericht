@@ -4,17 +4,15 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Footer from '../components/Footer'
 import { BsFillCartFill } from 'react-icons/bs'
-import PropTypes from 'prop-types'
 import Loader from '../components/Loader'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { setCartUpdate } from '../slices/cartSlice'
-import CartAlert from '../components/CartAlert'
-
-const Products = ({ products }) => {
-  Products.propTypes = {
-    products: PropTypes.array
-  }
+import { setFavorites } from '../slices/favoritesSlice'
+import Alert from '../components/Alert'
+import { FaRegHeart, FaHeart } from 'react-icons/fa'
+const Products = () => {
+  const products = useSelector((state) => state.product.productArray)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const token = useSelector((state) => state.token.token)
@@ -22,40 +20,18 @@ const Products = ({ products }) => {
   const [priceRange, setPriceRange] = useState('全部')
   const [category, setCategory] = useState('全部')
   const [alertQueue, setAlertQueue] = useState([])
-  const [currentAlert, setCurrentAlert] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const categoryTypes = ['全部', '燉飯', '義大利麵', '烤肉', '甜點']
   const priceRangeArr = ['全部', '$99~$199', '$200~$399']
+  const favorites = useSelector((state) => state.favorite.favoriteList)
 
-  const handleAddAlert = () => {
-    setAlertQueue((prevQueue) => [...prevQueue, { message: '已新增至購物車' }])
-    setTimeout(() => {
-      setCurrentAlert(null)
-    }, 2000)
+  const handleLike = (product) => {
+    dispatch(setFavorites(product))
   }
-  const handleUpdateAlert = () => {
-    setAlertQueue((prevQueue) => [...prevQueue, { message: '已更新購物車' }])
-    setTimeout(() => {
-      setCurrentAlert(null)
-    }, 2000)
+
+  const handleAlert = (message) => {
+    setAlertQueue((prevQueue) => [...prevQueue, { message }])
   }
-  useEffect(() => {
-    if (!currentAlert && alertQueue.length > 0) {
-      setCurrentAlert(alertQueue[0])
-      // 回傳一個新的array，包括所有從index 1往後的所有值，把他設定新的alert queue
-      setAlertQueue((prevQueue) => prevQueue.slice(1))
-    }
-  }, [currentAlert, alertQueue])
-
-  useEffect(() => {
-    window.scrollTo(0, 0)
-
-    if (products) {
-      setIsLoading(false)
-    } else {
-      setIsLoading(true)
-    }
-  }, [products])
 
   const handlePriceRangeChange = (e) => {
     const priceDivs = document.querySelectorAll('.price-range')
@@ -100,6 +76,8 @@ const Products = ({ products }) => {
     })
 
   const addToCart = async (product) => {
+    setIsLoading(true)
+
     let duplicate
     const res = await fetch(
       'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/products',
@@ -121,7 +99,6 @@ const Products = ({ products }) => {
     }
 
     if (duplicate) {
-      setIsLoading(true)
       try {
         const response = await fetch(
           `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${duplicate.id}`,
@@ -146,15 +123,12 @@ const Products = ({ products }) => {
         )
         const data = await response.json()
         if (data.success) {
-          handleUpdateAlert()
-          dispatch(setCartUpdate(1))
+          handleAlert('已更新購物車')
         }
       } catch (error) {
         console.log(error)
       }
-      setIsLoading(false)
     } else {
-      setIsLoading(true)
       try {
         const response = await fetch(
           'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product',
@@ -179,15 +153,22 @@ const Products = ({ products }) => {
         )
         const data = await response.json()
         if (data.success) {
-          handleAddAlert()
+          handleAlert('已新增至購物車')
           dispatch(setCartUpdate(1))
         }
       } catch (error) {
         console.log(error)
       }
-      setIsLoading(false)
     }
+    setIsLoading(false)
   }
+  useEffect(() => {
+    if (products.length > 0) {
+      setIsLoading(false)
+    } else {
+      setIsLoading(true)
+    }
+  }, [products])
 
   useEffect(() => {
     const blurDivs = document.querySelectorAll('.blur-load')
@@ -197,11 +178,14 @@ const Products = ({ products }) => {
       function loaded() {
         div.classList.add('loaded')
       }
-
       if (img.complete) {
         loaded()
       } else {
         img.addEventListener('load', loaded)
+      }
+
+      return () => {
+        img.removeEventListener('load', loaded)
       }
     })
   }, [])
@@ -209,12 +193,7 @@ const Products = ({ products }) => {
     <div className="bg">
       <Loader isLoading={isLoading} />
 
-      {currentAlert && (
-        <CartAlert
-          message={currentAlert.message}
-          onClose={() => setCurrentAlert(null)}
-        />
-      )}
+      <Alert alertQueue={alertQueue} setAlertQueue={setAlertQueue} />
       <Container className="custom-padding-top">
         <Row>
           {/* 篩選品項 */}
@@ -266,18 +245,41 @@ const Products = ({ products }) => {
                     />
 
                     <div>{product.title}</div>
-                    <div className="d-flex">
-                      <h5 className="pe-2">${product.price}</h5>
-                      <BsFillCartFill
-                        size={20}
-                        className="custom-icon"
+                    <h4 className="pe-2">NT$ {product.price}</h4>
+                    <div className="btn-group w-100">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          handleLike(product)
+                          if (
+                            favorites.find((fav) => fav.title === product.title)
+                          ) {
+                            handleAlert('已從收藏清單刪除')
+                          } else {
+                            handleAlert('已加入收藏清單')
+                          }
+                        }}
+                        className="btn btn-favorite"
+                      >
+                        {favorites.find(
+                          (fav) => fav.title === product.title
+                        ) ? (
+                          <FaHeart />
+                        ) : (
+                          <FaRegHeart />
+                        )}
+                      </button>
+                      <button
+                        className="btn btn-cart"
                         onClick={() => {
                           addToCart(product)
                         }}
-                      />
+                      >
+                        <BsFillCartFill size={20} />
+                      </button>
                     </div>
                     <button
-                      className="custom-btn"
+                      className="custom-btn mt-2"
                       onClick={() => navigate(`/product/${product.id}`)}
                     >
                       查看更多

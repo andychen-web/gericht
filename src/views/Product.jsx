@@ -6,24 +6,26 @@ import Footer from '../components/Footer'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { setFavorites } from '../slices/favoritesSlice'
 import { setCartUpdate } from '../slices/cartSlice'
 import Loader from '../components/Loader'
-import CartAlert from '../components/CartAlert'
+import Alert from '../components/Alert'
+import { BsFillCartFill } from 'react-icons/bs'
+import { FaRegHeart, FaHeart } from 'react-icons/fa'
 
-const Product = ({ product, products }) => {
+const Product = ({ product }) => {
   Product.propTypes = {
-    product: PropTypes.object,
-    products: PropTypes.array
+    product: PropTypes.object
   }
+  const products = useSelector((state) => state.product.productArray)
   const dispatch = useDispatch()
-
   const [alertQueue, setAlertQueue] = useState([])
-  const [currentAlert, setCurrentAlert] = useState(null)
   const token = useSelector((state) => state.token.token)
   const cartItems = useSelector((state) => state.cart.cartItems)
   const [isLoading, setIsLoading] = useState(false)
   const [quantity, setQuantity] = useState(1)
   const navigate = useNavigate()
+  const favorites = useSelector((state) => state.favorite.favoriteList)
 
   const relatedProducts = products.filter(
     (item) => item.category === product.category
@@ -31,32 +33,20 @@ const Product = ({ product, products }) => {
   const uniqueRelatedProducts = relatedProducts.filter(
     (item) => item.id !== product.id
   )
+  const handleLike = (product) => {
+    dispatch(setFavorites(product))
+  }
 
-  const handleAddAlert = () => {
-    setAlertQueue((prevQueue) => [...prevQueue, { message: '已新增至購物車' }])
-    setTimeout(() => {
-      setCurrentAlert(null)
-    }, 2000)
+  const handleAlert = (message) => {
+    setAlertQueue((prevQueue) => [...prevQueue, { message }])
   }
-  const handleUpdateAlert = () => {
-    setAlertQueue((prevQueue) => [...prevQueue, { message: '已更新購物車' }])
-    setTimeout(() => {
-      setCurrentAlert(null)
-    }, 2000)
-  }
-  useEffect(() => {
-    if (!currentAlert && alertQueue.length > 0) {
-      setCurrentAlert(alertQueue[0])
-      // 回傳一個新的array，包括所有從index 1往後的所有值，把他設定新的alert queue
-      setAlertQueue((prevQueue) => prevQueue.slice(1))
-    }
-  }, [currentAlert, alertQueue])
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [product])
 
-  const addToCart = async (product) => {
+  const addToCart = async (product, quantity) => {
+    setIsLoading(true)
     let duplicate
     const res = await fetch(
       'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/products',
@@ -68,7 +58,6 @@ const Product = ({ product, products }) => {
       }
     )
     const updatedProducts = await res.json()
-    // const updatedProductsLength = updatedProducts.products.length
     const updatedProduct = updatedProducts.products.find(
       (item) => item.title === product.title
     )
@@ -79,7 +68,6 @@ const Product = ({ product, products }) => {
     }
 
     if (duplicate) {
-      setIsLoading(true)
       try {
         const response = await fetch(
           `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${duplicate.id}`,
@@ -95,7 +83,7 @@ const Product = ({ product, products }) => {
                 origin_price: product.origin_price,
                 price: product.price,
                 unit: product.unit,
-                quantity: duplicate.quantity + 1,
+                quantity: duplicate.quantity + quantity,
                 category: product.category,
                 imageUrl: product.image
               }
@@ -104,15 +92,12 @@ const Product = ({ product, products }) => {
         )
         const data = await response.json()
         if (data.success) {
-          handleUpdateAlert()
-          dispatch(setCartUpdate(1))
+          handleAlert('已更新購物車')
         }
       } catch (error) {
         console.log(error)
       }
-      setIsLoading(false)
     } else {
-      setIsLoading(true)
       try {
         const response = await fetch(
           'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product',
@@ -128,7 +113,7 @@ const Product = ({ product, products }) => {
                 origin_price: product.origin_price,
                 price: product.price,
                 unit: product.unit,
-                quantity: product.quantity,
+                quantity,
                 category: product.category,
                 imageUrl: product.image
               }
@@ -137,43 +122,42 @@ const Product = ({ product, products }) => {
         )
         const data = await response.json()
         if (data.success) {
-          handleAddAlert()
+          handleAlert('已新增至購物車')
           dispatch(setCartUpdate(1))
         }
       } catch (error) {
         console.log(error)
       }
-      setIsLoading(false)
     }
+    setIsLoading(false)
   }
 
   return (
     <div className="bg">
+      {<Alert alertQueue={alertQueue} setAlertQueue={setAlertQueue} />}
       <Loader isLoading={isLoading} />
-
-      {currentAlert && (
-        <CartAlert
-          message={currentAlert.message}
-          onClose={() => setCurrentAlert(null)}
-        />
-      )}
       <Container className="custom-padding-top">
-        <Row className="position-relative d-flex">
+        <Row
+          id={'productWrap'}
+          className="m-auto d-flex bg-beige product product-wrap rounded"
+        >
           <Col
             md={6}
-            className="product-img position-right"
+            className="product-img position-left"
             style={{
               backgroundImage: `url(${product.image})`
             }}
           ></Col>
           <Col
-            md={3}
-            className="col-md-3 col-lg-2 product-card h-75 text-dark mt-4 py-3 bg-beige rounded d-flex flex-column"
+            md={12}
+            className="product-card h-75 text-dark mt-4 bg-beige rounded d-flex flex-column pb-3"
           >
-            <h4>{product.title}</h4>
+            <h5 className="fw-bold">{product.title}</h5>
             <div className="custom-small-font">【Gericht季節特選】</div>
             <div className="pt-3">
-              <s> 原價 {product.origin_price}</s>
+              <span className="text-muted">
+                <s> 原價 {product.origin_price}</s>
+              </span>
             </div>
             <div>
               <span className="text-danger fw-bold h5">
@@ -202,20 +186,40 @@ const Product = ({ product, products }) => {
                 <button
                   onClick={() => setQuantity((prevState) => prevState + 1)}
                   type="button"
-                  className="btn btn-outline-secondary"
+                  className="btn btn-outline-secondary "
                 >
                   +
                 </button>
               </div>
             </div>
-            <button
-              onClick={() => {
-                addToCart(product)
-              }}
-              className="custom-btn my-3"
-            >
-              加入購物車
-            </button>
+            <div className="btn-group w-100 mt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  handleLike(product)
+                  if (favorites.find((fav) => fav.title === product.title)) {
+                    handleAlert('已從收藏清單刪除')
+                  } else {
+                    handleAlert('已加入收藏清單')
+                  }
+                }}
+                className="btn btn-favorite"
+              >
+                {favorites.find((fav) => fav.title === product.title) ? (
+                  <FaHeart />
+                ) : (
+                  <FaRegHeart />
+                )}
+              </button>
+              <button
+                className="btn btn-cart"
+                onClick={() => {
+                  addToCart(product, quantity)
+                }}
+              >
+                <BsFillCartFill size={20} />
+              </button>
+            </div>
           </Col>
         </Row>
         <Col md={9} lg={7} className="text-left mt-3 m-auto">
@@ -239,7 +243,7 @@ const Product = ({ product, products }) => {
                       alt={product.title}
                       onClick={() => navigate(`/product/${product.id}`)}
                     />
-                    <p className="">{product.title}</p>
+                    <p>{product.title}</p>
                   </Col>
                 ))}
             </Row>

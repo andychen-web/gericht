@@ -215,9 +215,7 @@ const Favorites = () => {
                   <th className="py-2">操作</th>
                   <th className="py-2">品名</th>
                   <th className="py-2">單價</th>
-                  {isSmallScreen ? null : (
-                    <th className="py-2 custom-small-font">商品連結</th>
-                  )}
+                  {isSmallScreen ? null : <th className="py-2">商品連結</th>}
                 </tr>
               </thead>
               <tbody>

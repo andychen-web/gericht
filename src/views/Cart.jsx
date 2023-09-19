@@ -8,7 +8,7 @@ import { BsFillCartFill, BsFillTrash3Fill } from 'react-icons/bs'
 import { FaPencilAlt } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateItemQuantity, setItems } from '../slices/cartSlice'
+import { updateItemQuantity, setCartItems } from '../slices/cartSlice'
 import { setSum, setShippingFee, setTotal } from '../slices/priceSlice'
 import { setOrderForm } from '../slices/orderFormSlice'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
@@ -141,7 +141,7 @@ const Cart = () => {
         newCartItems.push(data.products[key])
       }
       if (data.success) {
-        dispatch(setItems(newCartItems))
+        dispatch(setCartItems(newCartItems))
         setIsLoading(false)
       } else {
         setIsLoading(true)
@@ -153,7 +153,7 @@ const Cart = () => {
 
   useEffect(() => {
     fetchCart(token)
-  }, [token])
+  }, [])
 
   const handleRemove = async (id) => {
     try {

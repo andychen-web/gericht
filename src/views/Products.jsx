@@ -99,8 +99,6 @@ const Products = () => {
     }
 
     if (duplicate) {
-      console.log(duplicate)
-
       try {
         const response = await fetch(
           `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${duplicate.id}`,
@@ -126,7 +124,6 @@ const Products = () => {
         const data = await response.json()
         if (data.success) {
           handleAlert('已更新購物車')
-          dispatch(setCartUpdate(1))
         }
       } catch (error) {
         console.log(error)

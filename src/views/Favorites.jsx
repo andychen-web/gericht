@@ -122,7 +122,7 @@ const Favorites = () => {
     const updatedProducts = await res.json()
 
     for (let fav = 0; fav < favorites.length; fav++) {
-      const updatedProduct = await updatedProducts.products.find(
+      const updatedProduct = updatedProducts.products.find(
         (item) => item.title === favorites[fav].title
       )
       if (updatedProduct) {
@@ -274,67 +274,6 @@ const Favorites = () => {
               </div>
             </div>
           )}
-          {/* sm 螢幕大小顯示 */}
-          <table className="sm d-none table table-striped table-bordered text-dark my-2">
-            <thead>
-              <tr>
-                <th>操作</th>
-                <th>瀏覽商品</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <button
-                    type="button"
-                    className="btn btn-outline-danger btn-sm mr-2"
-                  >
-                    <i aria-hidden="true" className="fa fa-trash"></i>
-                  </button>
-                  <button type="button" className="btn-outline-dark btn-sm btn">
-                    <i aria-hidden="true" className="fa fa-shopping-basket"></i>
-                  </button>
-                </td>
-                <td>
-                  <a
-                    href="#/product/-NYXH8sZ6iH0-H7qcv5a"
-                    className="text-muted"
-                  >
-                    雅致向日葵-2000片
-                  </a>
-                  <i
-                    aria-hidden="true"
-                    className="fa ml-2 text-muted fa-arrow-circle-right"
-                  ></i>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <button
-                    type="button"
-                    className="btn btn-outline-danger btn-sm mr-2"
-                  >
-                    <i aria-hidden="true" className="fa fa-trash"></i>
-                  </button>
-                  <button type="button" className="btn-outline-dark btn-sm btn">
-                    <i aria-hidden="true" className="fa fa-shopping-basket"></i>
-                  </button>
-                </td>
-                <td>
-                  <a
-                    href="#/product/-NYXPSoaif_n-PZup-9c"
-                    className="text-muted"
-                  >
-                    紐約天際線-2000片
-                  </a>
-                  <i
-                    aria-hidden="true"
-                    className="fa ml-2 text-muted fa-arrow-circle-right"
-                  ></i>
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       </Container>
     </div>

@@ -28,16 +28,7 @@ const Navigation = () => {
         for (const key in data.products) {
           newCartItems.push(data.products[key])
         }
-        const combinedCartItems = newCartItems.reduce((acc, item) => {
-          const existingItem = acc.find((i) => i.title === item.title)
-          if (existingItem) {
-            existingItem.quantity += item.quantity
-          } else {
-            acc.push({ ...item })
-          }
-          return acc
-        }, [])
-        dispatch(setItems(combinedCartItems))
+        dispatch(setItems(newCartItems))
       } catch (error) {
         console.log(error)
       }

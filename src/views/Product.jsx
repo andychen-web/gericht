@@ -93,7 +93,6 @@ const Product = ({ product }) => {
         const data = await response.json()
         if (data.success) {
           handleAlert('已更新購物車')
-          dispatch(setCartUpdate(1))
         }
       } catch (error) {
         console.log(error)

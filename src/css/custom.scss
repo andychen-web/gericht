@@ -1,4 +1,6 @@
 $golden: #dcca87;
+$md: 768px;
+$lg: 1024px;
 // nav styling
 .nav-link.custom-link {
   color: white;
@@ -18,7 +20,7 @@ $golden: #dcca87;
     width: 100%;
   }
 }
-// homepage styling
+// homepage styling & general styling
 .signature-text {
   font-family: 'Cormorant Upright', serif;
   font-size: 2.5rem;
@@ -234,7 +236,7 @@ $golden: #dcca87;
   color: $golden;
   background: #171819 !important;
 }
-@media (max-width: 768px) {
+@media (max-width: $md) {
   .category-wrap {
     display: flex;
     flex-wrap: wrap;
@@ -275,7 +277,7 @@ $golden: #dcca87;
 }
 .product-card {
   width: 160px;
-  @media (max-width: 768px) {
+  @media (max-width: $md) {
     margin: auto;
   }
 }

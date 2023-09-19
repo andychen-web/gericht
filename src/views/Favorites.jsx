@@ -6,6 +6,7 @@ import Loader from '../components/Loader'
 import Alert from '../components/Alert'
 import { removeFavorite } from '../slices/favoritesSlice'
 import { setCartUpdate } from '../slices/cartSlice'
+import { BsFillCartFill, BsFillTrash3Fill } from 'react-icons/bs'
 
 const Favorites = () => {
   const navigate = useNavigate()
@@ -15,6 +16,7 @@ const Favorites = () => {
   const cartItems = useSelector((state) => state.cart.cartItems)
   const [alertQueue, setAlertQueue] = useState([])
   const dispatch = useDispatch()
+  const isSmallScreen = window.innerWidth < 768
 
   const handleAlert = (message) => {
     setAlertQueue((prevQueue) => [...prevQueue, { message }])
@@ -201,8 +203,8 @@ const Favorites = () => {
       <Loader isLoading={isLoading} />
       {<Alert alertQueue={alertQueue} setAlertQueue={setAlertQueue} />}
 
-      <Container className="custom-padding-top">
-        <div className="favorites w-100 justify-content-center d-flex mt-5">
+      <Container className="custom-padding-top mw-50">
+        <div className="favorites justify-content-center d-flex mt-5">
           <h3 className="text-dark">收藏項目</h3>
         </div>
         <div className="favorites text-center">
@@ -213,7 +215,9 @@ const Favorites = () => {
                   <th className="py-2">操作</th>
                   <th className="py-2">品名</th>
                   <th className="py-2">單價</th>
-                  <th className="py-2">商品連結</th>
+                  {isSmallScreen ? null : (
+                    <th className="py-2 custom-small-font">商品連結</th>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -224,9 +228,9 @@ const Favorites = () => {
                         <button
                           type="button"
                           onClick={() => dispatch(removeFavorite(favorite))}
-                          className="btn btn-outline-danger me-2 btn-sm"
+                          className="btn btn-outline-danger me-md-2 btn-sm"
                         >
-                          取消收藏
+                          {isSmallScreen ? <BsFillTrash3Fill /> : '取消收藏'}
                         </button>
                         <button
                           type="button"
@@ -236,21 +240,23 @@ const Favorites = () => {
                           }}
                           className="btn-outline-dark btn-sm btn"
                         >
-                          加入購物車
+                          {isSmallScreen ? <BsFillCartFill /> : '加入購物車'}
                         </button>
                       </td>
                       <td>{favorite.title}</td>
                       <td>
                         {'$' + favorite.price} / {favorite.unit}
                       </td>
-                      <td>
-                        <button
-                          className="custom-btn"
-                          onClick={() => navigate(`/product/${favorite.id}`)}
-                        >
-                          查看更多
-                        </button>
-                      </td>
+                      {isSmallScreen ? null : (
+                        <td>
+                          <button
+                            className="custom-btn custom-small-font"
+                            onClick={() => navigate(`/product/${favorite.id}`)}
+                          >
+                            查看更多
+                          </button>
+                        </td>
+                      )}
                     </tr>
                   ))}
               </tbody>

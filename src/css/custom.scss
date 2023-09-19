@@ -142,6 +142,17 @@ $lg: 1024px;
 .custom-small-font {
   font-size: 10px;
 }
+.sm-font {
+  @media (max-width: $md) {
+    font-size: 10px;
+  }
+}
+.sm-height {
+  @media (max-width: $md) {
+    height: 30px;
+  }
+}
+
 .page-link {
   color: #000;
 }
@@ -217,6 +228,11 @@ $lg: 1024px;
 
   &:hover {
     background-color: rgba(#77352b, 0.9);
+  }
+}
+.vh-md-100 {
+  @media (min-width: $lg) {
+    height: 100vh;
   }
 }
 

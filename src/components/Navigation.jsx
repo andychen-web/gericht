@@ -75,6 +75,9 @@ const Navigation = () => {
             <Link className="custom-link nav-link" to="/orders">
               訂單查詢
             </Link>
+            <Link className="custom-link nav-link" to="/favorites">
+              我的收藏
+            </Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

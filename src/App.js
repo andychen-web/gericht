@@ -12,13 +12,14 @@ import Favorites from './views/Favorites'
 import Order from './components/Order'
 import { useDispatch, useSelector } from 'react-redux'
 import { setToken } from './slices/tokenSlice'
+import { setProducts } from './slices/productSlice'
 import Navigation from './components/Navigation'
 
 function App() {
   const dispatch = useDispatch()
   const orders = useSelector((state) => state.orderForm.orderArray)
   const products = useSelector((state) => state.product.productArray)
-
+  
   useEffect(() => {
     // 先登入測試帳號取得token，取得後續POST request權限
     const signIn = async () => {
@@ -47,10 +48,15 @@ function App() {
 
     const authorize = async (token) => {
       try {
-        await fetch('https://vue3-course-api.hexschool.io/v2/api/user/check', {
-          method: 'POST',
-          headers: { Authorization: token }
-        })
+        const res = await fetch(
+          'https://vue3-course-api.hexschool.io/v2/api/user/check',
+          {
+            method: 'POST',
+            headers: { Authorization: token }
+          }
+        )
+        // eslint-disable-next-line no-unused-vars
+        const data = await res.json()
       } catch (error) {
         console.log(error)
       }
@@ -62,8 +68,9 @@ function App() {
           `${process.env.REACT_APP_API}api/${process.env.REACT_APP_PATH}/products`,
           { method: 'GET' }
         )
-        // eslint-disable-next-line no-unused-vars
         const data = await response.json()
+
+        dispatch(setProducts(data.products))
       } catch (error) {
         console.log(error)
       }
@@ -95,7 +102,7 @@ function App() {
             <Route
               key={product.id}
               path={`product/${product.id}`}
-              element={<Product products={products} product={product} />}
+              element={<Product product={product} />}
             />
           ))}
       </Routes>

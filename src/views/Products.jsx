@@ -162,6 +162,13 @@ const Products = () => {
     }
     setIsLoading(false)
   }
+  useEffect(() => {
+    if (products.length > 0) {
+      setIsLoading(false)
+    } else {
+      setIsLoading(true)
+    }
+  }, [products])
 
   useEffect(() => {
     const blurDivs = document.querySelectorAll('.blur-load')

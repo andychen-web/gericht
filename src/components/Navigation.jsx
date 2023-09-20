@@ -4,14 +4,14 @@ import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import Container from 'react-bootstrap/Container'
 import { Link } from 'react-router-dom'
-import { setItems } from '../slices/cartSlice'
+import { setCartItems } from '../slices/cartSlice'
 import { useDispatch, useSelector } from 'react-redux'
 
 const Navigation = () => {
   const dispatch = useDispatch()
   const token = useSelector((state) => state.token.token)
   const cartItems = useSelector((state) => state.cart.cartItems)
-  const cartUpdate = useSelector((state) => state.cart.cartUpdateCount)
+  const cartUpdateCount = useSelector((state) => state.cart.cartUpdateCount)
 
   useEffect(() => {
     const fetchCart = async (token) => {
@@ -28,13 +28,16 @@ const Navigation = () => {
         for (const key in data.products) {
           newCartItems.push(data.products[key])
         }
-        dispatch(setItems(newCartItems))
+        dispatch(setCartItems(newCartItems))
       } catch (error) {
         console.log(error)
       }
     }
-    fetchCart(token)
-  }, [cartUpdate])
+
+    if (token) {
+      fetchCart(token)
+    }
+  }, [cartUpdateCount])
 
   return (
     <Navbar

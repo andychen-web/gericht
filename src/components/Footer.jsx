@@ -28,7 +28,6 @@ const Footer = () => {
         <Row className="d-center">
           <Col
             xs={8}
-            // Bug: border not showing up #######################################
             className="d-flex flex-column align-items-center border-5 border-white "
           >
             <Title title={'電子報'} subTitle={'訂閱電子報'} />
@@ -52,7 +51,7 @@ const Footer = () => {
         <Row>
           <Col md={4} className="d-center">
             <div className="text-white pt-3 pt-md-0">
-              <div className="fs-3 golden-text">聯絡我們</div>
+              <div className="fs-3 custom-text">聯絡我們</div>
               <div>新竹市東區美食路33號</div>
               <div>+1 212-344-1230</div>
               <div>+1 212-555-1230</div>
@@ -79,7 +78,7 @@ const Footer = () => {
             className="d-flex text-white flex-column align-items-center"
           >
             <div>
-              <div className="fs-3 golden-text">營業時間</div>
+              <div className="fs-3 custom-text">營業時間</div>
               <div>平日 08:00am -12:00am</div>
               <div>假日 07:00am -11:00pm </div>
             </div>

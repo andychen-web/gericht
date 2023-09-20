@@ -33,7 +33,10 @@ const Navigation = () => {
         console.log(error)
       }
     }
-    fetchCart(token)
+
+    if (token) {
+      fetchCart(token)
+    }
   }, [cartUpdateCount])
 
   return (

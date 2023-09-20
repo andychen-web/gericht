@@ -38,6 +38,10 @@
   }
 }
 
+.container.custom-padding-bottom {
+  padding-bottom: 6rem;
+}
+
 .custom-text {
   color: #dcca87;
 }

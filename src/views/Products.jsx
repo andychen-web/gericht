@@ -194,7 +194,7 @@ const Products = () => {
       <Loader isLoading={isLoading} />
 
       <Alert alertQueue={alertQueue} setAlertQueue={setAlertQueue} />
-      <Container className="custom-padding-top">
+      <Container className="custom-padding-top custom-padding-bottom">
         <Row>
           {/* 篩選品項 */}
           <Col md={3} className="custom-max-width">

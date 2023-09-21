@@ -209,7 +209,7 @@ const Favorites = () => {
         </div>
         <div className="favorites text-center">
           {favorites.length > 0 && (
-            <table className="lg table table-striped table-bordered text-dark mt-3">
+            <table className="table table-striped table-bordered mt-3">
               <thead>
                 <tr>
                   <th className="py-2">操作</th>

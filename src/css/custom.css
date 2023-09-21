@@ -45,7 +45,6 @@
 .custom-text {
   color: #dcca87;
 }
-
 @media (min-width: 300px) {
   .custom-text {
     font-size: 2.3rem;
@@ -59,7 +58,7 @@
 
 .hidden {
   opacity: 0;
-  transition: all 0.7s;
+  transition: all 0.7s ease-in-out;
 }
 
 .show {
@@ -204,21 +203,23 @@
 }
 
 .bg {
-  background-image: url(../assets/bg_small.png);
+  background-image: url("../assets/bg_small.png");
   background-size: cover;
 }
 
 .bg-brown {
-  background-image: url(../assets/bg-brown.png);
+  background-image: url("../assets/bg-brown.png");
   background-size: cover;
 }
 
 .welcome-blur {
-  background-image: url(../assets/welcome_small.png);
+  background-image: url("../assets/welcome_small.png");
+  background-size: cover;
 }
 
 .chef-blur {
-  background-image: url(../assets/chef_small.png);
+  background-image: url("../assets/chef_small.png");
+  background-size: cover;
 }
 
 .blur-load {

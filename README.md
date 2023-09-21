@@ -1,6 +1,6 @@
 # Gericht餐廳網站
 
-- [線上觀看連結](https://restaurant-react-rwd-andychen-web.vercel.app/)
+- [線上觀看連結](https://gericht-rwd.vercel.app/)
 
 
 ## 畫面

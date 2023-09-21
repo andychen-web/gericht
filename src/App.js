@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './css/custom.css'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import Products from './views/Products'
 import Product from './views/Product'
 import Cart from './views/Cart'
@@ -19,7 +19,7 @@ function App() {
   const dispatch = useDispatch()
   const orders = useSelector((state) => state.orderForm.orderArray)
   const products = useSelector((state) => state.product.productArray)
-  
+
   useEffect(() => {
     // 先登入測試帳號取得token，取得後續POST request權限
     const signIn = async () => {
@@ -83,6 +83,7 @@ function App() {
     <>
       <Navigation />
       <Routes>
+        <Route path="*" element={<Navigate to="/" />} />
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products products={products} />} />
         <Route path="/cart" element={<Cart />} />

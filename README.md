@@ -1,4 +1,4 @@
-# 網頁名稱
+# Gericht餐廳網站
 
 - [線上觀看連結](https://restaurant-react-rwd-andychen-web.vercel.app/)
 
@@ -9,10 +9,11 @@
 
 
 ## 專案技術
-- bootstrap 和 react 用於調整樣式和排版
-- 串接後端API取得商品
-- Redux & Redux persist管理訂單資訊
-- 使用ESlint(standard)
+- 以React.js和Bootstrap打造RWD
+- 有串接後端RESTful API 
+- 引入ESlint(standard)
+- 使用Redux 做狀態管理
+- 訂單管理系統
 
 ## 認識作者
 

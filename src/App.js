@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './css/custom.css'
-import { Route, Routes } from 'react-router-dom'
-import Products from './views/Products'
-import Product from './views/Product'
-import Cart from './views/Cart'
-import Checkout from './views/Checkout'
-import Home from './views/Home'
-import Orders from './views/Orders'
-import Favorites from './views/Favorites'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import Products from './pages/Products'
+import Product from './pages/Product'
+import Cart from './pages/Cart'
+import Checkout from './pages/Checkout'
+import Home from './pages/Home'
+import Orders from './pages/Orders'
+import Favorites from './pages/Favorites'
 import Order from './components/Order'
 import { useDispatch, useSelector } from 'react-redux'
 import { setToken } from './slices/tokenSlice'
@@ -19,7 +19,7 @@ function App() {
   const dispatch = useDispatch()
   const orders = useSelector((state) => state.orderForm.orderArray)
   const products = useSelector((state) => state.product.productArray)
-  
+
   useEffect(() => {
     // 先登入測試帳號取得token，取得後續POST request權限
     const signIn = async () => {
@@ -83,6 +83,7 @@ function App() {
     <>
       <Navigation />
       <Routes>
+        <Route path="*" element={<Navigate to="/" />} />
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products products={products} />} />
         <Route path="/cart" element={<Cart />} />

@@ -9,7 +9,6 @@
 
 
 ## 專案技術
-- bootstrap 和 react-bootstrap 用於調整樣式和排版
 - react-icons 用於圖標
 - 以React.js和Bootstrap打造RWD
 - 有串接後端RESTful API 

@@ -9,11 +9,19 @@
 
 
 ## 專案技術
-- 以React.js和Bootstrap打造RWD
+- React.js, React Router, React Icons
+- 使用Bootstrap實作RWD
 - 有串接後端RESTful API 
 - 引入ESlint(standard)
-- 使用Redux 做狀態管理
-- 訂單管理系統
+- 使用Redux Toolkit 做狀態管理
+
+## 功能
+商品展示：首頁、商品列表、商品介紹等
+收藏清單：新增、刪除收藏商品
+購物車：刪除、修改購物車中產品數量
+結帳：填寫購買資料
+查詢訂單：查看歷史訂單
+
 
 ## 認識作者
 

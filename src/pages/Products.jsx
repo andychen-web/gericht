@@ -197,7 +197,7 @@ const Products = () => {
       <Container className="custom-padding-top custom-padding-bottom">
         <Row>
           {/* 篩選品項 */}
-          <Col md={3} className="custom-max-width">
+          <Col md={3} className="filter-max-width">
             <label className="h3 special-text fw-bold">種類</label>
             <ul className="category-wrap bg-dark list-unstyled border">
               {categoryTypes.map((categoryType, key) => (
@@ -228,21 +228,27 @@ const Products = () => {
           </Col>
           {/* 展示品項 */}
           <Col md={9}>
-            <Row className="gap-5">
+            <Row className="gap-3">
               {filterdProducts &&
                 filterdProducts.map((product, key) => (
                   <Col
                     key={key}
                     xs={8}
-                    sm={4}
+                    md={4}
                     lg={3}
                     className="text-white mx-2 mt-3 blur-load rounded"
                   >
-                    <img
-                      className="menu-products rounded pb-2"
-                      src={product.image}
-                      alt={product.title}
-                    />
+                    <div
+                      onClick={() => navigate(`/product/${product.id}`)}
+                      className="position-relative product-img-wrap overflow-hidden"
+                    >
+                      <img
+                        className="menu-products rounded pb-2"
+                        src={product.image}
+                        alt={product.title}
+                      />
+                      <div className="check-detail">詳細資訊</div>
+                    </div>
 
                     <div>{product.title}</div>
                     <h4 className="pe-2">NT$ {product.price}</h4>

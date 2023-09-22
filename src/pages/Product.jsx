@@ -142,16 +142,12 @@ const Product = ({ product }) => {
           className="m-auto d-flex bg-beige product product-wrap rounded"
         >
           <Col
-            md={6}
             className="product-img position-left"
             style={{
               backgroundImage: `url(${product.image})`
             }}
-          ></Col>
-          <Col
-            md={12}
-            className="product-card h-75 text-dark mt-4 bg-beige rounded d-flex flex-column pb-3"
-          >
+          />
+          <Col className="product-card h-75 text-dark mt-4 bg-beige rounded d-flex flex-column pb-3">
             <h5 className="fw-bold">{product.title}</h5>
             <div className="custom-small-font">【Gericht季節特選】</div>
             <div className="pt-3">
@@ -222,14 +218,14 @@ const Product = ({ product }) => {
             </div>
           </Col>
         </Row>
-        <Col md={9} lg={7} className="text-left mt-3 m-auto">
+        <Col className="text-left mt-3 m-auto product-info">
           <pre className="custom-small-font bg-beige px-5 py-3 rounded">
             <h5>商品描述</h5>
             {product.description}
             <p className="text-muted">***溫馨提醒：所有產品須冷藏***</p>
           </pre>
         </Col>
-        <Col md={9} lg={7} className="text-left mt-3 m-auto">
+        <Col className="text-left mt-3 m-auto product-info">
           <div className="bg-beige px-5 py-3 rounded">
             <h5> 類似商品</h5>
             <Row>

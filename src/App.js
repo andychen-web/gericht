@@ -17,6 +17,7 @@ import Navigation from './components/Navigation'
 
 function App() {
   const dispatch = useDispatch()
+  const token = useSelector((state) => state.token.token)
   const orders = useSelector((state) => state.orderForm.orderArray)
   const products = useSelector((state) => state.product.productArray)
 
@@ -75,8 +76,11 @@ function App() {
         console.log(error)
       }
     }
-    signIn()
-    fetchProducts()
+    if (!token) {
+      // only sign in and fetch products once
+      signIn()
+      fetchProducts()
+    }
   }, [])
 
   return (

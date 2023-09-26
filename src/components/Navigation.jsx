@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import images from '../data/images'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
@@ -12,6 +12,13 @@ const Navigation = () => {
   const token = useSelector((state) => state.token.token)
   const cartItems = useSelector((state) => state.cart.cartItems)
   const cartUpdateCount = useSelector((state) => state.cart.cartUpdateCount)
+  const navButton = useRef(null)
+  const linksContainerRef = useRef(null)
+
+  function toggleNav() {
+    navButton.current.classList.toggle('collapsed')
+    linksContainerRef.current.classList.toggle('show')
+  }
 
   useEffect(() => {
     const fetchCart = async (token) => {
@@ -50,11 +57,23 @@ const Navigation = () => {
         <a href="/">
           <img src={images.gericht} alt="logo" width={'40%'} />
         </a>
-        {/* 創建一個可collapse的toggle btn，aria-controls代表要控制的Navbar.Collapse的id */}
-        <Navbar.Toggle aria-controls="navbarNav" />
-        <Navbar.Collapse id="navbarNav" className="justify-content-end">
+        <button
+          onClick={() => toggleNav()}
+          ref={navButton}
+          className="navbar-toggler"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <Navbar.Collapse
+          ref={linksContainerRef}
+          className="justify-content-end"
+        >
           <Nav>
-            <Link className="custom-link nav-link" to="/">
+            <Link
+              onClick={() => toggleNav()}
+              className="custom-link nav-link"
+              to="/"
+            >
               首頁
             </Link>
             <Link className="custom-link nav-link" to="/products">

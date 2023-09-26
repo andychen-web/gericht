@@ -197,7 +197,7 @@ const Products = () => {
       <Container className="custom-padding-top custom-padding-bottom">
         <Row>
           {/* 篩選品項 */}
-          <Col md={3} className="filter-max-width">
+          <Col md={2} className="filter-max-width">
             <label className="h3 special-text fw-bold">種類</label>
             <ul className="category-wrap bg-dark list-unstyled border">
               {categoryTypes.map((categoryType, key) => (
@@ -227,7 +227,7 @@ const Products = () => {
             </ul>
           </Col>
           {/* 展示品項 */}
-          <Col md={9}>
+          <Col md={10}>
             <Row className="gap-3">
               {filterdProducts &&
                 filterdProducts.map((product, key) => (

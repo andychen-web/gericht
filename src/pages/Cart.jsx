@@ -285,7 +285,7 @@ const Cart = () => {
 
                 <Modal.Body>
                   <div className="form-group py-1 custom-small-font">
-                    <label htmlFor="useremail">
+                    <label htmlFor="userEmail">
                       電子信箱
                       <i className="text-danger">*</i>
                     </label>
@@ -293,8 +293,8 @@ const Cart = () => {
                       type="text"
                       name="email"
                       className="form-control form-control-sm custom-small-font"
-                      id="useremail"
-                      placeholder="請輸入收件人電子郵件"
+                      id="userEmail"
+                      placeholder="請輸入訂購人電子郵件"
                     />
                     <ErrorMessage
                       name="email"
@@ -313,7 +313,7 @@ const Cart = () => {
                         name="name"
                         id="username"
                         className="form-control form-control-sm custom-small-font"
-                        placeholder="請輸入收件人姓名"
+                        placeholder="請輸入訂購人姓名"
                       />
                       <ErrorMessage
                         name="name"
@@ -331,7 +331,7 @@ const Cart = () => {
                         name="mobile"
                         id="usertel"
                         className="form-control custom-small-font"
-                        placeholder="請輸入收件人聯絡電話"
+                        placeholder="請輸入訂購人聯絡電話"
                       />
                       <ErrorMessage
                         name="mobile"
@@ -342,7 +342,7 @@ const Cart = () => {
                   </div>
                   <div className="form-group py-1 custom-small-font">
                     <label htmlFor="useraddress">
-                      收件地址
+                      訂購地址
                       <i className="text-danger">*</i>
                     </label>
                     <Field
@@ -350,7 +350,7 @@ const Cart = () => {
                       name="address"
                       id="useraddress"
                       className="form-control custom-small-font"
-                      placeholder="請輸入收件人地址"
+                      placeholder="請輸入訂購人地址"
                     />
                     <ErrorMessage
                       name="address"

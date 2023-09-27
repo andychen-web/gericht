@@ -19,7 +19,10 @@ $lg: 1024px;
   z-index: 3;
   width: 100vw;
 }
-
+#dropdown-custom-components {
+  background-color: #000;
+  border: none;
+}
 // homepage styling & general styling
 .signature-text {
   font-family: 'Cormorant Upright', serif;
@@ -302,4 +305,9 @@ $lg: 1024px;
 }
 pre {
   white-space: pre-wrap;
+}
+// signIn page styling
+.auth-card {
+  max-width: 300px;
+  max-height: 250px;
 }

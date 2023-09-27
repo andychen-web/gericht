@@ -19,11 +19,8 @@ const orderFormSlice = createSlice({
     setOrderForm: (state, action) => {
       state.orderFormValue = action.payload
     },
-    setOrderArray: (state, action) => {
-      state.orderArray = action.payload
-    }
   }
 })
 
-export const { setOrderForm, setOrderArray } = orderFormSlice.actions
+export const { setOrderForm } = orderFormSlice.actions
 export default orderFormSlice.reducer

@@ -6,9 +6,12 @@ import Container from 'react-bootstrap/Container'
 import { Link } from 'react-router-dom'
 import { setCartItems } from '../slices/cartSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { setAdminToken } from '../slices/tokenSlice'
+import { Dropdown } from 'react-bootstrap'
 
 const Navigation = () => {
   const dispatch = useDispatch()
+  const adminToken = useSelector((state) => state.token.adminToken)
   const token = useSelector((state) => state.token.token)
   const cartItems = useSelector((state) => state.cart.cartItems)
   const cartUpdateCount = useSelector((state) => state.cart.cartUpdateCount)
@@ -85,12 +88,53 @@ const Navigation = () => {
                 {cartItems.length === 0 ? null : cartItems.length}
               </span>
             </Link>
-            <Link className="custom-link nav-link" to="/orders">
-              訂單查詢
-            </Link>
             <Link className="custom-link nav-link" to="/favorites">
               我的收藏
             </Link>
+
+            <Dropdown>
+              <Dropdown.Toggle id="dropdown-custom-components">
+                後台管理
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                {adminToken ? (
+                  <Dropdown.Item
+                    as="button"
+                    onClick={() => {
+                      dispatch(setAdminToken(null))
+                    }}
+                  >
+                    登出
+                  </Dropdown.Item>
+                ) : (
+                  <Dropdown.Item as={Link} to="/auth">
+                    管理員登入
+                  </Dropdown.Item>
+                )}
+                <Dropdown.Item as={Link} to="/orders">
+                  訂單查詢
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+            {/* toggle menu for  th e  2 below */}
+            {/* {adminToken ? (
+              <Link
+                className="custom-link nav-link"
+                onClick={() => {
+                  dispatch(setAdminToken(null))
+                }}
+              >
+                登出
+              </Link>
+            ) : (
+              <Link className="custom-link nav-link" to="/auth">
+                後台管理登入
+              </Link>
+            )}
+            <Link className="custom-link nav-link" to="/orders">
+              訂單查詢
+            </Link> */}
           </Nav>
         </Navbar.Collapse>
       </Container>

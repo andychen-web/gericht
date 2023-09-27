@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './css/custom.css'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Products from './pages/Products'
+import Auth from './pages/Auth'
 import Product from './pages/Product'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
@@ -34,7 +35,7 @@ function App() {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              username: 'newandy1@gmail.com',
+              userme: 'newandy1@gmail.com',
               password: `${process.env.REACT_APP_PASSWORD}`
             })
           }
@@ -94,6 +95,7 @@ function App() {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/favorites" element={<Favorites />} />
+        <Route path="/auth" element={<Auth />} />
         {orders &&
           orders.map((order) => (
             <Route

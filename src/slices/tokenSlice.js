@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  token: null
+  token: null,
+  adminToken: null
 }
 
 const tokenSlice = createSlice({
@@ -10,9 +11,12 @@ const tokenSlice = createSlice({
   reducers: {
     setToken: (state, action) => {
       state.token = action.payload
+    },
+    setAdminToken: (state, action) => {
+      state.adminToken = action.payload
     }
   }
 })
 
-export const { setToken } = tokenSlice.actions
+export const { setToken, setAdminToken } = tokenSlice.actions
 export default tokenSlice.reducer

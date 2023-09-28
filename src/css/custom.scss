@@ -9,6 +9,9 @@ $lg: 1024px;
   background-size: cover;
 }
 // nav styling
+.dropdown-menu {
+  max-width: 20%;
+}
 .nav-link.custom-link {
   color: white;
   &:hover {

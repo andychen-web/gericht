@@ -11,7 +11,7 @@ const Order = ({ order }) => {
   }
   const navigate = useNavigate()
   const orderDetails = [
-    { label: '訂單編號', value: order.id },
+    { label: '訂單編號', value: order.serial },
     { label: '訂購人', value: order.name },
     { label: '訂單金額', value: 'NT$' + order.total },
     {

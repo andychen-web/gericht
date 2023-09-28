@@ -76,91 +76,95 @@ const Products = () => {
     })
 
   const addToCart = async (product) => {
-    setIsLoading(true)
-
-    let duplicate
-    const res = await fetch(
-      'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/products',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: token
-        }
-      }
-    )
-    const updatedProducts = await res.json()
-    const updatedProduct = await updatedProducts.products.find(
-      (item) => item.title === product.title
-    )
-    if (updatedProduct) {
-      duplicate = { ...updatedProduct }
-    } else if (cartItems) {
-      duplicate = cartItems.find((item) => item.title === product.title)
-    }
-
-    if (duplicate) {
-      try {
-        const response = await fetch(
-          `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${duplicate.id}`,
-          {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: token
-            },
-            body: JSON.stringify({
-              data: {
-                title: product.title,
-                origin_price: product.origin_price,
-                price: product.price,
-                unit: product.unit,
-                quantity: duplicate.quantity + 1,
-                category: product.category,
-                imageUrl: product.image
-              }
-            })
-          }
-        )
-        const data = await response.json()
-        if (data.success) {
-          handleAlert('已更新購物車')
-        }
-      } catch (error) {
-        console.log(error)
-      }
+    if (!token) {
+      navigate('/auth')
     } else {
-      try {
-        const response = await fetch(
-          'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: token
-            },
-            body: JSON.stringify({
-              data: {
-                title: product.title,
-                origin_price: product.origin_price,
-                price: product.price,
-                unit: product.unit,
-                quantity: product.quantity,
-                category: product.category,
-                imageUrl: product.image
-              }
-            })
+      setIsLoading(true)
+
+      let duplicate
+      const res = await fetch(
+        'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/products',
+        {
+          method: 'GET',
+          headers: {
+            Authorization: token
           }
-        )
-        const data = await response.json()
-        if (data.success) {
-          handleAlert('已新增至購物車')
-          dispatch(setCartUpdate(1))
         }
-      } catch (error) {
-        console.log(error)
+      )
+      const updatedProducts = await res.json()
+      const updatedProduct = await updatedProducts.products.find(
+        (item) => item.title === product.title
+      )
+      if (updatedProduct) {
+        duplicate = { ...updatedProduct }
+      } else if (cartItems) {
+        duplicate = cartItems.find((item) => item.title === product.title)
       }
+
+      if (duplicate) {
+        try {
+          const response = await fetch(
+            `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${duplicate.id}`,
+            {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: token
+              },
+              body: JSON.stringify({
+                data: {
+                  title: product.title,
+                  origin_price: product.origin_price,
+                  price: product.price,
+                  unit: product.unit,
+                  quantity: duplicate.quantity + 1,
+                  category: product.category,
+                  imageUrl: product.image
+                }
+              })
+            }
+          )
+          const data = await response.json()
+          if (data.success) {
+            handleAlert('已更新購物車')
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      } else {
+        try {
+          const response = await fetch(
+            'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: token
+              },
+              body: JSON.stringify({
+                data: {
+                  title: product.title,
+                  origin_price: product.origin_price,
+                  price: product.price,
+                  unit: product.unit,
+                  quantity: product.quantity,
+                  category: product.category,
+                  imageUrl: product.image
+                }
+              })
+            }
+          )
+          const data = await response.json()
+          if (data.success) {
+            handleAlert('已新增至購物車')
+            dispatch(setCartUpdate(1))
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      setIsLoading(false)
     }
-    setIsLoading(false)
   }
   useEffect(() => {
     if (products.length > 0) {
@@ -171,6 +175,7 @@ const Products = () => {
   }, [products])
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     const blurDivs = document.querySelectorAll('.blur-load')
     blurDivs.forEach((div) => {
       const img = div.querySelector('img')
@@ -197,8 +202,8 @@ const Products = () => {
       <Container className="custom-padding-top custom-padding-bottom">
         <Row>
           {/* 篩選品項 */}
-          <Col md={2} className="filter-max-width">
-            <label className="h3 special-text fw-bold">種類</label>
+          <Col md={2} className="filter-max-width text-center">
+            <label className="h4 special-text fw-bold">種類</label>
             <ul className="category-wrap bg-dark list-unstyled border">
               {categoryTypes.map((categoryType, key) => (
                 <li key={key}>
@@ -212,7 +217,7 @@ const Products = () => {
               ))}
             </ul>
 
-            <label className="h3 special-text fw-bold">價格區間</label>
+            <label className="h4 special-text fw-bold">價格區間</label>
             <ul className="bg-dark list-unstyled border">
               {priceRangeArr.map((priceRange, key) => (
                 <li key={key}>

@@ -14,7 +14,6 @@ const Menu = () => {
 
   const handleNavigation = () => {
     navigate('/products')
-    window.scrollTo(0, 0) // scroll to the top of the page
   }
   return (
     <div className="bg">
@@ -73,7 +72,7 @@ const Menu = () => {
           </Col>
         </Row>
         <button className="custom-btn mt-4" onClick={handleNavigation}>
-          了解更多
+          了解產品
         </button>
       </Container>
     </div>

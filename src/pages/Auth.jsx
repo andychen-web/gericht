@@ -1,15 +1,17 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Container from 'react-bootstrap/esm/Container'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import Footer from '../components/Footer'
 import { useNavigate } from 'react-router-dom'
-import { setAdminToken } from '../slices/tokenSlice'
+import { setAdminToken, setToken } from '../slices/tokenSlice'
 import { useDispatch } from 'react-redux'
+import Alert from '../components/Alert'
 
 const Auth = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [alertQueue, setAlertQueue] = useState([])
   const initialSignInValues = {
     email: '',
     password: ''
@@ -24,8 +26,26 @@ const Auth = () => {
       )
       .required('密碼必填')
   })
+  const handleAlert = (message) => {
+    setAlertQueue((prevQueue) => [...prevQueue, { message }])
+  }
   const handleSubmit = (values) => {
     signIn(values)
+  }
+  const authorize = async (token) => {
+    try {
+      const res = await fetch(
+        'https://vue3-course-api.hexschool.io/v2/api/user/check',
+        {
+          method: 'POST',
+          headers: { Authorization: token }
+        }
+      )
+      // eslint-disable-next-line no-unused-vars
+      const data = await res.json()
+    } catch (error) {
+      console.log(error)
+    }
   }
   const signIn = async (values) => {
     try {
@@ -45,16 +65,33 @@ const Auth = () => {
       )
       const data = await response.json()
       if (data.success) {
-        navigate('/orders')
-        dispatch(setAdminToken(data.token))
+        // admin login
+        if (
+          values.email === `${process.env.REACT_APP_ADMIN_EMAIL}` &&
+          values.password === `${process.env.REACT_APP_ADMIN_PASSWORD}`
+        ) {
+          dispatch(setAdminToken(data.token))
+          navigate('/orders')
+        } else {
+          // user login
+          dispatch(setToken(data.token))
+          authorize(data.token)
+          navigate('/products')
+        }
+      } else if (!data.success) {
+        handleAlert('登入失敗')
       }
     } catch (error) {
-      console.error(error)
+      console.log(error)
     }
   }
-
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   return (
     <div className="bg">
+      <Alert alertQueue={alertQueue} setAlertQueue={setAlertQueue} />
+
       <Container className="pb-5 custom-padding-top">
         <Formik
           initialValues={initialSignInValues}
@@ -87,7 +124,7 @@ const Auth = () => {
                 <i className="text-danger">*</i>
               </label>
               <Field
-                type="text"
+                type="password"
                 name="password"
                 id="password"
                 placeholder="請輸入英文數字混和的密碼"

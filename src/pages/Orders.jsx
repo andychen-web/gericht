@@ -4,19 +4,22 @@ import Loader from '../components/Loader'
 import Footer from '../components/Footer'
 import { AiFillFileText } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { setOrderArray } from '../slices/orderFormSlice'
+
 const Orders = () => {
   const navigate = useNavigate()
   const adminToken = useSelector((state) => state.token.adminToken)
   const [isLoading, setIsLoading] = useState(false)
   const [orders, setOrders] = useState([])
-
+  const dispatch = useDispatch()
   const parseOrders = (data) => {
     const newArr = []
     for (const item of data) {
-      const id = item.id.split('-')[0]
+      const id = item.id
+      const serial = item.id.split('-')[0]
       const parsedItem = JSON.parse(item.name)
-      newArr.push({ ...parsedItem, id })
+      newArr.push({ ...parsedItem, serial, id })
     }
     setOrders(newArr)
   }
@@ -46,6 +49,10 @@ const Orders = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0)
+    if (orders.length > 0) {
+      // save orders in redux to use in Order component, reduce server load
+      dispatch(setOrderArray(orders))
+    }
   }, [orders])
 
   return (
@@ -74,7 +81,7 @@ const Orders = () => {
                   return (
                     <tr key={index} className="text-center">
                       <td scope="row">{index + 1}</td>
-                      <td>{order.id}</td>
+                      <td>{order.serial}</td>
                       <td>{order.name}</td>
                       <td>
                         <span>NT$</span>
@@ -86,7 +93,7 @@ const Orders = () => {
                       <td>
                         <div>
                           <AiFillFileText
-                            onClick={() => navigate(`/order/${order.id}`)}
+                            onClick={() => navigate(`/order/${order.serial}`)}
                             className="cursor-pointer fs-3"
                           />
                         </div>
@@ -107,12 +114,12 @@ const Orders = () => {
                           <ul className="list-unstyled">
                             <li className="mb-2">
                               <p className="card-text">
-                                <span className="ms-1">#{order.id}</span>
+                                <span className="ms-1">#{order.serial}</span>
                               </p>
                             </li>
                             <li className="mb-2">
                               <p className="card-text">
-                                訂購人:{' '}
+                                訂購人:
                                 <span className="ms-1">{order.name}</span>
                               </p>
                             </li>
@@ -130,7 +137,7 @@ const Orders = () => {
                       </div>
                       <div className="col-4">
                         <button
-                          onClick={() => navigate(`/order/${order.id}`)}
+                          onClick={() => navigate(`/order/${order.serial}`)}
                           className="cursor-pointer custom-btn"
                         >
                           查看訂單
@@ -175,8 +182,8 @@ const Orders = () => {
             </div>
           </>
         ) : (
-          <div className="d-flex flex-column py-5">
-            <h3> 您還未登入</h3>
+          <div className="d-flex flex-column py-5 align-items-center">
+            <h3> 您還未登入管理員</h3>
             <button className="custom-btn" onClick={() => navigate('/auth')}>
               前往登入
             </button>

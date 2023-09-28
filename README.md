@@ -13,7 +13,9 @@
 - 有串接後端RESTful API 
 - 引入ESlint(standard)
 - 使用Redux 做狀態管理
-- 訂單管理系統
+- 會員登入系統
+- 後台訂單管理系統
+- 使用vercel部屬
 
 ## 認識作者
 

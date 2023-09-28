@@ -27,7 +27,7 @@ const Footer = () => {
       <Container>
         <Row className="d-center">
           <Col
-            xs={8}
+            xs={10}
             className="d-flex flex-column align-items-center border-5 border-white "
           >
             <Title title={'電子報'} subTitle={'訂閱電子報'} />
@@ -35,14 +35,14 @@ const Footer = () => {
             <Form className="d-flex bg-black" onSubmit={handleSubmit}>
               <input
                 type="email"
-                className="bg-black border-white rounded text-white p-2 pe-5 w-75"
+                className="bg-black border-white rounded text-white p-2 w-75"
                 placeholder="Enter email"
                 aria-label="Email adress"
                 onChange={handleChange}
                 id="formInput"
                 value={email}
               />
-              <button className="custom-btn ms-3" type="submit">
+              <button className="custom-btn ms-3 w-25" type="submit">
                 訂閱
               </button>
             </Form>

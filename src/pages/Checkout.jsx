@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom'
 const Checkout = () => {
   const cartItems = useSelector((state) => state.cart.cartItems)
   const sum = useSelector((state) => state.price.sum)
+  const token = useSelector((state) => state.token.token)
   const shippingFee = useSelector((state) => state.price.shippingFee)
   const total = useSelector((state) => state.price.total)
   const orderForm = useSelector((state) => state.orderForm.orderFormValue)
@@ -20,8 +21,22 @@ const Checkout = () => {
   const navigate = useNavigate()
 
   const progressWidth = (step / 3) * 100
-
-  function handleStep () {
+  const handleRemove = async (id) => {
+    try {
+      const res = await fetch(
+        `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${id}`,
+        {
+          headers: { Authorization: token },
+          method: 'DELETE'
+        }
+      )
+      // eslint-disable-next-line no-unused-vars
+      const data = await res.json()
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  function handleStep() {
     const cashOnDeliveryInput = document.querySelector('#cashOnDelivery')
     const transferInput = document.querySelector('#transfer')
 
@@ -36,7 +51,7 @@ const Checkout = () => {
     }
   }
   if (step === 3) {
-    //  checkout complete, send POST
+    //  checkout complete, POST order
     const myHeaders = new Headers()
     const apiKEY = process.env.REACT_APP_API_KEY
     myHeaders.append('apikey', apiKEY)
@@ -52,7 +67,10 @@ const Checkout = () => {
     }
     fetch('https://api.apilayer.com/form_api/form', requestOptions)
       .then((response) => response.text())
-      .then((result) => console.log(result))
+      .then((result) => {
+        const cartIds = cartItems.map((item) => item.id)
+        cartIds.forEach((id) => handleRemove(id))
+      })
       .catch((error) => console.log('error', error))
 
     const toProducts = document.querySelector('#toProducts')
@@ -63,11 +81,11 @@ const Checkout = () => {
     next.classList.add('d-none')
   }
 
-  function showTransferInfo () {
+  function showTransferInfo() {
     const transferInfo = document.querySelector('.transfer-info')
     transferInfo.classList.remove('d-none')
   }
-  function hideTransferInfo () {
+  function hideTransferInfo() {
     const transferInfo = document.querySelector('.transfer-info')
     transferInfo.classList.add('d-none')
   }

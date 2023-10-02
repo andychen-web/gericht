@@ -311,6 +311,10 @@ pre {
 }
 // signIn page styling
 .auth-card {
-  max-width: 300px;
-  max-height: 250px;
+  max-width: 320px;
+  min-height: 100%;
+}
+// alert styling
+.alert-top {
+  z-index: 1;
 }

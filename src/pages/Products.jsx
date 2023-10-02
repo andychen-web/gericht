@@ -16,6 +16,7 @@ const Products = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const token = useSelector((state) => state.token.token)
+  const currentUser = useSelector((state) => state.user.currentUser)
   const cartItems = useSelector((state) => state.cart.cartItems)
   const [priceRange, setPriceRange] = useState('全部')
   const [category, setCategory] = useState('全部')
@@ -24,7 +25,6 @@ const Products = () => {
   const categoryTypes = ['全部', '燉飯', '義大利麵', '烤肉', '甜點']
   const priceRangeArr = ['全部', '$99~$199', '$200~$399']
   const favorites = useSelector((state) => state.favorite.favoriteList)
-
   const handleLike = (product) => {
     dispatch(setFavorites(product))
   }
@@ -91,12 +91,16 @@ const Products = () => {
           }
         }
       )
-      const updatedProducts = await res.json()
-      const updatedProduct = await updatedProducts.products.find(
-        (item) => item.title === product.title
+      const allCartItems = await res.json()
+      const userCartItems = allCartItems.products.filter(
+        (item) => item.uId === currentUser.id
       )
-      if (updatedProduct) {
-        duplicate = { ...updatedProduct }
+      const updatedCartItem =
+        userCartItems.length > 0 &&
+        userCartItems.find((item) => item.title === product.title)
+
+      if (updatedCartItem) {
+        duplicate = { ...updatedCartItem }
       } else if (cartItems) {
         duplicate = cartItems.find((item) => item.title === product.title)
       }
@@ -113,6 +117,7 @@ const Products = () => {
               },
               body: JSON.stringify({
                 data: {
+                  uId: currentUser.id,
                   title: product.title,
                   origin_price: product.origin_price,
                   price: product.price,
@@ -129,7 +134,7 @@ const Products = () => {
             handleAlert('已更新購物車')
           }
         } catch (error) {
-          console.log(error)
+          handleAlert('加入購物車失敗')
         }
       } else {
         try {
@@ -143,6 +148,7 @@ const Products = () => {
               },
               body: JSON.stringify({
                 data: {
+                  uId: currentUser.id,
                   title: product.title,
                   origin_price: product.origin_price,
                   price: product.price,
@@ -160,7 +166,7 @@ const Products = () => {
             dispatch(setCartUpdate(1))
           }
         } catch (error) {
-          console.log(error)
+          handleAlert('加入購物車失敗')
         }
       }
       setIsLoading(false)

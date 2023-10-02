@@ -15,6 +15,7 @@ const Navigation = () => {
   const token = useSelector((state) => state.token.token)
   const cartItems = useSelector((state) => state.cart.cartItems)
   const cartUpdateCount = useSelector((state) => state.cart.cartUpdateCount)
+  const currentUser = useSelector((state) => state.user.currentUser)
   const navButton = useRef(null)
   const linksContainerRef = useRef(null)
 
@@ -38,7 +39,10 @@ const Navigation = () => {
         for (const key in data.products) {
           newCartItems.push(data.products[key])
         }
-        dispatch(setCartItems(newCartItems))
+        const matchedCartItems = newCartItems.filter(
+          (item) => item.uId === currentUser.id
+        )
+        dispatch(setCartItems(matchedCartItems))
       } catch (error) {
         console.log(error)
       }
@@ -134,7 +138,7 @@ const Navigation = () => {
                     <Dropdown.Item
                       onClick={() => toggleNav()}
                       as={Link}
-                      to="/auth"
+                      to="/adminAuth"
                     >
                       管理員登入
                     </Dropdown.Item>
@@ -146,6 +150,7 @@ const Navigation = () => {
                     onClick={() => {
                       toggleNav()
                       dispatch(setToken(null))
+                      dispatch(setCartItems([]))
                     }}
                   >
                     會員登出
@@ -155,7 +160,7 @@ const Navigation = () => {
                     <Dropdown.Item
                       onClick={() => toggleNav()}
                       as={Link}
-                      to="/auth"
+                      to="/userAuth"
                     >
                       會員登入
                     </Dropdown.Item>

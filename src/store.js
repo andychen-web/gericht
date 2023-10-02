@@ -4,6 +4,7 @@ import priceReducer from './slices/priceSlice'
 import productReducer from './slices/productSlice'
 import orderFormReducer from './slices/orderFormSlice'
 import tokenReducer from './slices/tokenSlice'
+import userReducer from './slices/userSlice'
 import favoritesReducer from './slices/favoritesSlice'
 import storage from 'redux-persist/lib/storage'
 import { persistReducer, persistStore } from 'redux-persist'
@@ -19,7 +20,8 @@ const reducer = combineReducers({
   orderForm: orderFormReducer,
   product: productReducer,
   token: tokenReducer,
-  favorite: favoritesReducer
+  favorite: favoritesReducer,
+  user: userReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer)

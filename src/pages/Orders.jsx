@@ -184,7 +184,10 @@ const Orders = () => {
         ) : (
           <div className="d-flex flex-column py-5 align-items-center">
             <h3> 您還未登入管理員</h3>
-            <button className="custom-btn" onClick={() => navigate('/auth')}>
+            <button
+              className="custom-btn"
+              onClick={() => navigate('/adminAuth')}
+            >
               前往登入
             </button>
           </div>

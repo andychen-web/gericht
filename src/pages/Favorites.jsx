@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Container from 'react-bootstrap/esm/Container'
+import { BsFillCartFill, BsFillTrash3Fill } from 'react-icons/bs'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import Loader from '../components/Loader'
 import Alert from '../components/Alert'
-import { removeFavorite } from '../slices/favoritesSlice'
+import Loader from '../components/Loader'
 import { setCartUpdate } from '../slices/cartSlice'
-import { BsFillCartFill, BsFillTrash3Fill } from 'react-icons/bs'
+import { removeFavorite } from '../slices/favoritesSlice'
 
 const Favorites = () => {
   const navigate = useNavigate()
@@ -198,6 +198,12 @@ const Favorites = () => {
     }
     setIsLoading(false)
   }
+
+  useEffect(() => {
+    if (!token) {
+      navigate('/userAuth')
+    }
+  }, [token])
   return (
     <div>
       <Loader isLoading={isLoading} />

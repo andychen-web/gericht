@@ -3,7 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './css/custom.css'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Products from './pages/Products'
-import Auth from './pages/Auth'
+import UserAuth from './pages/UserAuth'
+import AdminAuth from './pages/AdminAuth'
 import Product from './pages/Product'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
@@ -47,7 +48,8 @@ function App() {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/favorites" element={<Favorites />} />
-        <Route path="/auth" element={<Auth />} />
+        <Route path="/userAuth" element={<UserAuth />} />
+        <Route path="/adminAuth" element={<AdminAuth />} />
         {orders &&
           orders.map((order) => (
             <Route

@@ -359,6 +359,10 @@ pre {
 }
 
 .auth-card {
-  max-width: 300px;
-  max-height: 250px;
+  max-width: 320px;
+  min-height: 100%;
+}
+
+.alert-top {
+  z-index: 1;
 }/*# sourceMappingURL=custom.css.map */

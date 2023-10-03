@@ -53,7 +53,7 @@ const Checkout = () => {
   if (step === 3) {
     //  checkout complete, POST order
     const myHeaders = new Headers()
-    const apiKEY = process.env.REACT_APP_API_KEY
+    const apiKEY = process.env.REACT_APP_ORDER_API_KEY
     myHeaders.append('apikey', apiKEY)
     const requestOptions = {
       method: 'POST',

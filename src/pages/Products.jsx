@@ -26,7 +26,11 @@ const Products = () => {
   const priceRangeArr = ['全部', '$99~$199', '$200~$399']
   const favorites = useSelector((state) => state.favorite.favoriteList)
   const handleLike = (product) => {
-    dispatch(setFavorites(product))
+    if (!token) {
+      navigate('/userAuth')
+    } else {
+      dispatch(setFavorites(product))
+    }
   }
 
   const handleAlert = (message) => {
@@ -77,7 +81,7 @@ const Products = () => {
 
   const addToCart = async (product) => {
     if (!token) {
-      navigate('/auth')
+      navigate('/userAuth')
     } else {
       setIsLoading(true)
 

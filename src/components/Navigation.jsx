@@ -6,8 +6,9 @@ import Container from 'react-bootstrap/Container'
 import { Link } from 'react-router-dom'
 import { setCartItems } from '../slices/cartSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { setAdminToken, setToken } from '../slices/tokenSlice'
+import { setAdminToken, setUserToken } from '../slices/tokenSlice'
 import { Dropdown } from 'react-bootstrap'
+import { cleanFavorites } from '../slices/favoritesSlice'
 
 const Navigation = () => {
   const dispatch = useDispatch()
@@ -76,22 +77,22 @@ const Navigation = () => {
           className="justify-content-end"
         >
           <Nav>
-            <Link
-              onClick={() => toggleNav()}
-              className="custom-link nav-link"
-              to="/"
-            >
-              首頁
-            </Link>
-            <Link
-              onClick={() => toggleNav()}
-              className="custom-link nav-link"
-              to="/products"
-            >
-              產品列表
-            </Link>
             {adminToken ? null : (
               <>
+                <Link
+                  onClick={() => toggleNav()}
+                  className="custom-link nav-link"
+                  to="/"
+                >
+                  首頁
+                </Link>
+                <Link
+                  onClick={() => toggleNav()}
+                  className="custom-link nav-link"
+                  to="/products"
+                >
+                  產品列表
+                </Link>
                 <Link
                   onClick={() => toggleNav()}
                   className="custom-link nav-link"
@@ -149,8 +150,9 @@ const Navigation = () => {
                     as="button"
                     onClick={() => {
                       toggleNav()
-                      dispatch(setToken(null))
+                      dispatch(setUserToken(null))
                       dispatch(setCartItems([]))
+                      dispatch(cleanFavorites([]))
                     }}
                   >
                     會員登出

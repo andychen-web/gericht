@@ -6,16 +6,18 @@ import Container from 'react-bootstrap/esm/Container'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
-import Alert from '../components/Alert'
 import Footer from '../components/Footer'
 import Loader from '../components/Loader'
-import { setToken } from '../slices/tokenSlice'
+import { setUserToken } from '../slices/tokenSlice'
 import { setCurrentUser } from '../slices/userSlice'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
 const UserAuth = () => {
+  const MySwal = withReactContent(Swal)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
-  const [alertQueue, setAlertQueue] = useState([])
   const [isRegistered, setIsRegistered] = useState(true)
   const initialSignInValues = {
     email: '',
@@ -27,7 +29,10 @@ const UserAuth = () => {
     password: Yup.string().min(6, '密碼長度不足').required('密碼必填')
   })
   const handleAlert = (message) => {
-    setAlertQueue((prevQueue) => [...prevQueue, { message }])
+    MySwal.fire({
+      title: <p className="fs-4">{message}</p>,
+      timer: 1500
+    })
   }
   const handleSubmit = (isRegistered, values) => {
     if (isRegistered) {
@@ -77,6 +82,7 @@ const UserAuth = () => {
   }
 
   const signUp = async (values) => {
+    setIsLoading(true)
     try {
       console.log(values.email, values.password)
       const response = await fetch(
@@ -105,6 +111,7 @@ const UserAuth = () => {
     } catch (err) {
       console.log(err.message)
     }
+    setIsLoading(false)
   }
 
   const authorizeCartAccess = async () => {
@@ -125,7 +132,7 @@ const UserAuth = () => {
       )
       const data = await response.json()
       authorize(data.token)
-      dispatch(setToken(data.token))
+      dispatch(setUserToken(data.token))
     } catch (error) {
       console.error(error)
     }
@@ -151,7 +158,6 @@ const UserAuth = () => {
   }, [])
   return (
     <div className="bg">
-      <Alert alertQueue={alertQueue} setAlertQueue={setAlertQueue} />
       <Loader isLoading={isLoading} />
 
       <Container className="pb-5 custom-padding-top">

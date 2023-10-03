@@ -27,8 +27,6 @@ const validationSchema = Yup.object().shape({
 })
 
 const Cart = () => {
-  window.scrollTo(0, 0)
-
   const navigate = useNavigate()
   const token = useSelector((state) => state.token.token)
   const cartItems = useSelector((state) => state.cart.cartItems)
@@ -103,13 +101,6 @@ const Cart = () => {
     }
   }
 
-  useEffect(() => {
-    if (currentIndex !== null) {
-      updatedProduct = cartItems[currentIndex]
-      putQuantity(updatedProduct)
-    }
-  }, [currentIndex, changeCounter])
-
   const incrementQuantity = async (index, change) => {
     dispatch(updateItemQuantity({ index, change }))
     setCurrentIndex(index)
@@ -160,7 +151,12 @@ const Cart = () => {
       navigate('/userAuth')
     }
   }, [token])
-
+  useEffect(() => {
+    if (currentIndex !== null) {
+      updatedProduct = cartItems[currentIndex]
+      putQuantity(updatedProduct)
+    }
+  }, [currentIndex, changeCounter])
   const handleRemove = async (id) => {
     try {
       const res = await fetch(

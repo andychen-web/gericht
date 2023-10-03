@@ -2,21 +2,25 @@ import React, { useEffect, useState } from 'react'
 import Container from 'react-bootstrap/esm/Container'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import Alert from '../components/Alert'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 import Footer from '../components/Footer'
 import Loader from '../components/Loader'
-import { setAdminToken } from '../slices/tokenSlice'
+import { setAdminToken, setUserToken } from '../slices/tokenSlice'
 
 const AdminAuth = () => {
+  const MySwal = withReactContent(Swal)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
-  const [alertQueue, setAlertQueue] = useState([])
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isChecked, setIsChecked] = useState(false)
   const handleAlert = (message) => {
-    setAlertQueue((prevQueue) => [...prevQueue, { message }])
+    MySwal.fire({
+      title: <p className="fs-4">{message}</p>,
+      timer: 1500
+    })
   }
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -38,24 +42,23 @@ const AdminAuth = () => {
           }
         )
         const data = await response.json()
-        if (data.success) {
+        if (
+          data.success &&
+          email === `${process.env.REACT_APP_ADMIN_EMAIL}` &&
+          password === `${process.env.REACT_APP_ADMIN_PASSWORD}`
+        ) {
           handleAlert('登入成功')
-          if (
-            email === `${process.env.REACT_APP_ADMIN_EMAIL}` &&
-            password === `${process.env.REACT_APP_ADMIN_PASSWORD}`
-          ) {
-            dispatch(setAdminToken(data.token))
-            setTimeout(() => navigate('/orders'), 1500)
-          }
-        } else if (!data.success) {
+          dispatch(setAdminToken(data.token))
+          dispatch(setUserToken(null))
+          setTimeout(() => navigate('/orders'), 1500)
+        } else {
           handleAlert('登入失敗')
-          setIsLoading(false)
         }
       } catch (error) {
         handleAlert('登入失敗')
-        setIsLoading(false)
         console.log(error)
       }
+      setIsLoading(false)
     }
     signIn()
   }
@@ -76,7 +79,6 @@ const AdminAuth = () => {
   }, [])
   return (
     <div className="bg">
-      <Alert alertQueue={alertQueue} setAlertQueue={setAlertQueue} />
       <Loader isLoading={isLoading} />
 
       <Container className="pb-5 custom-padding-top">

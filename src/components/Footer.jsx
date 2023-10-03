@@ -8,11 +8,19 @@ import images from '../data/images'
 import { RxTwitterLogo, RxInstagramLogo } from 'react-icons/rx'
 import { FaFacebookF } from 'react-icons/fa'
 import Loader from '../components/Loader'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const Footer = () => {
   const [email, setEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-
+  const MySwal = withReactContent(Swal)
+  const handleAlert = (message) => {
+    MySwal.fire({
+      title: <p className="fs-4">{message}</p>,
+      timer: 1500
+    })
+  }
   const handleChange = (e) => {
     setEmail(e.target.value)
   }
@@ -22,16 +30,17 @@ const Footer = () => {
     const subscribeNewsletter = async () => {
       setIsLoading(true)
       try {
-        const myHeaders = new Headers()
-        myHeaders.append('apikey', process.env.REACT_APP_NEWSLETTER_API_KEY)
         const res = await fetch('https://api.apilayer.com/form_api/form', {
           method: 'POST',
           redirect: 'follow',
-          headers: myHeaders,
+          headers: { apikey: process.env.REACT_APP_NEWSLETTER_API_KEY },
           body: JSON.stringify({ email })
         })
         const data = await res.json()
-        data && setEmail('')
+        if (data) {
+          setEmail('')
+          handleAlert('訂閱成功 已收到您的Email😄')
+        }
       } catch (err) {
         console.log(err)
       }

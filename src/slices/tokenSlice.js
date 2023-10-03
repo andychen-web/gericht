@@ -9,7 +9,7 @@ const tokenSlice = createSlice({
   name: 'token',
   initialState,
   reducers: {
-    setToken: (state, action) => {
+    setUserToken: (state, action) => {
       state.token = action.payload
     },
     setAdminToken: (state, action) => {
@@ -18,5 +18,5 @@ const tokenSlice = createSlice({
   }
 })
 
-export const { setToken, setAdminToken } = tokenSlice.actions
+export const { setUserToken, setAdminToken } = tokenSlice.actions
 export default tokenSlice.reducer

@@ -187,6 +187,12 @@
 }
 
 @media (max-width: 768px) {
+  .mobile-small-font {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
   .sm-font {
     font-size: 10px;
   }
@@ -226,6 +232,13 @@
 .bg-brown {
   background-image: url("../assets/bg-brown.png");
   background-size: cover;
+}
+
+.bg-checkout {
+  background-image: url("../assets/bg-checkout.png");
+  background-size: cover;
+  height: 200px;
+  background-position: center;
 }
 
 .welcome-blur {
@@ -356,6 +369,10 @@
 
 pre {
   white-space: pre-wrap;
+}
+
+.text-shadow {
+  text-shadow: black 0.1em 0.1em 0.2em;
 }
 
 .auth-card {

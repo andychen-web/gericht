@@ -7,8 +7,11 @@ import { Col } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { setOrderForm } from '../slices/orderFormSlice'
 import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const Checkout = () => {
+  const MySwal = withReactContent(Swal)
   const cartItems = useSelector((state) => state.cart.cartItems)
   const sum = useSelector((state) => state.price.sum)
   const token = useSelector((state) => state.token.token)
@@ -19,9 +22,8 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
   const progressWidth = (step / 3) * 100
-  const handleRemove = async (id) => {
+  const cleanCart = async (id) => {
     try {
       const res = await fetch(
         `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${id}`,
@@ -35,6 +37,12 @@ const Checkout = () => {
     } catch (err) {
       console.log(err)
     }
+  }
+  const handleAlert = (message) => {
+    MySwal.fire({
+      title: <p className="fs-4">{message}</p>,
+      timer: 1500
+    })
   }
   function handleStep() {
     const cashOnDeliveryInput = document.querySelector('#cashOnDelivery')
@@ -52,13 +60,10 @@ const Checkout = () => {
   }
   if (step === 3) {
     //  checkout complete, POST order
-    const myHeaders = new Headers()
-    const apiKEY = process.env.REACT_APP_ORDER_API_KEY
-    myHeaders.append('apikey', apiKEY)
     const requestOptions = {
       method: 'POST',
       redirect: 'follow',
-      headers: myHeaders,
+      headers: { apikey: process.env.REACT_APP_ORDER_API_KEY },
       body: JSON.stringify({
         ...orderForm,
         total,
@@ -67,18 +72,12 @@ const Checkout = () => {
     }
     fetch('https://api.apilayer.com/form_api/form', requestOptions)
       .then((response) => response.text())
-      .then((result) => {
+      .then((data) => {
+        handleAlert('結帳完成')
         const cartIds = cartItems.map((item) => item.id)
-        cartIds.forEach((id) => handleRemove(id))
+        cartIds.forEach((id) => cleanCart(id))
       })
       .catch((error) => console.log('error', error))
-
-    const toProducts = document.querySelector('#toProducts')
-    const toOrders = document.querySelector('#toOrders')
-    toProducts.classList.remove('d-none')
-    toOrders.classList.remove('d-none')
-    const next = document.querySelector('#next')
-    next.classList.add('d-none')
   }
 
   function showTransferInfo() {
@@ -94,7 +93,9 @@ const Checkout = () => {
     <div className="bg">
       <Container className="pt-5">
         <div className="text-white pt-5 text-center">
-          <h4 className="pt-5">結帳</h4>
+          <div className="bg-checkout text-white w-100 rounded mb-5 d-flex align-items-center justify-content-center">
+            <h4 className="fw-bold text-shadow">結帳流程</h4>
+          </div>
           <form className="row d-center">
             <Col xs={12} md={4}>
               {/* 訂單摘要 */}
@@ -105,17 +106,17 @@ const Checkout = () => {
                 </div>
               </div>
               <div className="border bg-white rounded p-2">
-                <h6 className="flex-between p-xs-1 p-md-2 text-black">
+                <div className="h6 flex-between pt-2 text-black">
                   <div>小計:</div>
                   <div>{'NT$' + sum}</div>
-                </h6>
-                <h6 className="flex-between p-sm-1 p-md-2 pt-0 text-black">
+                </div>
+                <div className="h6 flex-between pt-2 text-black">
                   <div>運費: </div>
                   <div>{'NT$' + shippingFee}</div>
-                </h6>
-                <h4 className="flex-between border-top p-sm-1 p-md-2 text-black fs-5">
+                </div>
+                <div className="h4 flex-between border-top pt-2 text-black fs-5">
                   <div>總計</div> <div>{'NT$' + total}</div>
-                </h4>
+                </div>
               </div>
               {/*  購物車內容 */}
               <div className="text-white d-flex flex-column pt-3">
@@ -147,7 +148,7 @@ const Checkout = () => {
             {/* 結帳 */}
             <Col xs={12} md={6}>
               <div className="p-2">
-                <div className="px-3 my-3 fs-5  text-light flex-between">
+                <div className="px-3 my-3 text-light flex-between mobile-small-font">
                   <div>1.確認資料</div>
                   <div>2.付款方式</div>
                   <div>3.完成</div>
@@ -161,22 +162,22 @@ const Checkout = () => {
                   {step === 1 && (
                     <div className="p-3">
                       <h5 className="my-3">收件人資料</h5>
-                      <table className="table">
+                      <table className="table mobile-small-font">
                         <tbody>
                           <tr>
-                            <th>Email :</th>
+                            <th>Email</th>
                             <td>{orderForm.email}</td>
                           </tr>
                           <tr>
-                            <th>姓名 :</th>
+                            <th>姓名</th>
                             <td>{orderForm.name}</td>
                           </tr>
                           <tr>
-                            <th>收件人電話 :</th>
+                            <th>收件人電話</th>
                             <td>{orderForm.mobile}</td>
                           </tr>
                           <tr>
-                            <th>收件人地址 :</th>
+                            <th>收件人地址</th>
                             <td>{orderForm.address}</td>
                           </tr>
                         </tbody>
@@ -217,7 +218,7 @@ const Checkout = () => {
                       </div>
                       <div className="transfer-info d-none">
                         <p className="my-3">ATM 轉帳繳款資料如下</p>
-                        <table className="table table-striped table-bordered text-dark">
+                        <table className="table table-striped table-bordered text-dark mobile-small-font">
                           <tbody>
                             <tr>
                               <th>◆ 銀行名稱：</th>
@@ -281,28 +282,24 @@ const Checkout = () => {
                 </div>
 
                 <div className="d-center">
-                  <div
-                    id="next"
-                    onClick={() => handleStep()}
-                    className="cursor-pointer custom-btn fw-bold"
-                  >
-                    下一步
-                  </div>
-
-                  <button
-                    onClick={() => navigate('/products')}
-                    id="toProducts"
-                    className="cursor-pointer custom-btn fw-bold d-none me-4"
-                  >
-                    回到商品列表
-                  </button>
-                  <button
-                    onClick={() => navigate('/orders')}
-                    id="toOrders"
-                    className="cursor-pointer custom-btn fw-bold d-none"
-                  >
-                    查詢訂單
-                  </button>
+                  {step <= 2 && (
+                    <div
+                      id="next"
+                      onClick={() => handleStep()}
+                      className="cursor-pointer custom-btn fw-bold"
+                    >
+                      下一步
+                    </div>
+                  )}
+                  {step === 3 && (
+                    <button
+                      onClick={() => navigate('/products')}
+                      id="toProducts"
+                      className="cursor-pointer custom-btn fw-bold me-4"
+                    >
+                      回到商品列表
+                    </button>
+                  )}
                 </div>
               </div>
             </Col>

@@ -40,15 +40,14 @@ const Cart = () => {
   const [alertQueue, setAlertQueue] = useState([])
   const dispatch = useDispatch()
   const initFormValues = {
-    email: '',
-    name: '',
+    email: currentUser.email,
+    name: currentUser.name,
     address: '',
     mobile: '',
     message: '',
     paymentMethod: ''
   }
   let updatedProduct
-  console.log(currentUser)
   const sum =
     Array.isArray(cartItems) &&
     cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
@@ -307,7 +306,6 @@ const Cart = () => {
                           id="userEmail"
                           placeholder="請輸入訂購人電子郵件"
                         />
-                        {/* TODO: set initial value to be {currentUser.email} */}
                         <ErrorMessage
                           name="email"
                           component="span"

@@ -7,8 +7,11 @@ import Title from './Title'
 import images from '../data/images'
 import { RxTwitterLogo, RxInstagramLogo } from 'react-icons/rx'
 import { FaFacebookF } from 'react-icons/fa'
+import Loader from '../components/Loader'
+
 const Footer = () => {
   const [email, setEmail] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleChange = (e) => {
     setEmail(e.target.value)
@@ -16,14 +19,30 @@ const Footer = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (email) {
-      setEmail('')
-      // send post request to backend
+    const subscribeNewsletter = async () => {
+      setIsLoading(true)
+      try {
+        const myHeaders = new Headers()
+        myHeaders.append('apikey', process.env.REACT_APP_NEWSLETTER_API_KEY)
+        const res = await fetch('https://api.apilayer.com/form_api/form', {
+          method: 'POST',
+          redirect: 'follow',
+          headers: myHeaders,
+          body: JSON.stringify({ email })
+        })
+        const data = await res.json()
+        data && setEmail('')
+      } catch (err) {
+        console.log(err)
+      }
+      setIsLoading(false)
     }
+    subscribeNewsletter()
   }
 
   return (
     <div className="bg py-5">
+      <Loader isLoading={isLoading} />
       <Container>
         <Row className="d-center">
           <Col

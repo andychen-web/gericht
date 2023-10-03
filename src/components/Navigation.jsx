@@ -61,8 +61,8 @@ const Navigation = () => {
       className="position-fixed custom-nav"
     >
       <Container>
-        <a href="/">
-          <img src={images.gericht} alt="logo" width={'40%'} />
+        <a href="/" className="w-50">
+          <img src={images.gericht} alt="logo" width={'100px'} />
         </a>
         <button
           onClick={() => toggleNav()}

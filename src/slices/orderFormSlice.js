@@ -9,7 +9,7 @@ const initialState = {
     message: '',
     paymentMethod: ''
   },
-  orderArray: []
+  completedOrders: []
 }
 
 const orderFormSlice = createSlice({
@@ -19,11 +19,11 @@ const orderFormSlice = createSlice({
     setOrderForm: (state, action) => {
       state.orderFormValue = action.payload
     },
-    setOrderArray: (state, action) => {
-      state.orderArray = action.payload
+    setCompletedOrders: (state, action) => {
+      state.completedOrders = action.payload
     }
   }
 })
 
-export const { setOrderForm, setOrderArray } = orderFormSlice.actions
+export const { setOrderForm, setCompletedOrders } = orderFormSlice.actions
 export default orderFormSlice.reducer

@@ -5,9 +5,11 @@ import Col from 'react-bootstrap/Col'
 import images from '../data/images'
 import Title from './Title'
 import { BsFillCaretLeftFill, BsFillCaretRightFill } from 'react-icons/bs'
+import { useNavigate } from 'react-router-dom'
 
 const Gallery = () => {
   const scrollRef = React.useRef(null)
+  const navigate = useNavigate()
 
   const scroll = (direction) => {
     // get current element that scrollRef is attached to
@@ -26,7 +28,12 @@ const Gallery = () => {
           <Col xs={10} md={4} className="d-flex flex-column py-5">
             <Title title={'相片'} subTitle={'美食相簿'} />
             <span className="text-white py-3">美味風情，一睹為快</span>
-            <button className="custom-btn">了解更多</button>
+            <button
+              className="custom-btn"
+              onClick={() => navigate('/products')}
+            >
+              了解產品
+            </button>
           </Col>
           <Col
             ref={scrollRef}

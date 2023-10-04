@@ -7,27 +7,55 @@ import Title from './Title'
 import images from '../data/images'
 import { RxTwitterLogo, RxInstagramLogo } from 'react-icons/rx'
 import { FaFacebookF } from 'react-icons/fa'
+import Loader from '../components/Loader'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
 const Footer = () => {
   const [email, setEmail] = useState('')
-
+  const [isLoading, setIsLoading] = useState(false)
+  const MySwal = withReactContent(Swal)
+  const handleAlert = (message) => {
+    MySwal.fire({
+      title: <p className="fs-4">{message}</p>,
+      timer: 1500
+    })
+  }
   const handleChange = (e) => {
     setEmail(e.target.value)
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (email) {
-      setEmail('')
-      // send post request to backend
+    const subscribeNewsletter = async () => {
+      setIsLoading(true)
+      try {
+        const res = await fetch('https://api.apilayer.com/form_api/form', {
+          method: 'POST',
+          redirect: 'follow',
+          headers: { apikey: process.env.REACT_APP_NEWSLETTER_API_KEY },
+          body: JSON.stringify({ email })
+        })
+        const data = await res.json()
+        if (data) {
+          setEmail('')
+          handleAlert('訂閱成功 已收到您的Email😄')
+        }
+      } catch (err) {
+        console.log(err)
+      }
+      setIsLoading(false)
     }
+    subscribeNewsletter()
   }
 
   return (
     <div className="bg py-5">
+      <Loader isLoading={isLoading} />
       <Container>
         <Row className="d-center">
           <Col
-            xs={8}
+            xs={10}
             className="d-flex flex-column align-items-center border-5 border-white "
           >
             <Title title={'電子報'} subTitle={'訂閱電子報'} />
@@ -35,14 +63,14 @@ const Footer = () => {
             <Form className="d-flex bg-black" onSubmit={handleSubmit}>
               <input
                 type="email"
-                className="bg-black border-white rounded text-white p-2 pe-5 w-75"
+                className="bg-black border-white rounded text-white p-2 w-75"
                 placeholder="Enter email"
                 aria-label="Email adress"
                 onChange={handleChange}
                 id="formInput"
                 value={email}
               />
-              <button className="custom-btn ms-3" type="submit">
+              <button className="custom-btn ms-3 w-25" type="submit">
                 訂閱
               </button>
             </Form>

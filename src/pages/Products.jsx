@@ -9,28 +9,37 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { setCartUpdate } from '../slices/cartSlice'
 import { setFavorites } from '../slices/favoritesSlice'
-import Alert from '../components/Alert'
 import { FaRegHeart, FaHeart } from 'react-icons/fa'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
 const Products = () => {
   const products = useSelector((state) => state.product.productArray)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const token = useSelector((state) => state.token.token)
-  const cartItems = useSelector((state) => state.cart.cartItems)
+  const currentUser = useSelector((state) => state.user.currentUser)
   const [priceRange, setPriceRange] = useState('全部')
   const [category, setCategory] = useState('全部')
-  const [alertQueue, setAlertQueue] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const categoryTypes = ['全部', '燉飯', '義大利麵', '烤肉', '甜點']
   const priceRangeArr = ['全部', '$99~$199', '$200~$399']
   const favorites = useSelector((state) => state.favorite.favoriteList)
+  const MySwal = withReactContent(Swal)
 
   const handleLike = (product) => {
-    dispatch(setFavorites(product))
+    if (!token) {
+      navigate('/userAuth')
+    } else {
+      dispatch(setFavorites(product))
+    }
   }
 
   const handleAlert = (message) => {
-    setAlertQueue((prevQueue) => [...prevQueue, { message }])
+    MySwal.fire({
+      title: <p className="fs-4">{message}</p>,
+      timer: 1500
+    })
   }
 
   const handlePriceRangeChange = (e) => {
@@ -76,91 +85,94 @@ const Products = () => {
     })
 
   const addToCart = async (product) => {
-    setIsLoading(true)
-
-    let duplicate
-    const res = await fetch(
-      'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/products',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: token
-        }
-      }
-    )
-    const updatedProducts = await res.json()
-    const updatedProduct = await updatedProducts.products.find(
-      (item) => item.title === product.title
-    )
-    if (updatedProduct) {
-      duplicate = { ...updatedProduct }
-    } else if (cartItems) {
-      duplicate = cartItems.find((item) => item.title === product.title)
-    }
-
-    if (duplicate) {
-      try {
-        const response = await fetch(
-          `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${duplicate.id}`,
-          {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: token
-            },
-            body: JSON.stringify({
-              data: {
-                title: product.title,
-                origin_price: product.origin_price,
-                price: product.price,
-                unit: product.unit,
-                quantity: duplicate.quantity + 1,
-                category: product.category,
-                imageUrl: product.image
-              }
-            })
-          }
-        )
-        const data = await response.json()
-        if (data.success) {
-          handleAlert('已更新購物車')
-        }
-      } catch (error) {
-        console.log(error)
-      }
+    if (!token) {
+      navigate('/userAuth')
     } else {
-      try {
-        const response = await fetch(
-          'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: token
-            },
-            body: JSON.stringify({
-              data: {
-                title: product.title,
-                origin_price: product.origin_price,
-                price: product.price,
-                unit: product.unit,
-                quantity: product.quantity,
-                category: product.category,
-                imageUrl: product.image
-              }
-            })
+      setIsLoading(true)
+
+      const res = await fetch(
+        `${process.env.REACT_APP_API}api/newcart1/admin/products`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: token
           }
-        )
-        const data = await response.json()
-        if (data.success) {
-          handleAlert('已新增至購物車')
-          dispatch(setCartUpdate(1))
         }
-      } catch (error) {
-        console.log(error)
+      )
+      const allCartItems = await res.json()
+      const userCartItems = allCartItems.products.filter(
+        (item) => item.uId === currentUser.id
+      )
+      const duplicateCartItem =
+        userCartItems.length > 0 &&
+        userCartItems.find((item) => item.title === product.title)
+
+      if (duplicateCartItem) {
+        try {
+          const response = await fetch(
+            `${process.env.REACT_APP_API}api/newcart1/admin/product/${duplicateCartItem.id}`,
+            {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: token
+              },
+              body: JSON.stringify({
+                data: {
+                  uId: currentUser.id,
+                  title: product.title,
+                  origin_price: product.origin_price,
+                  price: product.price,
+                  unit: product.unit,
+                  quantity: duplicateCartItem.quantity + 1,
+                  category: product.category,
+                  imageUrl: product.image
+                }
+              })
+            }
+          )
+          const data = await response.json()
+          if (data.success) {
+            handleAlert('已更新購物車')
+          }
+        } catch (error) {
+          handleAlert('加入購物車失敗')
+        }
+      } else {
+        try {
+          const response = await fetch(
+            `${process.env.REACT_APP_API}api/newcart1/admin/product`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: token
+              },
+              body: JSON.stringify({
+                data: {
+                  uId: currentUser.id,
+                  title: product.title,
+                  origin_price: product.origin_price,
+                  price: product.price,
+                  unit: product.unit,
+                  quantity: product.quantity,
+                  category: product.category,
+                  imageUrl: product.image
+                }
+              })
+            }
+          )
+          const data = await response.json()
+          if (data.success) {
+            handleAlert('已新增至購物車')
+            dispatch(setCartUpdate(1))
+          }
+        } catch (error) {
+          handleAlert('加入購物車失敗')
+        }
       }
+      setIsLoading(false)
     }
-    setIsLoading(false)
   }
   useEffect(() => {
     if (products.length > 0) {
@@ -171,6 +183,7 @@ const Products = () => {
   }, [products])
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     const blurDivs = document.querySelectorAll('.blur-load')
     blurDivs.forEach((div) => {
       const img = div.querySelector('img')
@@ -193,12 +206,11 @@ const Products = () => {
     <div className="bg">
       <Loader isLoading={isLoading} />
 
-      <Alert alertQueue={alertQueue} setAlertQueue={setAlertQueue} />
       <Container className="custom-padding-top custom-padding-bottom">
         <Row>
           {/* 篩選品項 */}
-          <Col md={3} className="filter-max-width">
-            <label className="h3 special-text fw-bold">種類</label>
+          <Col md={2} className="filter-max-width text-center">
+            <label className="h4 special-text fw-bold">種類</label>
             <ul className="category-wrap bg-dark list-unstyled border">
               {categoryTypes.map((categoryType, key) => (
                 <li key={key}>
@@ -212,7 +224,7 @@ const Products = () => {
               ))}
             </ul>
 
-            <label className="h3 special-text fw-bold">價格區間</label>
+            <label className="h4 special-text fw-bold">價格區間</label>
             <ul className="bg-dark list-unstyled border">
               {priceRangeArr.map((priceRange, key) => (
                 <li key={key}>
@@ -227,7 +239,7 @@ const Products = () => {
             </ul>
           </Col>
           {/* 展示品項 */}
-          <Col md={9}>
+          <Col md={10}>
             <Row className="gap-3">
               {filterdProducts &&
                 filterdProducts.map((product, key) => (

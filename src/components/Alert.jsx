@@ -19,12 +19,12 @@ const Alert = ({ alertQueue, setAlertQueue }) => {
   }, [alertQueue, setAlertQueue])
 
   return (
-    <div className="position-fixed custom-top end-0 me-2">
+    <div className="position-fixed custom-top end-0 me-2 alert-top">
       {alertQueue &&
         alertQueue.map((alert, index) => (
           <div
             key={index}
-            className="alert alert-light mt-5 flex-between border border-dark"
+            className="alert alert-light mt-5 me-3 flex-between border border-dark"
           >
             {alert.message}
             <button

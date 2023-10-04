@@ -9,6 +9,9 @@ $lg: 1024px;
   background-size: cover;
 }
 // nav styling
+.dropdown-menu {
+  max-width: 20%;
+}
 .nav-link.custom-link {
   color: white;
   &:hover {
@@ -19,7 +22,10 @@ $lg: 1024px;
   z-index: 3;
   width: 100vw;
 }
-
+#dropdown-custom-components {
+  background-color: #000;
+  border: none;
+}
 // homepage styling & general styling
 .signature-text {
   font-family: 'Cormorant Upright', serif;
@@ -157,6 +163,11 @@ $lg: 1024px;
 .custom-small-font {
   font-size: 10px;
 }
+.mobile-small-font {
+  @media (max-width: $md) {
+    font-size: 12px;
+  }
+}
 .sm-font {
   @media (max-width: $md) {
     font-size: 10px;
@@ -189,6 +200,11 @@ $lg: 1024px;
 }
 .bg-brown {
   @include bg-img-cover(('../assets/bg-brown.png'));
+}
+.bg-checkout {
+  @include bg-img-cover(('../assets/bg-checkout.png'));
+  height: 200px;
+  background-position: center;
 }
 .welcome-blur {
   @include bg-img-cover(('../assets/welcome_small.png'));
@@ -246,7 +262,6 @@ $lg: 1024px;
     height: 100vh;
   }
 }
-
 .custom-top {
   top: 4rem;
 }
@@ -302,4 +317,18 @@ $lg: 1024px;
 }
 pre {
   white-space: pre-wrap;
+}
+// checkout page styling
+.text-shadow {
+  text-shadow: black 0.1em 0.1em 0.2em;
+}
+
+// signIn page styling
+.auth-card {
+  max-width: 320px;
+  min-height: 100%;
+}
+// alert styling
+.alert-top {
+  z-index: 1;
 }

@@ -1,8 +1,13 @@
 import React from 'react'
 import images from '../data/images'
+import PropTypes from 'prop-types';
 
-/* eslint-disable react/prop-types */
 const Title = ({ title, subTitle }) => {
+  Title.propTypes = {
+    title: PropTypes.string,
+    subTitle: PropTypes.string
+  };
+  
   return (
     <>
       <h4 className="text-white">{title}</h4>

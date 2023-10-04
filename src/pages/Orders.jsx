@@ -4,14 +4,17 @@ import Loader from '../components/Loader'
 import Footer from '../components/Footer'
 import { AiFillFileText } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { BsFillTrash3Fill } from 'react-icons/bs'
+import { setCompletedOrders } from '../slices/orderFormSlice'
 
 const Orders = () => {
   const navigate = useNavigate()
   const adminToken = useSelector((state) => state.token.adminToken)
   const [isLoading, setIsLoading] = useState(false)
   const [orders, setOrders] = useState([])
+  const dispatch = useDispatch()
+
   const parseOrders = (data) => {
     const newArr = []
     for (const item of data) {
@@ -20,6 +23,7 @@ const Orders = () => {
       const parsedItem = JSON.parse(item.name)
       newArr.push({ ...parsedItem, serial, id })
     }
+    dispatch(setCompletedOrders(newArr))
     setOrders(newArr)
   }
   const fetchOrders = async () => {
@@ -31,7 +35,6 @@ const Orders = () => {
         headers: { apikey: process.env.REACT_APP_ORDER_API_KEY }
       })
       const data = await res.json()
-      console.log(data)
       data && parseOrders(data)
     } catch (err) {
       console.log(err)

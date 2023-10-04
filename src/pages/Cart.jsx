@@ -210,7 +210,7 @@ const Cart = () => {
                               >
                                 <BsFillTrash3Fill />
                               </button>
-                              <div className="ps-2 pt-1 sm-font">
+                              <div className="ps-md-2 pt-1 sm-font">
                                 {item.title}
                               </div>
                             </td>
@@ -258,16 +258,17 @@ const Cart = () => {
                   <div className="ps-2 fs-5">訂單摘要</div>
                 </div>
                 <div className="border bg-white rounded p-2">
-                  <h6 className="flex-between p-xs-1 p-md-2 text-black">
+                  <div className="h6 flex-between pt-2 text-black">
                     <div>小計:</div>
-                    <div>{'$' + sum}</div>
-                  </h6>
-                  <h6 className="flex-between p-sm-1 p-md-2 pt-0 text-black">
-                    <div>運費:</div> <div>{'$' + shippingFee}</div>
-                  </h6>
-                  <h4 className="flex-between border-top p-sm-1 p-md-2 text-black fs-5">
-                    <div>總計</div> <div>{total}</div>
-                  </h4>
+                    <div>{'NT$' + sum}</div>
+                  </div>
+                  <div className="h6 flex-between pt-2 text-black">
+                    <div>運費: </div>
+                    <div>{'NT$' + shippingFee}</div>
+                  </div>
+                  <div className="h4 flex-between border-top pt-2 text-black fs-5">
+                    <div>總計</div> <div>{'NT$' + total}</div>
+                  </div>
                   <button
                     className="btn fw-bold w-100 px-5 my-1 btn-danger"
                     onClick={() => confirmCheckout()}

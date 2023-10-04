@@ -65,8 +65,10 @@ const Order = ({ order }) => {
                   return (
                     <li key={key} className="p-2">
                       <div className="flex-between">
-                        <div className="fw-bold">{detail.label}</div>
-                        <div>{detail.value}</div>
+                        <div>
+                          <div className="fw-bold fs-5">{detail.label}</div>
+                          <div className="">{detail.value}</div>
+                        </div>
                       </div>
                     </li>
                   )
@@ -104,7 +106,7 @@ const Order = ({ order }) => {
                                     <div className="fw-bold">
                                       {detail.label}
                                     </div>
-                                    <div className="">{detail.value}</div>
+                                    <div>{detail.value}</div>
                                   </div>
                                 </li>
                               )

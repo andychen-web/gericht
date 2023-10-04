@@ -12,6 +12,7 @@
 - 以 React.js 和 Bootstrap 打造 RWD
 - 有串接後端 RESTful API
 - 使用 Redux Toolkit 和 Redux-persist 做狀態管理
+- 使用 Redux Toolkit 和 Redux-persist 做狀態管理
 
 ## 功能
 

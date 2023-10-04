@@ -38,8 +38,8 @@ const Cart = () => {
   const [alertQueue, setAlertQueue] = useState([])
   const dispatch = useDispatch()
   const initFormValues = {
-    email: currentUser.email,
-    name: currentUser.name,
+    email: currentUser && currentUser.email,
+    name: currentUser && currentUser.name,
     address: '',
     mobile: '',
     message: '',
@@ -145,10 +145,10 @@ const Cart = () => {
   }
 
   useEffect(() => {
-    if (token) {
-      fetchCart(token)
-    } else {
+    if (!token) {
       navigate('/userAuth')
+    } else if (token) {
+      fetchCart(token)
     }
   }, [token])
   useEffect(() => {

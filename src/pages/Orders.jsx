@@ -4,16 +4,14 @@ import Loader from '../components/Loader'
 import Footer from '../components/Footer'
 import { AiFillFileText } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { setOrderArray } from '../slices/orderFormSlice'
+import { useSelector } from 'react-redux'
 import { BsFillTrash3Fill } from 'react-icons/bs'
 
 const Orders = () => {
   const navigate = useNavigate()
   const adminToken = useSelector((state) => state.token.adminToken)
   const [isLoading, setIsLoading] = useState(false)
-  const orders = useSelector((state) => state.orderForm.orderArray)
-  const dispatch = useDispatch()
+  const [orders, setOrders] = useState([])
   const parseOrders = (data) => {
     const newArr = []
     for (const item of data) {
@@ -22,7 +20,7 @@ const Orders = () => {
       const parsedItem = JSON.parse(item.name)
       newArr.push({ ...parsedItem, serial, id })
     }
-    dispatch(setOrderArray(newArr))
+    setOrders(newArr)
   }
   const fetchOrders = async () => {
     setIsLoading(true)
@@ -67,9 +65,6 @@ const Orders = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    if (orders.length > 0) {
-      dispatch(setOrderArray(orders))
-    }
   }, [orders])
 
   return (
@@ -182,38 +177,6 @@ const Orders = () => {
                   })
                 : null}
             </ul>
-
-            <div className="d-center mb-5 pb-5 text-dark">
-              <nav aria-label="page">
-                <ul className="pagination">
-                  <li className="page-item disabled">
-                    <a className="page-link" href="#">
-                      上一頁
-                    </a>
-                  </li>
-                  <li className="page-item active" style={{ zIndex: '0' }}>
-                    <a className="page-link" href="#">
-                      1
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      2
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      3
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      下一頁
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
           </>
         ) : (
           <div className="d-flex flex-column py-5 align-items-center">

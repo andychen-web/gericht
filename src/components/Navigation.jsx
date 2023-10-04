@@ -25,6 +25,19 @@ const Navigation = () => {
     linksContainerRef.current.classList.toggle('show')
   }
 
+  const handleResize = () => {
+    if (window.innerWidth <= 768) {
+      navButton.current.classList.add('collapsed')
+      linksContainerRef.current.classList.remove('show')
+    }
+  }
+  useEffect(() => {
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
   useEffect(() => {
     const fetchCart = async (token) => {
       try {

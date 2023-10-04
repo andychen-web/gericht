@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 import Footer from '../components/Footer'
 import Loader from '../components/Loader'
-import { setUserToken } from '../slices/tokenSlice'
+import { setAdminToken, setUserToken } from '../slices/tokenSlice'
 import { setCurrentUser } from '../slices/userSlice'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -72,6 +72,7 @@ const UserAuth = () => {
           })
         )
         authorizeCartAccess()
+        dispatch(setAdminToken(null))
       } else {
         handleAlert('登入失敗')
         setIsLoading(false)

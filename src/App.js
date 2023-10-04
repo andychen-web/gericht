@@ -18,7 +18,7 @@ import Navigation from './components/Navigation'
 
 function App() {
   const dispatch = useDispatch()
-  const orders = useSelector((state) => state.orderForm.orderArray)
+  const orders = useSelector((state) => state.orderForm.completedOrders)
   const products = useSelector((state) => state.product.productArray)
 
   const fetchProducts = async () => {
@@ -35,6 +35,7 @@ function App() {
     }
   }
   useEffect(() => {
+    // 加快產品頁面加載速度
     fetchProducts()
   }, [])
   return (

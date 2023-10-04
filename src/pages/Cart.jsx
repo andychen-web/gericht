@@ -94,8 +94,8 @@ const Cart = () => {
           })
         }
       )
+      // eslint-disable-next-line no-unused-vars
       const data = await response.json()
-      console.g(data)
     } catch (error) {
       console.log(error)
     }
@@ -173,6 +173,9 @@ const Cart = () => {
       console.log(err)
     }
   }
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   return (
     <div className="bg vh-md-100 d-flex flex-column">
       <Loader isLoading={isLoading} />
@@ -260,14 +263,14 @@ const Cart = () => {
                 <div className="border bg-white rounded p-2">
                   <div className="h6 flex-between pt-2 text-black">
                     <div>小計:</div>
-                    <div>{'NT$' + sum}</div>
+                    <div>{'$' + sum}</div>
                   </div>
                   <div className="h6 flex-between pt-2 text-black">
                     <div>運費: </div>
-                    <div>{'NT$' + shippingFee}</div>
+                    <div>{'$' + shippingFee}</div>
                   </div>
                   <div className="h4 flex-between border-top pt-2 text-black fs-5">
-                    <div>總計</div> <div>{'NT$' + total}</div>
+                    <div>總計</div> <div>{total}</div>
                   </div>
                   <button
                     className="btn fw-bold w-100 px-5 my-1 btn-danger"

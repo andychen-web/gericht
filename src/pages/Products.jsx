@@ -9,22 +9,24 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { setCartUpdate } from '../slices/cartSlice'
 import { setFavorites } from '../slices/favoritesSlice'
-import Alert from '../components/Alert'
 import { FaRegHeart, FaHeart } from 'react-icons/fa'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
 const Products = () => {
   const products = useSelector((state) => state.product.productArray)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const token = useSelector((state) => state.token.token)
   const currentUser = useSelector((state) => state.user.currentUser)
-  const cartItems = useSelector((state) => state.cart.cartItems)
   const [priceRange, setPriceRange] = useState('全部')
   const [category, setCategory] = useState('全部')
-  const [alertQueue, setAlertQueue] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const categoryTypes = ['全部', '燉飯', '義大利麵', '烤肉', '甜點']
   const priceRangeArr = ['全部', '$99~$199', '$200~$399']
   const favorites = useSelector((state) => state.favorite.favoriteList)
+  const MySwal = withReactContent(Swal)
+
   const handleLike = (product) => {
     if (!token) {
       navigate('/userAuth')
@@ -34,7 +36,10 @@ const Products = () => {
   }
 
   const handleAlert = (message) => {
-    setAlertQueue((prevQueue) => [...prevQueue, { message }])
+    MySwal.fire({
+      title: <p className="fs-4">{message}</p>,
+      timer: 1500
+    })
   }
 
   const handlePriceRangeChange = (e) => {
@@ -85,7 +90,6 @@ const Products = () => {
     } else {
       setIsLoading(true)
 
-      let duplicate
       const res = await fetch(
         `${process.env.REACT_APP_API}api/newcart1/admin/products`,
         {
@@ -99,20 +103,14 @@ const Products = () => {
       const userCartItems = allCartItems.products.filter(
         (item) => item.uId === currentUser.id
       )
-      const updatedCartItem =
+      const duplicateCartItem =
         userCartItems.length > 0 &&
         userCartItems.find((item) => item.title === product.title)
 
-      if (updatedCartItem) {
-        duplicate = { ...updatedCartItem }
-      } else if (cartItems) {
-        duplicate = cartItems.find((item) => item.title === product.title)
-      }
-
-      if (duplicate) {
+      if (duplicateCartItem) {
         try {
           const response = await fetch(
-            `${process.env.REACT_APP_API}api/newcart1/admin/product/${duplicate.id}`,
+            `${process.env.REACT_APP_API}api/newcart1/admin/product/${duplicateCartItem.id}`,
             {
               method: 'PUT',
               headers: {
@@ -126,7 +124,7 @@ const Products = () => {
                   origin_price: product.origin_price,
                   price: product.price,
                   unit: product.unit,
-                  quantity: duplicate.quantity + 1,
+                  quantity: duplicateCartItem.quantity + 1,
                   category: product.category,
                   imageUrl: product.image
                 }
@@ -208,7 +206,6 @@ const Products = () => {
     <div className="bg">
       <Loader isLoading={isLoading} />
 
-      <Alert alertQueue={alertQueue} setAlertQueue={setAlertQueue} />
       <Container className="custom-padding-top custom-padding-bottom">
         <Row>
           {/* 篩選品項 */}

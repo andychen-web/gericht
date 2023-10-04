@@ -45,20 +45,17 @@ const UserAuth = () => {
   const signIn = async (values) => {
     setIsLoading(true)
     try {
-      const response = await fetch(
-        'https://vue3-course-api.hexschool.io/v2/admin/signin',
-        {
-          method: 'POST',
-          headers: {
-            accept: 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            username: values.email,
-            password: values.password
-          })
-        }
-      )
+      const response = await fetch(`${process.env.REACT_APP_API}admin/signin`, {
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: values.email,
+          password: values.password
+        })
+      })
       const data = await response.json()
       if (data.success) {
         handleAlert('登入成功')
@@ -117,20 +114,17 @@ const UserAuth = () => {
 
   const authorizeCartAccess = async () => {
     try {
-      const response = await fetch(
-        'https://vue3-course-api.hexschool.io/v2/admin/signin',
-        {
-          method: 'POST',
-          headers: {
-            accept: 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            username: 'newandy1@gmail.com',
-            password: `${process.env.REACT_APP_PASSWORD}`
-          })
-        }
-      )
+      const response = await fetch(`${process.env.REACT_APP_API}admin/signin`, {
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: 'newandy1@gmail.com',
+          password: `${process.env.REACT_APP_PASSWORD}`
+        })
+      })
       const data = await response.json()
       authorize(data.token)
       dispatch(setUserToken(data.token))
@@ -141,13 +135,10 @@ const UserAuth = () => {
 
   const authorize = async (token) => {
     try {
-      const res = await fetch(
-        'https://vue3-course-api.hexschool.io/v2/api/user/check',
-        {
-          method: 'POST',
-          headers: { Authorization: token }
-        }
-      )
+      const res = await fetch(`${process.env.REACT_APP_API}api/user/check`, {
+        method: 'POST',
+        headers: { Authorization: token }
+      })
       // eslint-disable-next-line no-unused-vars
       const data = await res.json()
     } catch (error) {

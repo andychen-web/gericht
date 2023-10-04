@@ -42,7 +42,7 @@ const Navigation = () => {
     const fetchCart = async (token) => {
       try {
         const response = await fetch(
-          'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/products/all',
+          `${process.env.REACT_APP_API}api/newcart1/admin/products/all`,
           {
             headers: { Authorization: token },
             method: 'GET'

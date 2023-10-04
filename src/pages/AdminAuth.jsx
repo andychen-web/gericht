@@ -28,7 +28,7 @@ const AdminAuth = () => {
       setIsLoading(true)
       try {
         const response = await fetch(
-          'https://vue3-course-api.hexschool.io/v2/admin/signin',
+          `${process.env.REACT_APP_API}admin/signin`,
           {
             method: 'POST',
             headers: {

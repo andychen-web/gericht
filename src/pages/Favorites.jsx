@@ -25,7 +25,7 @@ const Favorites = () => {
     setIsLoading(true)
     let duplicate
     const res = await fetch(
-      'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/products',
+      `${process.env.REACT_APP_API}api/newcart1/admin/products`,
       {
         method: 'GET',
         headers: {
@@ -47,7 +47,7 @@ const Favorites = () => {
     if (duplicate) {
       try {
         const response = await fetch(
-          `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${duplicate.id}`,
+          `${process.env.REACT_APP_API}api/newcart1/admin/product/${duplicate.id}`,
           {
             method: 'PUT',
             headers: {
@@ -77,7 +77,7 @@ const Favorites = () => {
     } else {
       try {
         const response = await fetch(
-          'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product',
+          `${process.env.REACT_APP_API}api/newcart1/admin/product`,
           {
             method: 'POST',
             headers: {
@@ -113,7 +113,7 @@ const Favorites = () => {
     setIsLoading(true)
     let duplicate
     const res = await fetch(
-      'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/products',
+      `${process.env.REACT_APP_API}api/newcart1/admin/products`,
       {
         method: 'GET',
         headers: {
@@ -137,7 +137,7 @@ const Favorites = () => {
       if (duplicate) {
         try {
           const response = await fetch(
-            `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${duplicate.id}`,
+            `${process.env.REACT_APP_API}api/newcart1/admin/product/${duplicate.id}`,
             {
               method: 'PUT',
               headers: {
@@ -167,7 +167,7 @@ const Favorites = () => {
       } else {
         try {
           const response = await fetch(
-            'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product',
+            `${process.env.REACT_APP_API}api/newcart1/admin/product`,
             {
               method: 'POST',
               headers: {

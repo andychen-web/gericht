@@ -82,7 +82,7 @@ const Cart = () => {
   const putQuantity = async (updatedProduct) => {
     try {
       const response = await fetch(
-        `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${updatedProduct.id}`,
+        `${process.env.REACT_APP_API}api/newcart1/admin/product/${updatedProduct.id}`,
         {
           method: 'PUT',
           headers: {
@@ -119,7 +119,7 @@ const Cart = () => {
     setIsLoading(true)
     try {
       const response = await fetch(
-        'https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/products/all',
+        `${process.env.REACT_APP_API}api/newcart1/admin/products/all`,
         {
           headers: { Authorization: token },
           method: 'GET'
@@ -160,7 +160,7 @@ const Cart = () => {
   const handleRemove = async (id) => {
     try {
       const res = await fetch(
-        `https://vue3-course-api.hexschool.io/v2/api/newcart1/admin/product/${id}`,
+        `${process.env.REACT_APP_API}api/newcart1/admin/product/${id}`,
         {
           headers: { Authorization: token },
           method: 'DELETE'

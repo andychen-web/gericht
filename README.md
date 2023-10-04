@@ -11,21 +11,128 @@
 
 - 以 React.js 和 Bootstrap 打造 RWD
 - 有串接後端 RESTful API
-- 引入 ESlint(standard)
-- 使用 Redux 做狀態管理
-- 使用 vercel 部屬
+- 使用 Redux Toolkit 和 Redux-persist 做狀態管理
 
 ## 功能
 
-- 會員登入系統
-  測試用帳號 newandy1@gmail.com 密碼 newandy1
-- 加入購物車、收藏清單
-- 後台訂單管理系統
+- 會員登入註冊<br/> 
+  1. 測試用帳號 newandy1@gmail.com <br/>
+     測試用密碼 newandy1
+  2. Google 第三方登入
+- 查看從後端取得的產品資訊
+- 加入收藏清單、加入購物車、結帳
+- 後台訂單管理(查看與刪除)，可點選自動填入登入查看
 
+上述頁面切板加功能開發完成，總時程約36個工作天
 
-## 認識作者
+## 重要功能實作說明
+- 會員登入註冊 <br/>
+  1. 使用了redux-persist 儲存 user token，相較於單純用redux store或useContext，能確保不會因為頁面重整或切換頁面時遺失user token 進而將使用者登出 <br/>
+  2. Google第三方登入使用套件 [@react-oauth/google](https://www.npmjs.com/package/@react-oauth/google/v/0.7.3) 搭配sweetalert2顯示成功或失敗訊息
+- 加入購物車
 
-歡迎透過以下連結認識我
+  檢查用戶的購物車裡是否已經有了目前要加入的商品  
+
+  首先查看用戶購物車中是否有與當前產品同名的品項。  
+
+  若有，就把這個商品存到 duplicateCartItem 變數裡，再根據duplicateCartItem的quantity，把購物車既有產品更新；
+  
+  若無，把當前指定的商品直接加入到購物車中
+
+  ```jsx
+   // Products 頁面
+   const addToCart = async (product) => {
+    if (!token) {
+      navigate('/userAuth')
+    } else {
+      setIsLoading(true)
+
+      const res = await fetch(
+        `${process.env.REACT_APP_API}api/newcart1/admin/products`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: token
+          }
+        }
+      )
+      const allCartItems = await res.json()
+      const userCartItems = allCartItems.products.filter(
+        (item) => item.uId === currentUser.id
+      )
+      const duplicateCartItem =
+        userCartItems.length > 0 &&
+        userCartItems.find((item) => item.title === product.title)
+
+      if (duplicateCartItem) {
+        try {
+          const response = await fetch(
+            `${process.env.REACT_APP_API}api/newcart1/admin/product/${duplicateCartItem.id}`,
+            {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: token
+              },
+              body: JSON.stringify({
+                data: {
+                  uId: currentUser.id,
+                  title: product.title,
+                  origin_price: product.origin_price,
+                  price: product.price,
+                  unit: product.unit,
+                  quantity: duplicateCartItem.quantity + 1,
+                  category: product.category,
+                  imageUrl: product.image
+                }
+              })
+            }
+          )
+          const data = await response.json()
+          if (data.success) {
+            handleAlert('已更新購物車')
+          }
+        } catch (error) {
+          handleAlert('加入購物車失敗')
+        }
+      } else {
+        try {
+          const response = await fetch(
+            `${process.env.REACT_APP_API}api/newcart1/admin/product`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: token
+              },
+              body: JSON.stringify({
+                data: {
+                  uId: currentUser.id,
+                  title: product.title,
+                  origin_price: product.origin_price,
+                  price: product.price,
+                  unit: product.unit,
+                  quantity: product.quantity,
+                  category: product.category,
+                  imageUrl: product.image
+                }
+              })
+            }
+          )
+          const data = await response.json()
+          if (data.success) {
+            handleAlert('已新增至購物車')
+            dispatch(setCartUpdate(1))
+          }
+        } catch (error) {
+          handleAlert('加入購物車失敗')
+        }
+      }
+      setIsLoading(false)
+    }
+  }
+  ```
+## 歡迎透過以下連結認識我
 
 - [IT 邦文章](https://ithelp.ithome.com.tw/users/20151785/articles)
 - [個人履歷](https://www.cakeresume.com/andy-792004)

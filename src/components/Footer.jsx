@@ -50,7 +50,7 @@ const Footer = () => {
   }
 
   return (
-    <div className="bg py-5">
+    <footer className="bg pt-5 pb-2">
       <Loader isLoading={isLoading} />
       <Container>
         <Row className="d-center">
@@ -113,7 +113,7 @@ const Footer = () => {
           </Col>
         </Row>
       </Container>
-    </div>
+    </footer>
   )
 }
 

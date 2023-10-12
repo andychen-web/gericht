@@ -16,8 +16,8 @@ const priceSlice = createSlice({
     setShippingFee: (state, action) => {
       state.shippingFee = action.payload
     },
-    setTotal: (state) => {
-      state.total = state.sum + state.shippingFee
+    setTotal: (state, action) => {
+      state.total = action.payload
     }
   }
 })

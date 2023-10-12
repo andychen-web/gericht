@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Footer from '../components/Footer'
 import { BsFillCartFill } from 'react-icons/bs'
 import Loader from '../components/Loader'
 import { useNavigate } from 'react-router-dom'
@@ -55,33 +54,21 @@ const Products = () => {
     e.target.classList.add('clicked')
   }
 
-  const filterdProducts =
+  const filteredProducts =
     products &&
     products.filter((product) => {
-      let priceMatch = false
-      if (priceRange === '全部') {
-        priceMatch = true
-      } else if (priceRange === '$99~$199') {
-        priceMatch = product.price >= 99 && product.price <= 199
-      } else if (priceRange === '$200~$399') {
-        priceMatch = product.price >= 200 && product.price <= 399
-      }
+      const isPriceMatch =
+        priceRange === '全部' ||
+        (priceRange === '$99~$199' &&
+          product.price >= 99 &&
+          product.price <= 199) ||
+        (priceRange === '$200~$399' &&
+          product.price >= 200 &&
+          product.price <= 399)
 
-      let categoryMatch = false
-      if (category === '全部') {
-        categoryMatch = true
-      } else if (category === '燉飯') {
-        categoryMatch = product.category === '燉飯'
-      } else if (category === '義大利麵') {
-        categoryMatch = product.category === '義大利麵'
-      } else if (category === '烤肉') {
-        categoryMatch = product.category === '烤肉'
-      } else if (category === '甜點') {
-        categoryMatch = product.category === '甜點'
-      }
-
-      // return products that match both filters
-      return priceMatch && categoryMatch
+      const isCategoryMatch =
+        category === '全部' || product.category === category
+      return isPriceMatch && isCategoryMatch
     })
 
   const addToCart = async (product) => {
@@ -241,8 +228,8 @@ const Products = () => {
           {/* 展示品項 */}
           <Col md={10}>
             <Row className="gap-3">
-              {filterdProducts &&
-                filterdProducts.map((product, key) => (
+              {filteredProducts &&
+                filteredProducts.map((product, key) => (
                   <Col
                     key={key}
                     xs={8}
@@ -308,7 +295,6 @@ const Products = () => {
           </Col>
         </Row>
       </Container>
-      <Footer />
     </div>
   )
 }

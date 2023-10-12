@@ -7,7 +7,6 @@ import IntroVideo from '../components/IntroVideo'
 import Awards from '../components/Awards'
 import Gallery from '../components/Gallery'
 import Contact from '../components/Contact'
-import Footer from '../components/Footer'
 
 const Home = () => {
   // animation on scroll
@@ -38,7 +37,6 @@ const Home = () => {
       <Awards />
       <Gallery />
       <Contact />
-      <Footer />
     </>
   )
 }

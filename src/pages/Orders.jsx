@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Container from 'react-bootstrap/Container'
 import Loader from '../components/Loader'
-import Footer from '../components/Footer'
 import { AiFillFileText } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -35,7 +34,7 @@ const Orders = () => {
         headers: { apikey: process.env.REACT_APP_ORDER_API_KEY }
       })
       const data = await res.json()
-      data && parseOrders(data)
+      data.length > 0 && parseOrders(data)
     } catch (err) {
       console.log(err)
     }
@@ -71,7 +70,7 @@ const Orders = () => {
   }, [orders])
 
   return (
-    <div className="bg-beige">
+    <main className="bg-beige">
       <Loader isLoading={isLoading} />
       <Container className="custom-padding-top pb-5 d-flex flex-column align-items-center">
         {adminToken ? (
@@ -193,8 +192,7 @@ const Orders = () => {
           </div>
         )}
       </Container>
-      <Footer />
-    </div>
+    </main>
   )
 }
 

@@ -1,7 +1,6 @@
 import React from 'react'
 import Container from 'react-bootstrap/Container'
 import Navigation from '../components/Navigation'
-import Footer from '../components/Footer'
 import { useNavigate } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
@@ -20,14 +19,29 @@ const Order = ({ order }) => {
     },
     { label: '付款狀態', value: '未付款' },
     { label: '付款日期', value: '未付款' },
-    { label: '訂單狀態', value: '確認中' },
-    { label: '出貨日期', value: '未出貨' }
+    { label: '訂單狀態', value: '確認中' }
   ]
+  if (order.takeoutInfo) {
+    orderDetails.push(
+      {
+        label: '預計取餐時間',
+        value: order.pickupTime
+      },
+      { label: '外帶店家', value: order.takeoutInfo.branch }
+    )
+  } else if (order.deliveryLocation) {
+    orderDetails.push(
+      {
+        label: '預計送達時間',
+        value: order.pickupTime
+      },
+      { label: '外送地點', value: order.deliveryLocation }
+    )
+  }
   const buyerDetails = [
     { label: '買家姓名', value: order.name },
     { label: '買家手機', value: order.mobile },
     { label: '買家信箱', value: order.email },
-    { label: '買家地址', value: order.address },
     { label: '買家備註', value: order.message ? order.message : '無' }
   ]
   const productArr = order.cartItems.map((item) => [
@@ -49,9 +63,11 @@ const Order = ({ order }) => {
                 {orderDetails.map((detail, key) => {
                   return (
                     <li key={key} className="p-2 col-lg-6 col-sm-12">
-                      <div className="p-1 flex-between">
-                        <div className="fw-bold">{detail.label}</div>
-                        <div>{detail.value}</div>
+                      <div>
+                        <div>
+                          <div className="fw-bold fs-5">{detail.label}</div>
+                          <div>{detail.value}</div>
+                        </div>
                       </div>
                     </li>
                   )
@@ -129,7 +145,6 @@ const Order = ({ order }) => {
           </button>
         </div>
       </Container>
-      <Footer />
     </div>
   )
 }

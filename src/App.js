@@ -15,13 +15,17 @@ import Order from './components/Order'
 import { useDispatch, useSelector } from 'react-redux'
 import { setProducts } from './slices/productSlice'
 import Navigation from './components/Navigation'
+import PickupMethods from './pages/PickupMethods'
+import Footer from './components/Footer'
+import { setUserToken } from './slices/tokenSlice'
 
 function App() {
   const dispatch = useDispatch()
   const orders = useSelector((state) => state.orderForm.completedOrders)
   const products = useSelector((state) => state.product.productArray)
-
-  const fetchProducts = async () => {
+  const token = useSelector((state) => state.token.token)
+  const currentUser = useSelector((state) => state.user.currentUser)
+  const getProducts = async () => {
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API}api/${process.env.REACT_APP_PATH}/products`,
@@ -36,8 +40,17 @@ function App() {
   }
   useEffect(() => {
     // 加快產品頁面加載速度
-    fetchProducts()
+    getProducts()
   }, [])
+
+  useEffect(() => {
+    if (token) {
+      if (Math.floor(Date.now() / 1000) > currentUser.exp) {
+        dispatch(setUserToken(null))
+      }
+    }
+  }, [token])
+
   return (
     <>
       <Navigation />
@@ -51,6 +64,7 @@ function App() {
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/userAuth" element={<UserAuth />} />
         <Route path="/adminAuth" element={<AdminAuth />} />
+        <Route path="/pickupMethods" element={<PickupMethods />} />
         {orders &&
           orders.map((order) => (
             <Route
@@ -68,6 +82,7 @@ function App() {
             />
           ))}
       </Routes>
+      <Footer />
     </>
   )
 }

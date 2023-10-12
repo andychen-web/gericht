@@ -1,13 +1,12 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import images from '../data/images'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import Container from 'react-bootstrap/Container'
-import { Link } from 'react-router-dom'
 import { setCartItems } from '../slices/cartSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAdminToken, setUserToken } from '../slices/tokenSlice'
-import { Dropdown } from 'react-bootstrap'
+import { NavDropdown } from 'react-bootstrap'
 import { cleanFavorites } from '../slices/favoritesSlice'
 
 const Navigation = () => {
@@ -17,29 +16,9 @@ const Navigation = () => {
   const cartItems = useSelector((state) => state.cart.cartItems)
   const cartUpdateCount = useSelector((state) => state.cart.cartUpdateCount)
   const currentUser = useSelector((state) => state.user.currentUser)
-  const navButton = useRef(null)
-  const linksContainerRef = useRef(null)
-
-  function toggleNav() {
-    navButton.current.classList.toggle('collapsed')
-    linksContainerRef.current.classList.toggle('show')
-  }
-
-  const handleResize = () => {
-    if (window.innerWidth <= 768) {
-      navButton.current.classList.add('collapsed')
-      linksContainerRef.current.classList.remove('show')
-    }
-  }
-  useEffect(() => {
-    window.addEventListener('resize', handleResize)
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
 
   useEffect(() => {
-    const fetchCart = async (token) => {
+    const getCart = async (token) => {
       try {
         const response = await fetch(
           `${process.env.REACT_APP_API}api/newcart1/admin/products/all`,
@@ -52,6 +31,7 @@ const Navigation = () => {
         const newCartItems = []
         for (const key in data.products) {
           newCartItems.push(data.products[key])
+          // console.log(key)
         }
         const matchedCartItems = newCartItems.filter(
           (item) => item.uId === currentUser.id
@@ -63,12 +43,13 @@ const Navigation = () => {
     }
 
     if (token) {
-      fetchCart(token)
+      getCart(token)
     }
   }, [cartUpdateCount])
 
   return (
     <Navbar
+      collapseOnSelect
       bg="black"
       expand="lg"
       variant="dark"
@@ -78,57 +59,73 @@ const Navigation = () => {
         <a href="/" className="w-50">
           <img src={images.gericht} alt="logo" width={'100px'} />
         </a>
-        <button
-          onClick={() => toggleNav()}
-          ref={navButton}
-          className="navbar-toggler"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse
-          ref={linksContainerRef}
+          id="responsive-navbar-nav"
           className="justify-content-end"
         >
           <Nav>
             {adminToken ? null : (
               <>
-                <Link
-                  onClick={() => toggleNav()}
-                  className="custom-link nav-link"
-                  to="/"
-                >
+                <Nav.Link className="custom-link nav-link" href="/">
                   首頁
-                </Link>
-                <Link
-                  onClick={() => toggleNav()}
-                  className="custom-link nav-link"
-                  to="/products"
-                >
-                  產品列表
-                </Link>
-                <Link
-                  onClick={() => toggleNav()}
-                  className="custom-link nav-link"
-                  to="/cart"
-                >
-                  購物車
+                </Nav.Link>
+                <Nav.Link className="custom-link nav-link" href="/products">
+                  美味菜單
+                </Nav.Link>
+                <Nav.Link className="custom-link nav-link" href="/cart">
+                  結帳
                   {token && (
                     <span className="badge badge-danger">
                       {cartItems.length === 0 ? null : cartItems.length}
                     </span>
                   )}
-                </Link>
-                <Link
-                  onClick={() => toggleNav()}
-                  className="custom-link nav-link"
-                  to="/favorites"
-                >
+                </Nav.Link>
+                <Nav.Link className="custom-link nav-link" href="/favorites">
                   我的收藏
-                </Link>
+                </Nav.Link>
+                {token ? (
+                  <Nav.Link
+                    onClick={() => {
+                      dispatch(setUserToken(null))
+                      dispatch(setCartItems([]))
+                      dispatch(cleanFavorites([]))
+                    }}
+                    className="custom-link nav-link"
+                  >
+                    會員登出
+                  </Nav.Link>
+                ) : (
+                  !adminToken && (
+                    <Nav.Link className="custom-link nav-link" href="/userAuth">
+                      會員登入
+                    </Nav.Link>
+                  )
+                )}
               </>
             )}
-
-            <Dropdown>
+            <NavDropdown
+              variant="light"
+              title={<span className="text-white">後台管理</span>}
+            >
+              {adminToken ? (
+                <NavDropdown.Item
+                  variant="light"
+                  onClick={() => {
+                    dispatch(setAdminToken(null))
+                  }}
+                  href="/products"
+                >
+                  管理員登出
+                </NavDropdown.Item>
+              ) : (
+                <NavDropdown.Item href="/adminAuth">
+                  管理員登入
+                </NavDropdown.Item>
+              )}
+              <NavDropdown.Item href="/orders">訂單查詢</NavDropdown.Item>
+            </NavDropdown>
+            {/* <Dropdown>
               <Dropdown.Toggle
                 id="dropdown-custom-components"
                 className="ps-0 pt-2"
@@ -141,7 +138,6 @@ const Navigation = () => {
                   <Dropdown.Item
                     as="button"
                     onClick={() => {
-                      toggleNav()
                       dispatch(setAdminToken(null))
                     }}
                   >
@@ -149,47 +145,16 @@ const Navigation = () => {
                   </Dropdown.Item>
                 ) : (
                   !token && (
-                    <Dropdown.Item
-                      onClick={() => toggleNav()}
-                      as={Link}
-                      to="/adminAuth"
-                    >
+                    <Dropdown.Item as={Link} href="/adminAuth">
                       管理員登入
                     </Dropdown.Item>
                   )
                 )}
-                {token ? (
-                  <Dropdown.Item
-                    as="button"
-                    onClick={() => {
-                      toggleNav()
-                      dispatch(setUserToken(null))
-                      dispatch(setCartItems([]))
-                      dispatch(cleanFavorites([]))
-                    }}
-                  >
-                    會員登出
-                  </Dropdown.Item>
-                ) : (
-                  !adminToken && (
-                    <Dropdown.Item
-                      onClick={() => toggleNav()}
-                      as={Link}
-                      to="/userAuth"
-                    >
-                      會員登入
-                    </Dropdown.Item>
-                  )
-                )}
-                <Dropdown.Item
-                  onClick={() => toggleNav()}
-                  as={Link}
-                  to="/orders"
-                >
+                <Dropdown.Item as={Link} href="/orders">
                   訂單查詢
                 </Dropdown.Item>
               </Dropdown.Menu>
-            </Dropdown>
+            </Dropdown> */}
           </Nav>
         </Navbar.Collapse>
       </Container>

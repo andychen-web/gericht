@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import Footer from '../components/Footer'
+import React, { useEffect, useState } from 'react'
 import Container from 'react-bootstrap/Container'
 import { FaPencilAlt } from 'react-icons/fa'
 import { BsFillCartFill } from 'react-icons/bs'
@@ -9,19 +8,31 @@ import { setOrderForm } from '../slices/orderFormSlice'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import Loader from '../components/Loader'
 
 const Checkout = () => {
   const MySwal = withReactContent(Swal)
+  const [isLoading, setIsLoading] = useState(false)
   const cartItems = useSelector((state) => state.cart.cartItems)
   const sum = useSelector((state) => state.price.sum)
   const token = useSelector((state) => state.token.token)
   const shippingFee = useSelector((state) => state.price.shippingFee)
+  const deliveryLocation = useSelector((state) => state.cart.deliveryLocation)
   const total = useSelector((state) => state.price.total)
   const orderForm = useSelector((state) => state.orderForm.orderFormValue)
   const [step, setStep] = useState(1)
   const [paymentMethod, setPaymentMethod] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  if (!token) {
+    navigate('/userAuth')
+  }
+  useEffect(() => {
+    if (!cartItems.length > 0 && step < 3) {
+      navigate('/cart')
+    }
+  }, [cartItems])
+
   const progressWidth = (step / 3) * 100
   const cleanCart = async (id) => {
     try {
@@ -58,27 +69,31 @@ const Checkout = () => {
       setStep((prevStep) => prevStep + 1)
     }
   }
-  if (step === 3) {
-    //  checkout complete, POST order
-    const requestOptions = {
-      method: 'POST',
-      redirect: 'follow',
-      headers: { apikey: process.env.REACT_APP_ORDER_API_KEY },
-      body: JSON.stringify({
-        ...orderForm,
-        total,
-        cartItems
-      })
+  useEffect(() => {
+    if (token && step === 3) {
+      setIsLoading(true)
+      const requestOptions = {
+        method: 'POST',
+        redirect: 'follow',
+        headers: { apikey: process.env.REACT_APP_ORDER_API_KEY },
+        body: JSON.stringify({
+          ...orderForm,
+          total,
+          cartItems
+        })
+      }
+      fetch('https://api.apilayer.com/form_api/form', requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data)
+          setIsLoading(false)
+          handleAlert('結帳完成')
+          const cartIds = cartItems.map((item) => item.id)
+          cartIds.forEach((id) => cleanCart(id))
+        })
+        .catch((error) => console.log('error', error))
     }
-    fetch('https://api.apilayer.com/form_api/form', requestOptions)
-      .then((response) => response.text())
-      .then((data) => {
-        handleAlert('結帳完成')
-        const cartIds = cartItems.map((item) => item.id)
-        cartIds.forEach((id) => cleanCart(id))
-      })
-      .catch((error) => console.log('error', error))
-  }
+  }, [step])
 
   function showTransferInfo() {
     const transferInfo = document.querySelector('.transfer-info')
@@ -91,6 +106,7 @@ const Checkout = () => {
 
   return (
     <div className="bg">
+      <Loader isLoading={isLoading} />
       <Container className="pt-5">
         <div className="text-white pt-5 text-center">
           <div className="bg-checkout text-white w-100 rounded mb-5 d-flex align-items-center justify-content-center">
@@ -110,10 +126,13 @@ const Checkout = () => {
                   <div>小計:</div>
                   <div>{'NT$' + sum}</div>
                 </div>
-                <div className="h6 flex-between pt-2 text-black">
-                  <div>運費: </div>
-                  <div>{'NT$' + shippingFee}</div>
-                </div>
+                {deliveryLocation && (
+                  <div className="h6 flex-between pt-2 text-black">
+                    <div>運費: </div>
+                    <div>{'NT$' + shippingFee}</div>
+                  </div>
+                )}
+
                 <div className="h4 flex-between border-top pt-2 text-black fs-5">
                   <div>總計</div> <div>{'NT$' + total}</div>
                 </div>
@@ -173,12 +192,22 @@ const Checkout = () => {
                             <td>{orderForm.name}</td>
                           </tr>
                           <tr>
-                            <th>收件人電話</th>
+                            <th>訂購人電話</th>
                             <td>{orderForm.mobile}</td>
                           </tr>
                           <tr>
-                            <th>收件人地址</th>
-                            <td>{orderForm.address}</td>
+                            {orderForm.takeoutInfo && (
+                              <>
+                                <th>訂購取餐分店</th>
+                                <td>{orderForm.takeoutInfo.branch}</td>
+                              </>
+                            )}
+                            {orderForm.deliveryLocation && (
+                              <>
+                                <th>外送地址</th>
+                                <td>{orderForm.deliveryLocation}</td>
+                              </>
+                            )}
                           </tr>
                         </tbody>
                       </table>
@@ -253,10 +282,6 @@ const Checkout = () => {
                             <td>{orderForm.mobile}</td>
                           </tr>
                           <tr>
-                            <th>收件人地址 :</th>
-                            <td>{orderForm.address}</td>
-                          </tr>
-                          <tr>
                             <th>訂購品項 :</th>
                             <td>
                               {cartItems.map((item) => (
@@ -306,7 +331,6 @@ const Checkout = () => {
           </form>
         </div>
       </Container>
-      <Footer />
     </div>
   )
 }

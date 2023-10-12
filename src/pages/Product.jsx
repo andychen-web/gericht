@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Footer from '../components/Footer'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
@@ -21,7 +20,7 @@ const Product = ({ product }) => {
   const dispatch = useDispatch()
   const [alertQueue, setAlertQueue] = useState([])
   const token = useSelector((state) => state.token.token)
-  const cartItems = useSelector((state) => state.cart.cartItems)
+  const currentUser = useSelector((state) => state.user.currentUser)
   const [isLoading, setIsLoading] = useState(false)
   const [quantity, setQuantity] = useState(1)
   const navigate = useNavigate()
@@ -46,94 +45,97 @@ const Product = ({ product }) => {
   }, [product])
 
   const addToCart = async (product, quantity) => {
-    setIsLoading(true)
-    let duplicate
-    const res = await fetch(
-      `${process.env.REACT_APP_API}api/newcart1/admin/products`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: token
-        }
-      }
-    )
-    const updatedProducts = await res.json()
-    const updatedProduct = updatedProducts.products.find(
-      (item) => item.title === product.title
-    )
-    if (updatedProduct) {
-      duplicate = { ...updatedProduct }
-    } else if (cartItems) {
-      duplicate = cartItems.find((item) => item.title === product.title)
-    }
-
-    if (duplicate) {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_API}api/newcart1/admin/product/${duplicate.id}`,
-          {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: token
-            },
-            body: JSON.stringify({
-              data: {
-                title: product.title,
-                origin_price: product.origin_price,
-                price: product.price,
-                unit: product.unit,
-                quantity: duplicate.quantity + quantity,
-                category: product.category,
-                imageUrl: product.image
-              }
-            })
-          }
-        )
-        const data = await response.json()
-        if (data.success) {
-          handleAlert('已更新購物車')
-        }
-      } catch (error) {
-        console.log(error)
-      }
+    if (!token) {
+      navigate('/userAuth')
     } else {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_API}api/newcart1/admin/product`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: token
-            },
-            body: JSON.stringify({
-              data: {
-                title: product.title,
-                origin_price: product.origin_price,
-                price: product.price,
-                unit: product.unit,
-                quantity,
-                category: product.category,
-                imageUrl: product.image
-              }
-            })
-          }
-        )
-        const data = await response.json()
-        if (data.success) {
-          handleAlert('已新增至購物車')
-          dispatch(setCartUpdate(1))
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    setIsLoading(false)
-  }
+      setIsLoading(true)
 
+      const res = await fetch(
+        `${process.env.REACT_APP_API}api/newcart1/admin/products`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: token
+          }
+        }
+      )
+      const allCartItems = await res.json()
+      const userCartItems = allCartItems.products.filter(
+        (item) => item.uId === currentUser.id
+      )
+      const duplicateCartItem =
+        userCartItems.length > 0 &&
+        userCartItems.find((item) => item.title === product.title)
+
+      if (duplicateCartItem) {
+        try {
+          const response = await fetch(
+            `${process.env.REACT_APP_API}api/newcart1/admin/product/${duplicateCartItem.id}`,
+            {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: token
+              },
+              body: JSON.stringify({
+                data: {
+                  uId: currentUser.id,
+                  title: product.title,
+                  origin_price: product.origin_price,
+                  price: product.price,
+                  unit: product.unit,
+                  quantity: duplicateCartItem.quantity + quantity,
+                  category: product.category,
+                  imageUrl: product.image
+                }
+              })
+            }
+          )
+          const data = await response.json()
+          if (data.success) {
+            handleAlert('已更新購物車')
+          }
+        } catch (error) {
+          handleAlert('加入購物車失敗')
+        }
+      } else {
+        try {
+          const response = await fetch(
+            `${process.env.REACT_APP_API}api/newcart1/admin/product`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: token
+              },
+              body: JSON.stringify({
+                data: {
+                  uId: currentUser.id,
+                  title: product.title,
+                  origin_price: product.origin_price,
+                  price: product.price,
+                  unit: product.unit,
+                  quantity,
+                  category: product.category,
+                  imageUrl: product.image
+                }
+              })
+            }
+          )
+          const data = await response.json()
+          if (data.success) {
+            handleAlert('已新增至購物車')
+            dispatch(setCartUpdate(1))
+          }
+        } catch (error) {
+          handleAlert('加入購物車失敗')
+        }
+      }
+      setIsLoading(false)
+    }
+  }
   return (
-    <div className="bg">
+    <main className="bg">
       {<Alert alertQueue={alertQueue} setAlertQueue={setAlertQueue} />}
       <Loader isLoading={isLoading} />
       <Container className="custom-padding-top">
@@ -220,34 +222,35 @@ const Product = ({ product }) => {
         </Row>
         <Col className="text-left mt-3 m-auto product-info">
           <pre className="custom-small-font bg-beige px-5 py-3 rounded">
-            <h5>商品描述</h5>
+            <h5 className="title-border">商品描述</h5>
             {product.description}
-            <p className="text-muted">***溫馨提醒：所有產品須冷藏***</p>
+            <p className="text-muted">
+              *溫馨提醒：所有產品須冷藏*
+            </p>
           </pre>
         </Col>
         <Col className="text-left mt-3 m-auto product-info">
           <div className="bg-beige px-5 py-3 rounded">
-            <h5> 類似商品</h5>
+            <h5 className="title-border"> 類似商品</h5>
             <Row>
               {uniqueRelatedProducts &&
                 uniqueRelatedProducts.map((product) => (
-                  <Col key={product.id} md={4} xs={4} className="mb-4">
+                  <Col key={product.id} md={4} xs={12} className="mb-4">
                     <img
-                      width={'95%'}
+                      width={'150px'}
                       className="rounded cursor-pointer"
                       src={product.image}
                       alt={product.title}
                       onClick={() => navigate(`/product/${product.id}`)}
                     />
-                    <p>{product.title}</p>
+                    <div>{product.title}</div>
                   </Col>
                 ))}
             </Row>
           </div>
         </Col>
       </Container>
-      <Footer />
-    </div>
+    </main>
   )
 }
 

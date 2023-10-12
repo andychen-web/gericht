@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import Footer from '../components/Footer'
 import Loader from '../components/Loader'
 import { setAdminToken, setUserToken } from '../slices/tokenSlice'
 
@@ -78,7 +77,7 @@ const AdminAuth = () => {
     window.scrollTo(0, 0)
   }, [])
   return (
-    <div className="bg">
+    <main className="bg">
       <Loader isLoading={isLoading} />
 
       <Container className="pb-5 custom-padding-top">
@@ -88,7 +87,7 @@ const AdminAuth = () => {
         >
           <h3>管理員登入</h3>
           <span className="text-danger fw-bold">限管理員操作</span>
-          <div className="form-group pb-1 pt-3 custom-small-font">
+          <div className="form-group custom-small-font">
             <label htmlFor="userEmail" className="h5">
               電子信箱
             </label>
@@ -98,6 +97,7 @@ const AdminAuth = () => {
               className="form-control form-control-sm custom-small-font"
               id="userEmail"
               value={email}
+              autoComplete="off"
               onChange={(e) => {
                 setEmail(e.target.value)
                 setIsChecked(false)
@@ -105,7 +105,7 @@ const AdminAuth = () => {
               placeholder="請輸入電子郵件"
             />
           </div>
-          <div className="form-group py-1  custom-small-font">
+          <div className="form-group custom-small-font">
             <label htmlFor="password" className="h5">
               密碼
             </label>
@@ -113,6 +113,7 @@ const AdminAuth = () => {
               type="password"
               name="password"
               id="password"
+              autoComplete="off"
               placeholder="請輸入密碼"
               onChange={(e) => {
                 setPassword(e.target.value)
@@ -135,9 +136,8 @@ const AdminAuth = () => {
             資料送出
           </button>
         </form>
-        <Footer />
       </Container>
-    </div>
+    </main>
   )
 }
 

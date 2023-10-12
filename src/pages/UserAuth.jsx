@@ -6,7 +6,6 @@ import Container from 'react-bootstrap/esm/Container'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
-import Footer from '../components/Footer'
 import Loader from '../components/Loader'
 import { setAdminToken, setUserToken } from '../slices/tokenSlice'
 import { setCurrentUser } from '../slices/userSlice'
@@ -64,8 +63,9 @@ const UserAuth = () => {
         dispatch(
           setCurrentUser({
             id: userInfo.sub,
-            name: userInfo.name ? userInfo.name : '新用戶1',
-            email: userInfo.email
+            name: userInfo.name ? userInfo.name : '新用戶',
+            email: userInfo.email,
+            exp: userInfo.exp
           })
         )
         authorizeCartAccess()
@@ -149,7 +149,7 @@ const UserAuth = () => {
     window.scrollTo(0, 0)
   }, [])
   return (
-    <div className="bg">
+    <main className="bg">
       <Loader isLoading={isLoading} />
 
       <Container className="pb-5 custom-padding-top">
@@ -181,7 +181,7 @@ const UserAuth = () => {
                 登入帳號
               </button>
             )}
-            <div className="form-group pb-1 pt-3 custom-small-font">
+            <div className="form-group custom-small-font">
               <label htmlFor="userEmail" className="h5">
                 電子信箱
               </label>
@@ -190,6 +190,7 @@ const UserAuth = () => {
                 name="email"
                 className="form-control form-control-sm custom-small-font"
                 id="userEmail"
+                autoComplete="off"
                 placeholder="請輸入電子郵件"
               />
               <ErrorMessage
@@ -198,7 +199,7 @@ const UserAuth = () => {
                 className="text-danger custom-small-font"
               />
             </div>
-            <div className="form-group py-1  custom-small-font">
+            <div className="form-group custom-small-font">
               <label htmlFor="password" className="h5">
                 密碼
               </label>
@@ -206,6 +207,7 @@ const UserAuth = () => {
                 type="password"
                 name="password"
                 id="password"
+                autoComplete="off"
                 placeholder="請輸入密碼"
                 className="form-control form-control-sm custom-small-font"
               />
@@ -218,32 +220,30 @@ const UserAuth = () => {
             <button type="submit" className="btn btn-dark mt-2">
               資料送出
             </button>
-            <div className="m-auto py-2 pe-3">
-              {isRegistered && (
-                <GoogleLogin
-                  onSuccess={(credentialResponse) => {
-                    navigate('/products')
-                    const userInfo = jwtDecode(credentialResponse.credential)
-                    dispatch(
-                      setCurrentUser({
-                        id: userInfo.sub,
-                        name: userInfo.name,
-                        email: userInfo.email
-                      })
-                    )
-                    authorizeCartAccess()
-                  }}
-                  onError={() => {
-                    handleAlert('登入失敗')
-                  }}
-                />
-              )}
+            <div className="m-auto py-2 pe-3 google-auth-wrap">
+              <GoogleLogin
+                onSuccess={(credentialResponse) => {
+                  navigate('/products')
+                  const userInfo = jwtDecode(credentialResponse.credential)
+                  dispatch(
+                    setCurrentUser({
+                      id: userInfo.sub,
+                      name: userInfo.name,
+                      email: userInfo.email,
+                      exp: userInfo.exp
+                    })
+                  )
+                  authorizeCartAccess()
+                }}
+                onError={() => {
+                  handleAlert('登入失敗')
+                }}
+              />
             </div>
           </Form>
         </Formik>
       </Container>
-      <Footer />
-    </div>
+    </main>
   )
 }
 

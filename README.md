@@ -22,6 +22,10 @@
   2. 使用Google 第三方登入
 - 商品展示與介紹、加入購物車、結帳
 - 引入Google Maps API，讓用戶選擇在哪間分店取餐
+   <img width="754" alt="image" src="https://github.com/andychen-web/gericht/assets/79246459/fe08ae26-e874-44af-b474-a3366dc45970">
+
+
+
 - 管理收藏清單
 - 後台訂單管理(查看與刪除訂單)，可點選自動填入帳密登入管理員
 

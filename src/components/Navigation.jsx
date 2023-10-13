@@ -31,7 +31,6 @@ const Navigation = () => {
         const newCartItems = []
         for (const key in data.products) {
           newCartItems.push(data.products[key])
-          // console.log(key)
         }
         const matchedCartItems = newCartItems.filter(
           (item) => item.uId === currentUser.id
@@ -125,36 +124,6 @@ const Navigation = () => {
               )}
               <NavDropdown.Item href="/orders">訂單查詢</NavDropdown.Item>
             </NavDropdown>
-            {/* <Dropdown>
-              <Dropdown.Toggle
-                id="dropdown-custom-components"
-                className="ps-0 pt-2"
-              >
-                帳號管理
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu>
-                {adminToken ? (
-                  <Dropdown.Item
-                    as="button"
-                    onClick={() => {
-                      dispatch(setAdminToken(null))
-                    }}
-                  >
-                    管理員登出
-                  </Dropdown.Item>
-                ) : (
-                  !token && (
-                    <Dropdown.Item as={Link} href="/adminAuth">
-                      管理員登入
-                    </Dropdown.Item>
-                  )
-                )}
-                <Dropdown.Item as={Link} href="/orders">
-                  訂單查詢
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown> */}
           </Nav>
         </Navbar.Collapse>
       </Container>

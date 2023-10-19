@@ -3,14 +3,15 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { BsFillCartFill } from 'react-icons/bs'
-import Loader from '../components/Loader'
+import Loader from '../../components/Loader'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { setCartUpdate } from '../slices/cartSlice'
-import { setFavorites } from '../slices/favoritesSlice'
+import { setCartUpdate } from '../../slices/cartSlice'
+import { setFavorites } from '../../slices/favoritesSlice'
 import { FaRegHeart, FaHeart } from 'react-icons/fa'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import { setProducts } from '../../slices/productSlice'
 
 const Products = () => {
   const products = useSelector((state) => state.product.productArray)
@@ -25,6 +26,24 @@ const Products = () => {
   const priceRangeArr = ['全部', '$99~$199', '$200~$399']
   const favorites = useSelector((state) => state.favorite.favoriteList)
   const MySwal = withReactContent(Swal)
+  const getProducts = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API}api/${process.env.REACT_APP_PATH}/products`,
+        { method: 'GET' }
+      )
+      const data = await response.json()
+      const availableProducts = data.products.filter(
+        (product) => product.category !== '下架'
+      )
+      dispatch(setProducts(availableProducts))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    getProducts()
+  }, [])
 
   const handleLike = (product) => {
     if (!token) {
@@ -113,7 +132,7 @@ const Products = () => {
                   unit: product.unit,
                   quantity: duplicateCartItem.quantity + 1,
                   category: product.category,
-                  imageUrl: product.image
+                  image: product.image
                 }
               })
             }
@@ -144,7 +163,7 @@ const Products = () => {
                   unit: product.unit,
                   quantity: product.quantity,
                   category: product.category,
-                  imageUrl: product.image
+                  image: product.image
                 }
               })
             }

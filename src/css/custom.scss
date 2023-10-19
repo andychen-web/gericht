@@ -424,7 +424,20 @@ pre {
 .react-datepicker__time-list {
   min-width: 90px;
 }
-// userAuth styling
+// userAuth page styling
 .google-auth-wrap iframe {
   max-width: 230px;
+}
+// admin orders page styling
+.page-link.disabled {
+  background-color: #fff;
+}
+// 後台頁面
+@media (max-width: $md) {
+  .border-sm-none {
+    border: none !important;
+  }
+  .mw-sm {
+    max-width: 5rem;
+  }
 }

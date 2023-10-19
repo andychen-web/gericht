@@ -3,7 +3,11 @@ import images from '../data/images'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import Container from 'react-bootstrap/Container'
-import { setCartItems } from '../slices/cartSlice'
+import {
+  setCartItems,
+  setDeliveryLocation,
+  setTakeoutInfo
+} from '../slices/cartSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAdminToken, setUserToken } from '../slices/tokenSlice'
 import { NavDropdown } from 'react-bootstrap'
@@ -64,14 +68,14 @@ const Navigation = () => {
           className="justify-content-end"
         >
           <Nav>
+            <Nav.Link className="custom-link nav-link" href="/">
+              首頁
+            </Nav.Link>
+            <Nav.Link className="custom-link nav-link" href="/products">
+              美味菜單
+            </Nav.Link>
             {adminToken ? null : (
               <>
-                <Nav.Link className="custom-link nav-link" href="/">
-                  首頁
-                </Nav.Link>
-                <Nav.Link className="custom-link nav-link" href="/products">
-                  美味菜單
-                </Nav.Link>
                 <Nav.Link className="custom-link nav-link" href="/cart">
                   結帳
                   {token && (
@@ -89,6 +93,8 @@ const Navigation = () => {
                       dispatch(setUserToken(null))
                       dispatch(setCartItems([]))
                       dispatch(cleanFavorites([]))
+                      dispatch(setTakeoutInfo(null))
+                      dispatch(setDeliveryLocation(null))
                     }}
                     className="custom-link nav-link"
                   >
@@ -108,21 +114,28 @@ const Navigation = () => {
               title={<span className="text-white">後台管理</span>}
             >
               {adminToken ? (
-                <NavDropdown.Item
-                  variant="light"
-                  onClick={() => {
-                    dispatch(setAdminToken(null))
-                  }}
-                  href="/products"
-                >
-                  管理員登出
-                </NavDropdown.Item>
+                <>
+                  <NavDropdown.Item
+                    variant="light"
+                    onClick={() => {
+                      dispatch(setAdminToken(null))
+                    }}
+                    href="/products"
+                  >
+                    管理員登出
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/admin/orders">
+                    訂單管理
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/admin/products">
+                    商品管理
+                  </NavDropdown.Item>
+                </>
               ) : (
                 <NavDropdown.Item href="/adminAuth">
                   管理員登入
                 </NavDropdown.Item>
               )}
-              <NavDropdown.Item href="/orders">訂單查詢</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

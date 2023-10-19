@@ -20,7 +20,17 @@ const orderFormSlice = createSlice({
       state.orderFormValue = action.payload
     },
     setCompletedOrders: (state, action) => {
-      state.completedOrders = action.payload
+      let updatedOrder
+      if (action.payload.legnth === 1) {
+        updatedOrder = state.completedOrders.filter(
+          (order) => order.id === action.payload.id
+        )
+        if (updatedOrder) {
+          console.log(updatedOrder.current)
+        }
+      } else {
+        state.completedOrders = action.payload
+      }
     }
   }
 })

@@ -5,10 +5,10 @@ import Col from 'react-bootstrap/Col'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { setFavorites } from '../slices/favoritesSlice'
-import { setCartUpdate } from '../slices/cartSlice'
-import Loader from '../components/Loader'
-import Alert from '../components/Alert'
+import { setFavorites } from '../../slices/favoritesSlice'
+import { setCartUpdate } from '../../slices/cartSlice'
+import Loader from '../../components/Loader'
+import Alert from '../../components/Alert'
 import { BsFillCartFill } from 'react-icons/bs'
 import { FaRegHeart, FaHeart } from 'react-icons/fa'
 
@@ -224,16 +224,14 @@ const Product = ({ product }) => {
           <pre className="custom-small-font bg-beige px-5 py-3 rounded">
             <h5 className="title-border">商品描述</h5>
             {product.description}
-            <p className="text-muted">
-              *溫馨提醒：所有產品須冷藏*
-            </p>
+            <p className="text-muted">*溫馨提醒：所有產品須冷藏*</p>
           </pre>
         </Col>
         <Col className="text-left mt-3 m-auto product-info">
           <div className="bg-beige px-5 py-3 rounded">
             <h5 className="title-border"> 類似商品</h5>
             <Row>
-              {uniqueRelatedProducts &&
+              {uniqueRelatedProducts.length > 0 &&
                 uniqueRelatedProducts.map((product) => (
                   <Col key={product.id} md={4} xs={12} className="mb-4">
                     <img

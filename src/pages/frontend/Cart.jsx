@@ -1,4 +1,3 @@
-import * as Yup from 'yup'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import Col from 'react-bootstrap/Col'
@@ -9,18 +8,18 @@ import Table from 'react-bootstrap/Table'
 import { BsFillCartFill, BsFillTrash3Fill } from 'react-icons/bs'
 import { FaPencilAlt } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
-import { setCartItems, updateItemQuantity } from '../slices/cartSlice'
 import { useNavigate } from 'react-router-dom'
-import Alert from '../components/Alert'
-import Loader from '../components/Loader'
-
-import { setOrderForm } from '../slices/orderFormSlice'
-import { setShippingFee, setSum, setTotal } from '../slices/priceSlice'
-
-import zhTW from 'date-fns/locale/zh-TW'
-import DatePicker, { registerLocale } from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
+import * as Yup from 'yup'
+import Alert from '../../components/Alert'
+import Loader from '../../components/Loader'
+import { setCartItems, updateItemQuantity } from '../../slices/cartSlice'
+import { setOrderForm } from '../../slices/orderFormSlice'
+import { setShippingFee, setSum, setTotal } from '../../slices/priceSlice'
 import { getHours, setHours, setMinutes } from 'date-fns'
+// import zhTW from 'date-fns/locale/zh-TW'
+// import DatePicker, { registerLocale } from 'react-datepicker'
+import DatePicker from 'react-datepicker' // mtest
+import 'react-datepicker/dist/react-datepicker.css'
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -226,8 +225,6 @@ const Cart = () => {
   } else {
     selectedTime = null
   }
-
-  registerLocale('zh-TW', zhTW)
 
   const [time, setTime] = useState(
     setHours(setMinutes(new Date(), 0), selectedTime)

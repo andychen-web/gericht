@@ -6,9 +6,9 @@ import Container from 'react-bootstrap/esm/Container'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
-import Loader from '../components/Loader'
-import { setAdminToken, setUserToken } from '../slices/tokenSlice'
-import { setCurrentUser } from '../slices/userSlice'
+import Loader from '../../components/Loader'
+import { setAdminToken, setUserToken } from '../../slices/tokenSlice'
+import { setCurrentUser } from '../../slices/userSlice'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
@@ -47,7 +47,6 @@ const UserAuth = () => {
       const response = await fetch(`${process.env.REACT_APP_API}admin/signin`, {
         method: 'POST',
         headers: {
-          accept: 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -117,7 +116,6 @@ const UserAuth = () => {
       const response = await fetch(`${process.env.REACT_APP_API}admin/signin`, {
         method: 'POST',
         headers: {
-          accept: 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({

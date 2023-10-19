@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import Loader from '../components/Loader'
-import { setAdminToken, setUserToken } from '../slices/tokenSlice'
+import Loader from '../../components/Loader'
+import { setAdminToken, setUserToken } from '../../slices/tokenSlice'
 
 const AdminAuth = () => {
   const MySwal = withReactContent(Swal)
@@ -31,7 +31,6 @@ const AdminAuth = () => {
           {
             method: 'POST',
             headers: {
-              accept: 'application/json',
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -49,7 +48,7 @@ const AdminAuth = () => {
           handleAlert('登入成功')
           dispatch(setAdminToken(data.token))
           dispatch(setUserToken(null))
-          setTimeout(() => navigate('/orders'), 1500)
+          setTimeout(() => navigate('/admin/orders'), 1500)
         } else {
           handleAlert('登入失敗')
         }
@@ -130,7 +129,7 @@ const AdminAuth = () => {
               onChange={(e) => autoFill(e)}
               id="autoFill"
             />
-            <label htmlFor="autoFill">自動填入</label>
+            <label htmlFor="autoFill">自動填入測試帳密</label>
           </div>
           <button type="submit" className="btn btn-dark mt-2">
             資料送出

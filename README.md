@@ -1,4 +1,5 @@
 # Gericht 訂餐網站
+# Gericht 訂餐網站
 
 - [線上觀看連結](https://gericht-rwd.vercel.app/)
 
@@ -11,7 +12,9 @@
 
 - 以 React.js 和 Bootstrap 打造 RWD
 - 串接後端 RESTful API
+- 串接後端 RESTful API
 - 使用 Redux Toolkit 和 Redux-persist 做狀態管理
+- Google Maps API
 - Google Maps API
 
 ## 功能

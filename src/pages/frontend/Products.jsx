@@ -216,7 +216,7 @@ const Products = () => {
         <Row>
           {/* 篩選品項 */}
           <Col md={2} className="filter-max-width text-center">
-            <label className="h4 special-text fw-bold">種類</label>
+            <div className="h4 special-text fw-bold">種類</div>
             <ul className="category-wrap bg-dark list-unstyled border">
               {categoryTypes.map((categoryType, key) => (
                 <li key={key}>
@@ -230,7 +230,7 @@ const Products = () => {
               ))}
             </ul>
 
-            <label className="h4 special-text fw-bold">價格區間</label>
+            <div className="h4 special-text fw-bold">價格區間</div>
             <ul className="bg-dark list-unstyled border">
               {priceRangeArr.map((priceRange, key) => (
                 <li key={key}>

@@ -60,8 +60,9 @@ const AdminOrders = () => {
         }
       )
       const data = await res.json()
-      console.log(data)
-      getOrders()
+      if (data.success) {
+        getOrders()
+      }
     } catch (err) {
       console.log(err)
     }

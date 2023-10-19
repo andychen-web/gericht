@@ -17,8 +17,8 @@
 ## 功能
 
 - 會員登入註冊<br/>
-  1. 測試用會員帳號 newandy1@gmail.com <br/>
-     測試用密碼 newandy1
+  1. 測試用會員帳號 test@foo.com <br/>
+     測試用密碼 mytest
   2. 使用Google 第三方登入
 - 商品展示與介紹、加入購物車、結帳
 - 引入Google Maps API，讓用戶選擇在哪間分店取餐

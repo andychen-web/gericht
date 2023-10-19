@@ -492,4 +492,17 @@ pre {
 
 .google-auth-wrap iframe {
   max-width: 230px;
+}
+
+.page-link.disabled {
+  background-color: #fff;
+}
+
+@media (max-width: 768px) {
+  .border-sm-none {
+    border: none !important;
+  }
+  .mw-sm {
+    max-width: 5rem;
+  }
 }/*# sourceMappingURL=custom.css.map */

@@ -1,4 +1,3 @@
-import * as Yup from 'yup'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React, { useEffect, useState } from 'react'
 import Col from 'react-bootstrap/Col'
@@ -9,18 +8,16 @@ import Table from 'react-bootstrap/Table'
 import { BsFillCartFill, BsFillTrash3Fill } from 'react-icons/bs'
 import { FaPencilAlt } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
-import { setCartItems, updateItemQuantity } from '../slices/cartSlice'
 import { useNavigate } from 'react-router-dom'
-import Alert from '../components/Alert'
-import Loader from '../components/Loader'
-
-import { setOrderForm } from '../slices/orderFormSlice'
-import { setShippingFee, setSum, setTotal } from '../slices/priceSlice'
-
-import zhTW from 'date-fns/locale/zh-TW'
-import DatePicker, { registerLocale } from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
+import * as Yup from 'yup'
+import Alert from '../../components/Alert'
+import Loader from '../../components/Loader'
+import { setCartItems, updateItemQuantity } from '../../slices/cartSlice'
+import { setOrderForm } from '../../slices/orderFormSlice'
+import { setShippingFee, setSum, setTotal } from '../../slices/priceSlice'
 import { getHours, setHours, setMinutes } from 'date-fns'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -51,9 +48,10 @@ const Cart = () => {
     paymentMethod: ''
   }
   let updatedProduct
-  const sum =
-    Array.isArray(cartItems) &&
-    cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
+  const sum = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  )
 
   let shippingFee = (sum / 20).toFixed(0)
   shippingFee = Number(shippingFee)
@@ -148,8 +146,8 @@ const Cart = () => {
           method: 'DELETE'
         }
       )
-      // eslint-disable-next-line no-unused-vars
       const data = await res.json()
+      console.log(data)
       getCart(token)
     } catch (err) {
       console.log(err)
@@ -226,8 +224,6 @@ const Cart = () => {
   } else {
     selectedTime = null
   }
-
-  registerLocale('zh-TW', zhTW)
 
   const [time, setTime] = useState(
     setHours(setMinutes(new Date(), 0), selectedTime)
@@ -397,7 +393,7 @@ const Cart = () => {
                               name="pickupTime"
                               className="w-50 p-1 rounded"
                               closeOnScroll={true}
-                              locale="zh-TW"
+                              id="pickupTime"
                               selected={time}
                               showTimeSelect
                               timeCaption="時段"
@@ -450,7 +446,7 @@ const Cart = () => {
             </Col>
           </Row>
           {showCheckout && (
-            <Modal show={showCheckout}>
+            <Modal centered show={showCheckout}>
               <Formik
                 initialValues={initFormValues}
                 validationSchema={validationSchema}
@@ -472,6 +468,7 @@ const Cart = () => {
                         name="email"
                         className="form-control form-control-sm custom-small-font"
                         id="userEmail"
+                        autoComplete="on"
                         placeholder="請輸入訂購人電子郵件"
                       />
                       <ErrorMessage
@@ -482,14 +479,15 @@ const Cart = () => {
                     </div>
                     <div className="form-row">
                       <div className="form-group col-md-">
-                        <label htmlFor="username">
+                        <label htmlFor="userName">
                           姓名
                           <i className="text-danger">*</i>
                         </label>
                         <Field
                           type="text"
                           name="name"
-                          id="username"
+                          id="userName"
+                          autoComplete="on"
                           className="form-control form-control-sm custom-small-font"
                           placeholder="請輸入訂購人姓名"
                         />
@@ -500,14 +498,14 @@ const Cart = () => {
                         />
                       </div>
                       <div className="form-group col-md-7">
-                        <label htmlFor="usertel">
+                        <label htmlFor="userTel">
                           電話號碼
                           <i className="text-danger">*</i>
                         </label>
                         <Field
                           type="text"
                           name="mobile"
-                          id="usertel"
+                          id="userTel"
                           className="form-control custom-small-font"
                           placeholder="請輸入訂購人聯絡電話"
                         />

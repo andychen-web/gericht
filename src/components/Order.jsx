@@ -1,26 +1,71 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Container from 'react-bootstrap/Container'
-import Navigation from '../components/Navigation'
+import Loader from './Loader'
 import { useNavigate } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
+import { setCompletedOrders } from '../slices/orderFormSlice'
 
 const Order = ({ order }) => {
   Order.propTypes = {
     order: PropTypes.object
   }
+  const [isUpdate, setIsUpdate] = useState(false)
+  const dispatch = useDispatch()
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const orderDetails = [
-    { label: '訂單編號', value: order.serial },
     { label: '訂購人', value: order.name },
     { label: '訂單金額', value: 'NT$' + order.total },
     {
       label: '付款方式',
-      value: order.paymentMethod === 'cash' ? '貨到付款' : '銀行轉帳'
+      value: order.paymentMethod
     },
-    { label: '付款狀態', value: '未付款' },
-    { label: '付款日期', value: '未付款' },
-    { label: '訂單狀態', value: '確認中' }
+    { label: '訂單狀態', value: order.orderStatus }
   ]
+  const updateOrderStatus = async (newStatus) => {
+    setIsLoading(true)
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_CUSTOM_API}/orders/${order._id}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${process.env.REACT_APP_ORDER_API_KEY}`
+          },
+          body: JSON.stringify({ orderStatus: newStatus })
+        }
+      )
+      const data = await res.json()
+      if (data.success) {
+        setIsUpdate(true)
+      }
+    } catch (err) {
+      console.log(err)
+    }
+    setIsLoading(false)
+  }
+  const getAllOrders = async () => {
+    try {
+      const res = await fetch(`${process.env.REACT_APP_CUSTOM_API}/orders`, {
+        method: 'GET',
+        redirect: 'follow',
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_ORDER_API_KEY}`
+        }
+      })
+      const data = await res.json()
+      dispatch(setCompletedOrders(data.orders))
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  if (isUpdate) {
+    getAllOrders()
+    setIsUpdate(false)
+  }
+
   if (order.takeoutInfo) {
     orderDetails.push(
       {
@@ -53,7 +98,7 @@ const Order = ({ order }) => {
 
   return (
     <div className="bg-beige">
-      <Navigation />
+      <Loader isLoading={isLoading} />
       <Container className="custom-padding-top">
         <div className="row d-center mb-1 ">
           <div className="col-md-5">
@@ -72,6 +117,30 @@ const Order = ({ order }) => {
                     </li>
                   )
                 })}
+                <div className="d-flex justify-content-start mt-3">
+                  <button
+                    className={`cursor-pointer btn btn-success ${
+                      order.orderStatus === '已取餐' ||
+                      order.orderStatus === '已取消'
+                        ? 'd-none'
+                        : ''
+                    }`}
+                    onClick={() => updateOrderStatus('已取餐')}
+                  >
+                    確認已取餐
+                  </button>
+                  <button
+                    className={`ms-2 cursor-pointer btn btn-danger ${
+                      order.orderStatus === '已取餐' ||
+                      order.orderStatus === '已取消'
+                        ? 'd-none'
+                        : ''
+                    }`}
+                    onClick={() => updateOrderStatus('已取消')}
+                  >
+                    取消訂單
+                  </button>
+                </div>
               </ul>
             </div>
             <h4 className="fw-bold mb-3">買家資訊</h4>
@@ -138,7 +207,7 @@ const Order = ({ order }) => {
         </div>
         <div className="d-center">
           <button
-            onClick={() => navigate('/orders')}
+            onClick={() => navigate('/admin/orders')}
             className="cursor-pointer custom-btn mb-5"
           >
             返回列表

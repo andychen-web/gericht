@@ -3,12 +3,11 @@ import Container from 'react-bootstrap/Container'
 import { FaPencilAlt } from 'react-icons/fa'
 import { BsFillCartFill } from 'react-icons/bs'
 import { Col } from 'react-bootstrap'
-import { useSelector, useDispatch } from 'react-redux'
-import { setOrderForm } from '../slices/orderFormSlice'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import Loader from '../components/Loader'
+import Loader from '../../components/Loader'
 
 const Checkout = () => {
   const MySwal = withReactContent(Swal)
@@ -22,7 +21,6 @@ const Checkout = () => {
   const orderForm = useSelector((state) => state.orderForm.orderFormValue)
   const [step, setStep] = useState(1)
   const [paymentMethod, setPaymentMethod] = useState('')
-  const dispatch = useDispatch()
   const navigate = useNavigate()
   if (!token) {
     navigate('/userAuth')
@@ -65,7 +63,6 @@ const Checkout = () => {
       (step === 2) &
       (cashOnDeliveryInput.checked || transferInput.checked)
     ) {
-      dispatch(setOrderForm({ ...orderForm, paymentMethod }))
       setStep((prevStep) => prevStep + 1)
     }
   }
@@ -74,20 +71,26 @@ const Checkout = () => {
       setIsLoading(true)
       const requestOptions = {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.REACT_APP_ORDER_API_KEY}`
+        },
         redirect: 'follow',
-        headers: { apikey: process.env.REACT_APP_ORDER_API_KEY },
         body: JSON.stringify({
           ...orderForm,
           total,
-          cartItems
+          cartItems,
+          paymentMethod,
+          orderStatus: '未付款'
         })
       }
-      fetch('https://api.apilayer.com/form_api/form', requestOptions)
+      fetch(`${process.env.REACT_APP_CUSTOM_API}/orders/order`, requestOptions)
         .then((response) => response.json())
         .then((data) => {
-          console.log(data)
+          if (data) {
+            handleAlert('結帳完成')
+          }
           setIsLoading(false)
-          handleAlert('結帳完成')
           const cartIds = cartItems.map((item) => item.id)
           cartIds.forEach((id) => cleanCart(id))
         })
@@ -105,7 +108,7 @@ const Checkout = () => {
   }
 
   return (
-    <div className="bg">
+    <main className="bg">
       <Loader isLoading={isLoading} />
       <Container className="pt-5">
         <div className="text-white pt-5 text-center">
@@ -198,7 +201,7 @@ const Checkout = () => {
                           <tr>
                             {orderForm.takeoutInfo && (
                               <>
-                                <th>訂購取餐分店</th>
+                                <th>取餐門市</th>
                                 <td>{orderForm.takeoutInfo.branch}</td>
                               </>
                             )}
@@ -226,7 +229,7 @@ const Checkout = () => {
                             value="cash"
                             onClick={() => {
                               hideTransferInfo()
-                              setPaymentMethod('cash')
+                              setPaymentMethod('取貨付款')
                             }}
                           />
                           <label htmlFor="cashOnDelivery">取貨付款</label>
@@ -239,7 +242,7 @@ const Checkout = () => {
                             value="transfer"
                             onClick={() => {
                               showTransferInfo()
-                              setPaymentMethod('transfer')
+                              setPaymentMethod('銀行轉帳')
                             }}
                           />
                           <label htmlFor="transfer">銀行轉帳</label>
@@ -331,7 +334,7 @@ const Checkout = () => {
           </form>
         </div>
       </Container>
-    </div>
+    </main>
   )
 }
 

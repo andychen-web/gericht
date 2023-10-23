@@ -7,12 +7,23 @@ import tokenReducer from './slices/tokenSlice'
 import userReducer from './slices/userSlice'
 import favoritesReducer from './slices/favoritesSlice'
 import storage from 'redux-persist/lib/storage'
-import { persistReducer, persistStore } from 'redux-persist'
-
+import { persistReducer, persistStore, createMigrate } from 'redux-persist'
+const migrations = {
+  2: (state) => {
+    return {
+      ...state,
+      orderForm: {
+        ...state.orderForm,
+        completedOrders: []
+      }
+    }
+  }
+}
 const persistConfig = {
   key: 'root',
-  version: 1,
-  storage
+  version: 2,
+  storage,
+  migrate: createMigrate(migrations)
 }
 const reducer = combineReducers({
   cart: cartReducer,

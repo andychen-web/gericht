@@ -9,6 +9,7 @@ import { setDeliveryLocation, setTakeoutInfo } from '../../slices/cartSlice'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import Loader from '../../components/Loader'
 
 const PickupMethods = () => {
   const MySwal = withReactContent(Swal)
@@ -27,48 +28,43 @@ const PickupMethods = () => {
   const [city, setCity] = useState('')
   const [district, setDistrict] = useState('')
   const [districts, setDistricts] = useState([])
-  const [isShopShown, setIsShopShown] = useState(false)
-  const [shopDetail, setShopDetail] = useState({ lat: 25, lng: 121.5 })
-  const { branch, address } = shopDetail
+  const [shownShopIndex, setShownShopIndex] = useState(null)
+  const [shopDetail, setShopDetail] = useState([])
   const [deliveryAddress, setDeliveryAddress] = useState('')
-  const cityToDistricts = {
-    台北市: ['信義區', '中山區'],
-    新北市: ['板橋區', '永和區'],
-    基隆市: ['中正區']
-  }
-  // 範例座標，可換成實際店家座標
-  const shopInfo = {
-    信義區: {
-      address: '台北市信義區美食路1號',
-      branch: '台北信義店',
-      lat: 25.03367,
-      lng: 121.5644
-    },
-    中山區: {
-      address: '台北市中山區美食路1號',
-      branch: '台北中山店',
-      lat: 25.066,
-      lng: 121.5226
-    },
-    板橋區: {
-      address: '新北市板橋區美食路1號',
-      branch: '新北板橋店',
-      lat: 25.00858,
-      lng: 121.46018
-    },
-    永和區: {
-      address: '新北市永和區美食路1號',
-      branch: '新北永和店',
-      lat: 25.0076,
-      lng: 121.516
-    },
-    中正區: {
-      address: '基隆市中正區美食路1號',
-      branch: '基隆中正店',
-      lat: 25.15,
-      lng: 121.7718242
+  const [shopsInfo, setShopsInfo] = useState({})
+  const [cityToDistricts, setCityToDistricts] = useState({})
+  const [isLoading, setIsLoading] = useState(false)
+  async function getShops() {
+    setIsLoading(true)
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_CUSTOM_API}/shops`,
+        {
+          method: 'GET'
+        }
+      )
+      const data = await response.json()
+      // set city to district
+      const cityToDistrict = {}
+      data.cityToDistricts.forEach((item) => {
+        cityToDistrict[item.city] = item.districts
+      })
+      setCityToDistricts(cityToDistrict)
+
+      // set shops info
+      const shopsInfo = {}
+      data.shopsInfo.forEach((value) => {
+        shopsInfo[value.district] = value.shops
+      })
+      setShopsInfo(shopsInfo)
+    } catch (error) {
+      console.error(error)
     }
+    setIsLoading(false)
   }
+  useEffect(() => {
+    getShops()
+  }, [])
   const handleCityChange = (e) => {
     setDistricts(cityToDistricts[e.target.value])
     setCity(e.target.value)
@@ -77,15 +73,24 @@ const PickupMethods = () => {
     setDistrict('00')
   }, [city])
   const handleDistrictChange = (e) => {
-    if (e.target.value) {
-      setShopDetail({
-        lat: shopInfo[e.target.value].lat,
-        lng: shopInfo[e.target.value].lng,
-        branch: shopInfo[e.target.value].branch,
-        address: shopInfo[e.target.value].address
-      })
-      setDistrict(e.target.value)
+    const district = e.target.value
+    if (shopsInfo[district]) {
+      if (shopsInfo[district].length > 1) {
+        const detailedShops = shopsInfo[district].map((shop) => {
+          return {
+            lat: shop.lat,
+            lng: shop.lng,
+            branch: shop.branch,
+            address: shop.address
+          }
+        })
+        setShopDetail(detailedShops)
+      } else if (shopsInfo[district].length === 1) {
+        setShopDetail([shopsInfo[district][0]])
+      }
     }
+
+    setDistrict(district)
   }
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -105,6 +110,7 @@ const PickupMethods = () => {
   return (
     <main className="bg">
       {/* 取餐選項 */}
+      <Loader isLoading={isLoading} />
       <div className="container custom-padding-top">
         <div className="row d-flex justify-content-center py-3 fs-5 px-2">
           <a
@@ -148,9 +154,11 @@ const PickupMethods = () => {
                       onChange={(e) => handleCityChange(e)}
                     >
                       <option value="">-縣市-</option>
-                      <option value="台北市">台北市</option>
-                      <option value="新北市">新北市</option>
-                      <option value="基隆市">基隆市</option>
+                      {Object.keys(cityToDistricts).map((city, key) => (
+                        <option key={key} value={city}>
+                          {city}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -177,62 +185,151 @@ const PickupMethods = () => {
               <div>載入中...</div>
             ) : (
               <GoogleMap
-                zoom={shopDetail.lat !== 25 ? 20 : 10}
-                center={{ lat: shopDetail.lat, lng: shopDetail.lng }}
+                zoom={shopDetail.length > 0 ? 15 : 10}
+                center={
+                  shopDetail.length > 0
+                    ? {
+                        lat: shopDetail[0].lat,
+                        lng: shopDetail[0].lng
+                      }
+                    : {
+                        lat: 25,
+                        lng: 121.5
+                      }
+                }
                 mapContainerClassName="map-frame"
               >
-                {shopDetail.lat !== 25 ? (
-                  <Marker
-                    onClick={() => setIsShopShown((prevState) => !prevState)}
-                    position={{ lat: shopDetail.lat, lng: shopDetail.lng }}
-                  />
-                ) : null}
-                <Modal show={isShopShown} centered>
-                  <Modal.Header>
-                    <Modal.Title>
-                      <div>
-                        <span> 分店</span>
-                        <button
-                          onClick={() => {
-                            setIsShopShown(false)
-                          }}
-                          className="btn fw-bold position-absolute end-0 pe-3"
-                        >
-                          X
-                        </button>
-                      </div>
-                      <div className="fw-bold fs-5">{shopDetail.branch}</div>
-                    </Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <div>
-                      <div>
-                        <FaLocationDot />
-                        {shopDetail.address}
-                      </div>
-                      <div>
-                        <a
-                          className="text-decoration-none ps-3"
-                          href="tel:02+12345678"
-                        >
-                          <span className="text-black">(02)1234-5678</span>
-                        </a>
-                      </div>
-                    </div>
-                  </Modal.Body>
-                  <Modal.Footer className="d-flex justify-content-center">
-                    <button
-                      className="custom-btn"
+                {shopDetail.length > 1 &&
+                  shopDetail.map((shop, index) => (
+                    <Marker
+                      key={index}
                       onClick={() => {
-                        dispatch(setDeliveryLocation(null))
-                        dispatch(setTakeoutInfo({ branch, address }))
-                        navigate('/cart')
+                        setShownShopIndex(index)
                       }}
-                    >
-                      預約
-                    </button>
-                  </Modal.Footer>
-                </Modal>
+                      position={{
+                        lat: shop.lat,
+                        lng: shop.lng
+                      }}
+                    />
+                  ))}
+                {shopDetail.length === 1 && (
+                  <Marker
+                    onClick={() => setShownShopIndex(0)}
+                    position={{
+                      lat: shopDetail[0].lat,
+                      lng: shopDetail[0].lng
+                    }}
+                  />
+                )}
+                {shopDetail.length > 1 &&
+                  shopDetail.map((shop, index) => (
+                    <Modal key={index} show={shownShopIndex === index} centered>
+                      <Modal.Header>
+                        <Modal.Title>
+                          <div>
+                            <span>分店</span>
+                            <button
+                              onClick={() => {
+                                setShownShopIndex(null)
+                              }}
+                              className="btn fw-bold position-absolute end-0 pe-3"
+                            >
+                              X
+                            </button>
+                          </div>
+                          <div className="fw-bold fs-5">{shop.branch}</div>
+                        </Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <div>
+                          <div>
+                            <FaLocationDot />
+                            {shop.address}
+                          </div>
+                          <div>
+                            <a
+                              className="text-decoration-none ps-3"
+                              href="tel:02+12345678"
+                            >
+                              <span className="text-black">(02)1234-5678</span>
+                            </a>
+                          </div>
+                        </div>
+                      </Modal.Body>
+                      <Modal.Footer className="d-flex justify-content-center">
+                        <button
+                          className="custom-btn"
+                          onClick={() => {
+                            dispatch(setDeliveryLocation(null))
+                            dispatch(
+                              setTakeoutInfo({
+                                branch: shop.branch,
+                                address: shop.address
+                              })
+                            )
+                            navigate('/cart')
+                          }}
+                        >
+                          預約
+                        </button>
+                      </Modal.Footer>
+                    </Modal>
+                  ))}
+                {shopDetail.length === 1 && (
+                  <Modal show={shownShopIndex === 0} centered>
+                    <Modal.Header>
+                      <Modal.Title>
+                        <div>
+                          <span>分店</span>
+                          <button
+                            onClick={() => {
+                              setShownShopIndex(null)
+                            }}
+                            className="btn fw-bold position-absolute end-0 pe-3"
+                          >
+                            X
+                          </button>
+                        </div>
+                        <div className="fw-bold fs-5">
+                          {shopDetail[0].branch}
+                        </div>
+                      </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <div>
+                        <div>
+                          <FaLocationDot />
+                          {shopDetail[0].address}
+                        </div>
+                        <div>
+                          <a
+                            className="text-decoration-none ps-3"
+                            href="tel:02+12345678"
+                          >
+                            <span className="text-black">(02)1234-5678</span>
+                          </a>
+                        </div>
+                      </div>
+                    </Modal.Body>
+                    <Modal.Footer className="d-flex justify-content-center">
+                      <button
+                        className="custom-btn"
+                        onClick={() => {
+                          dispatch(setDeliveryLocation(null))
+                          dispatch(
+                            setTakeoutInfo({
+                              branch: shopDetail[0].branch,
+                              address: shopDetail[0].address
+                            })
+                          )
+                          navigate('/cart')
+                        }}
+                      >
+                        預約
+                      </button>
+                    </Modal.Footer>
+                  </Modal>
+                )}
               </GoogleMap>
             )}
           </div>

@@ -142,9 +142,6 @@
     display: flex;
     justify-content: center;
   }
-  .custom-small-font {
-    font-size: 10px;
-  }
   .mobile-small-font {
     @media (max-width: $md) {
       font-size: 12px;

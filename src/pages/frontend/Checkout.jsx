@@ -125,18 +125,18 @@ const Checkout = () => {
                 </div>
               </div>
               <div className="border bg-white rounded p-2">
-                <div className="h6 flex-between pt-2 text-black">
+                <div className="flex-between pt-2 text-black pb-2">
                   <div>小計:</div>
                   <div>{'NT$' + sum}</div>
                 </div>
                 {deliveryLocation && (
-                  <div className="h6 flex-between pt-2 text-black">
+                  <div className="flex-between pt-2 text-black pb-2">
                     <div>運費: </div>
                     <div>{'NT$' + shippingFee}</div>
                   </div>
                 )}
 
-                <div className="h4 flex-between border-top pt-2 text-black fs-5">
+                <div className="flex-between border-top pt-2 text-black fs-5">
                   <div>總計</div> <div>{'NT$' + total}</div>
                 </div>
               </div>

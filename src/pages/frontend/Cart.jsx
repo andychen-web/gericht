@@ -466,7 +466,7 @@ const Cart = () => {
                       <Field
                         type="text"
                         name="email"
-                        className="form-control form-control-sm custom-small-font"
+                        className="form-control form-control-sm "
                         id="userEmail"
                         autoComplete="on"
                         placeholder="請輸入訂購人電子郵件"
@@ -488,7 +488,7 @@ const Cart = () => {
                           name="name"
                           id="userName"
                           autoComplete="on"
-                          className="form-control form-control-sm custom-small-font"
+                          className="form-control form-control-sm"
                           placeholder="請輸入訂購人姓名"
                         />
                         <ErrorMessage
@@ -506,7 +506,7 @@ const Cart = () => {
                           type="text"
                           name="mobile"
                           id="userTel"
-                          className="form-control custom-small-font"
+                          className="form-control form-control-sm"
                           placeholder="請輸入訂購人聯絡電話"
                         />
                         <ErrorMessage
@@ -522,7 +522,7 @@ const Cart = () => {
                         name="text"
                         id="message"
                         placeholder="商品備註"
-                        className="form-control form-control-sm custom-small-font"
+                        className="form-control form-control-sm"
                       />
                     </div>
                   </Modal.Body>

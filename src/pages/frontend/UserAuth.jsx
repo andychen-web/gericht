@@ -1,7 +1,7 @@
 import { GoogleLogin } from '@react-oauth/google'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import jwtDecode from 'jwt-decode'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Container from 'react-bootstrap/esm/Container'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -143,9 +143,6 @@ const UserAuth = () => {
       console.log(error)
     }
   }
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
   return (
     <main className="bg">
       <Loader isLoading={isLoading} />

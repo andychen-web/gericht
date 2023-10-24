@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import Container from 'react-bootstrap/esm/Container'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -72,9 +72,6 @@ const AdminAuth = () => {
       setPassword('')
     }
   }
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
   return (
     <main className="bg">
       <Loader isLoading={isLoading} />

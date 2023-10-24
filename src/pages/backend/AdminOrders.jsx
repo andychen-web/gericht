@@ -75,9 +75,6 @@ const AdminOrders = () => {
   }, [adminToken])
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-  useEffect(() => {
     getOrders(currentPage, 'all')
   }, [currentPage])
   return (

@@ -189,7 +189,6 @@ const Products = () => {
   }, [products])
 
   useEffect(() => {
-    window.scrollTo(0, 0)
     const blurDivs = document.querySelectorAll('.blur-load')
     blurDivs.forEach((div) => {
       const img = div.querySelector('img')
@@ -230,7 +229,7 @@ const Products = () => {
               ))}
             </ul>
 
-            <div className="h4 special-text fw-bold">價格區間</div>
+            <h5 className="special-text fw-bold pt-2">價格區間</h5>
             <ul className="bg-dark list-unstyled border">
               {priceRangeArr.map((priceRange, key) => (
                 <li key={key}>
@@ -269,7 +268,7 @@ const Products = () => {
                     </div>
 
                     <div>{product.title}</div>
-                    <h4 className="pe-2">NT$ {product.price}</h4>
+                    <h5 className="pe-2">NT$ {product.price}</h5>
                     <div className="btn-group w-100">
                       <button
                         type="button"

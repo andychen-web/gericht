@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { BsFillTrash3Fill } from 'react-icons/bs'
 import { setCompletedOrders } from '../../slices/orderFormSlice.js'
 import AdminSideBar from '../../components/AdminSideBar.jsx'
-
+import { FcCancel, FcOk, FcMediumPriority } from 'react-icons/fc'
 const AdminOrders = () => {
   const navigate = useNavigate()
   const adminToken = useSelector((state) => state.token.adminToken)
@@ -138,9 +138,24 @@ const AdminOrders = () => {
                           </td>
                           <td>{order.paymentMethod}</td>
                           <td>
-                            {order.orderStatus === '已取消' && '❌已取消'}
-                            {order.orderStatus === '未付款' && '💲未付款'}
-                            {order.orderStatus === '已取餐' && '🆗已取餐'}
+                            {order.orderStatus === '已取消' && (
+                              <div>
+                                <FcCancel size={20} />
+                                已取消
+                              </div>
+                            )}
+                            {order.orderStatus === '未付款' && (
+                              <div>
+                                <FcMediumPriority size={20} />
+                                未付款
+                              </div>
+                            )}
+                            {order.orderStatus === '已取餐' && (
+                              <div>
+                                <FcOk size={20} />
+                                已取餐
+                              </div>
+                            )}
                           </td>
                           <td>
                             <BsFillTrash3Fill
@@ -150,7 +165,7 @@ const AdminOrders = () => {
                           </td>
                           <td>
                             <AiFillFileText
-                              onClick={() => navigate(`/order/${order._id}`)}
+                              onClick={() => navigate(`/admin/${order._id}`)}
                               className="cursor-pointer fs-3"
                             />
                           </td>
@@ -167,7 +182,7 @@ const AdminOrders = () => {
                     return (
                       <li key={index} className="card mb-3">
                         <div className="row align-items-center">
-                          <div className="col-8">
+                          <div className="col-md-8 col-7">
                             <div className="card-body">
                               <ul className="list-unstyled">
                                 <li className="mb-2">
@@ -190,9 +205,9 @@ const AdminOrders = () => {
                               </ul>
                             </div>
                           </div>
-                          <div className="col-4">
+                          <div className="col-md-4 col-5">
                             <button
-                              onClick={() => navigate(`/order/${order._id}`)}
+                              onClick={() => navigate(`/admin/${order._id}`)}
                               className="cursor-pointer custom-btn custom-small-font"
                             >
                               查看訂單

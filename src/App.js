@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import './css/custom.css'
+import './assets/stylesheets/all.scss'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Products from './pages/frontend/Products'
 import UserAuth from './pages/frontend/UserAuth'

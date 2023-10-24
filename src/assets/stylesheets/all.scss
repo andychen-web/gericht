@@ -1,0 +1,24 @@
+@import '~bootstrap/scss/functions';
+@import './utils/variables'; //自定義變數
+@import '~bootstrap/scss/bootstrap';
+
+// util
+@import './utils/mixins';
+@import './utils/utils';
+
+@import './base/base';
+@import './base/typography';
+
+// layouts
+@import './layouts/cart';
+@import './layouts/home';
+@import './layouts/products';
+
+// component
+@import './components/nav';
+@import './components/container';
+@import './components/background';
+@import './components/button';
+@import './components/card';
+@import './components/datapicker';
+@import './components/product';

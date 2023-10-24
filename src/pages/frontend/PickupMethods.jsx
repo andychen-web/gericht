@@ -114,7 +114,7 @@ const PickupMethods = () => {
       <div className="container custom-padding-top">
         <div className="row d-flex justify-content-center py-3 fs-5 px-2">
           <a
-            className={`text-decoration-none custom-btn ${
+            className={` custom-btn ${
               pickupMethod === 'takeout' ? 'active' : 'inactive'
             }`}
             role="button"
@@ -124,7 +124,7 @@ const PickupMethods = () => {
             <span>到店自取</span>
           </a>
           <a
-            className={`ms-2 text-decoration-none custom-btn ${
+            className={`ms-2 custom-btn ${
               pickupMethod === 'delivery' ? 'active' : 'inactive'
             }`}
             onClick={() => setPickupMethod('delivery')}
@@ -247,10 +247,7 @@ const PickupMethods = () => {
                             {shop.address}
                           </div>
                           <div>
-                            <a
-                              className="text-decoration-none ps-3"
-                              href="tel:02+12345678"
-                            >
+                            <a className="ps-3" href="tel:02+12345678">
                               <span className="text-black">(02)1234-5678</span>
                             </a>
                           </div>
@@ -302,10 +299,7 @@ const PickupMethods = () => {
                           {shopDetail[0].address}
                         </div>
                         <div>
-                          <a
-                            className="text-decoration-none ps-3"
-                            href="tel:02+12345678"
-                          >
+                          <a className="ps-3" href="tel:02+12345678">
                             <span className="text-black">(02)1234-5678</span>
                           </a>
                         </div>

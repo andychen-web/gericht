@@ -1,0 +1,9 @@
+.container.custom-padding-top {
+  padding-top: 8rem;
+  @media (min-width: $md) {
+    padding-top: 6rem;
+  }
+}
+.container.custom-padding-bottom {
+  padding-bottom: 6rem;
+}

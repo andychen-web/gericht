@@ -5,9 +5,8 @@ import Row from 'react-bootstrap/Row'
 import Loader from '../../components/Loader.jsx'
 import { AiFillFileText } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { BsFillTrash3Fill } from 'react-icons/bs'
-import { setCompletedOrders } from '../../slices/orderFormSlice.js'
 import AdminSideBar from '../../components/AdminSideBar.jsx'
 import { FcCancel, FcOk, FcMediumPriority } from 'react-icons/fc'
 const AdminOrders = () => {
@@ -19,7 +18,7 @@ const AdminOrders = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [hasNext, setHasNext] = useState(true)
   const [hasPre, setHasPre] = useState(false)
-  const dispatch = useDispatch()
+  const [queryType, setQueryType] = useState('')
   const getOrders = async (page, orderStatus) => {
     setIsLoading(true)
     if (!orderStatus) {
@@ -40,7 +39,6 @@ const AdminOrders = () => {
       setHasPre(data.pagination.has_pre)
       setHasNext(data.pagination.has_next)
       setTotalPages(data.pagination.total_pages)
-      dispatch(setCompletedOrders(data.orders))
       setOrders(data.orders)
     } catch (err) {
       console.log(err)
@@ -77,6 +75,10 @@ const AdminOrders = () => {
   useEffect(() => {
     getOrders(currentPage, 'all')
   }, [currentPage])
+  const handleQuery = (page, type) => {
+    setQueryType(type)
+    getOrders(page, type)
+  }
   return (
     <main className="bg-beige">
       <Loader isLoading={isLoading} />
@@ -87,25 +89,33 @@ const AdminOrders = () => {
             <div className="h2 fw-bold">訂單</div>
             <div className="d-flex">
               <button
-                onClick={() => getOrders(1, 'all')}
+                onClick={() => {
+                  handleQuery(1, 'all')
+                }}
                 className="mb-3  mw-sm btn-sm btn btn-dark custom-small-font"
               >
                 全部訂單
               </button>
               <button
-                onClick={() => getOrders(1, '已取消')}
+                onClick={() => {
+                  handleQuery(1, '已取消')
+                }}
                 className="mb-3 mw-sm btn-sm mx-1 mx-md-3 btn btn-danger custom-small-font"
               >
                 已取消訂單
               </button>
               <button
-                onClick={() => getOrders(1, '未付款')}
+                onClick={() => {
+                  handleQuery(1, '未付款')
+                }}
                 className="mb-3 mw-sm btn-sm  btn btn-warning custom-small-font"
               >
                 尚未付款
               </button>
               <button
-                onClick={() => getOrders(1, '已取餐')}
+                onClick={() => {
+                  handleQuery(1, '已取餐')
+                }}
                 className="mb-3 mw-sm btn-sm mx-1 mx-md-3 btn btn-success custom-small-font"
               >
                 已完成訂單
@@ -165,7 +175,9 @@ const AdminOrders = () => {
                           </td>
                           <td>
                             <AiFillFileText
-                              onClick={() => navigate(`/admin/${order._id}`)}
+                              onClick={() =>
+                                navigate(`/admin/orders/${order._id}`)
+                              }
                               className="cursor-pointer fs-3"
                             />
                           </td>
@@ -207,7 +219,9 @@ const AdminOrders = () => {
                           </div>
                           <div className="col-md-4 col-5">
                             <button
-                              onClick={() => navigate(`/admin/${order._id}`)}
+                              onClick={() =>
+                                navigate(`/admin/orders/${order._id}`)
+                              }
                               className="cursor-pointer custom-btn custom-small-font"
                             >
                               查看訂單
@@ -251,7 +265,7 @@ const AdminOrders = () => {
                       >
                         <a
                           className="page-link"
-                          onClick={() => getOrders(index + 1, 'all')}
+                          onClick={() => getOrders(index + 1, queryType)}
                         >
                           {index + 1}
                         </a>

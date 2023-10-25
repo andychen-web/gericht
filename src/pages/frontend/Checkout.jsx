@@ -3,11 +3,12 @@ import Container from 'react-bootstrap/Container'
 import { FaPencilAlt } from 'react-icons/fa'
 import { BsFillCartFill } from 'react-icons/bs'
 import { Col } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import Loader from '../../components/Loader'
+import { setCartUpdate } from '../../slices/cartSlice'
 
 const Checkout = () => {
   const MySwal = withReactContent(Swal)
@@ -22,6 +23,7 @@ const Checkout = () => {
   const [step, setStep] = useState(1)
   const [paymentMethod, setPaymentMethod] = useState('')
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   if (!token) {
     navigate('/userAuth')
   }
@@ -69,13 +71,12 @@ const Checkout = () => {
   useEffect(() => {
     if (token && step === 3) {
       setIsLoading(true)
-      const requestOptions = {
+      fetch(`${process.env.REACT_APP_CUSTOM_API}/orders/order`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${process.env.REACT_APP_ORDER_API_KEY}`
         },
-        redirect: 'follow',
         body: JSON.stringify({
           ...orderForm,
           total,
@@ -83,8 +84,7 @@ const Checkout = () => {
           paymentMethod,
           orderStatus: '未付款'
         })
-      }
-      fetch(`${process.env.REACT_APP_CUSTOM_API}/orders/order`, requestOptions)
+      })
         .then((response) => response.json())
         .then((data) => {
           if (data) {
@@ -321,7 +321,10 @@ const Checkout = () => {
                   )}
                   {step === 3 && (
                     <button
-                      onClick={() => navigate('/products')}
+                      onClick={() => {
+                        dispatch(setCartUpdate(1))
+                        navigate('/products')
+                      }}
                       id="toProducts"
                       className="cursor-pointer custom-btn fw-bold me-4"
                     >

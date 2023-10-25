@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import PropTypes from 'prop-types'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { setFavorites } from '../../slices/favoritesSlice'
 import { setCartUpdate } from '../../slices/cartSlice'
@@ -12,12 +11,11 @@ import Alert from '../../components/Alert'
 import { BsFillCartFill } from 'react-icons/bs'
 import { FaRegHeart, FaHeart } from 'react-icons/fa'
 
-const Product = ({ product }) => {
-  Product.propTypes = {
-    product: PropTypes.object
-  }
-  const products = useSelector((state) => state.product.productArray)
+const Product = () => {
+  const { id } = useParams()
   const dispatch = useDispatch()
+  const products = useSelector((state) => state.product.productArray)
+  const [product, setProduct] = useState({})
   const [alertQueue, setAlertQueue] = useState([])
   const token = useSelector((state) => state.token.token)
   const currentUser = useSelector((state) => state.user.currentUser)
@@ -27,10 +25,7 @@ const Product = ({ product }) => {
   const favorites = useSelector((state) => state.favorite.favoriteList)
 
   const relatedProducts = products.filter(
-    (item) => item.category === product.category
-  )
-  const uniqueRelatedProducts = relatedProducts.filter(
-    (item) => item.id !== product.id
+    (item) => item.category === product.category && item.id !== product.id
   )
   const handleLike = (product) => {
     dispatch(setFavorites(product))
@@ -39,7 +34,23 @@ const Product = ({ product }) => {
   const handleAlert = (message) => {
     setAlertQueue((prevQueue) => [...prevQueue, { message }])
   }
-
+  const getProduct = async () => {
+    setIsLoading(true)
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API}api/${process.env.REACT_APP_PATH}/product/${id}`,
+        { method: 'GET' }
+      )
+      const data = await response.json()
+      setProduct(data.product)
+    } catch (error) {
+      console.log(error)
+    }
+    setIsLoading(false)
+  }
+  useEffect(() => {
+    getProduct()
+  }, [])
   const addToCart = async (product, quantity) => {
     if (!token) {
       navigate('/userAuth')
@@ -227,15 +238,18 @@ const Product = ({ product }) => {
           <div className="bg-beige px-5 py-3 rounded">
             <h5 className="title-border"> 類似商品</h5>
             <Row>
-              {uniqueRelatedProducts.length > 0 &&
-                uniqueRelatedProducts.map((product) => (
+              {relatedProducts.length > 0 &&
+                relatedProducts.map((product) => (
                   <Col key={product.id} md={4} xs={12} className="mb-4">
                     <img
                       width={'150px'}
                       className="rounded cursor-pointer"
                       src={product.image}
                       alt={product.title}
-                      onClick={() => navigate(`/product/${product.id}`)}
+                      onClick={() => {
+                        setProduct(product)
+                        navigate(`/product/${product.id}`)
+                      }}
                     />
                     <div>{product.title}</div>
                   </Col>

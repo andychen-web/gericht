@@ -1,17 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Container from 'react-bootstrap/Container'
 import Loader from './Loader'
-import { useNavigate } from 'react-router-dom'
-import PropTypes from 'prop-types'
-import { useDispatch } from 'react-redux'
-import { setCompletedOrders } from '../slices/orderFormSlice'
+import { useNavigate, useParams } from 'react-router-dom'
 
-const Order = ({ order }) => {
-  Order.propTypes = {
-    order: PropTypes.object
-  }
+const Order = () => {
+  const { id } = useParams()
+  const [order, setOrder] = useState({})
   const [isUpdate, setIsUpdate] = useState(false)
-  const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const orderDetails = [
@@ -23,6 +18,23 @@ const Order = ({ order }) => {
     },
     { label: '訂單狀態', value: order.orderStatus }
   ]
+  if (order.takeoutInfo) {
+    orderDetails.push(
+      {
+        label: '預計取餐時間',
+        value: order.pickupTime
+      },
+      { label: '外帶店家', value: order.takeoutInfo.branch }
+    )
+  } else if (order.deliveryLocation) {
+    orderDetails.push(
+      {
+        label: '預計送達時間',
+        value: order.pickupTime
+      },
+      { label: '外送地點', value: order.deliveryLocation }
+    )
+  }
   const updateOrderStatus = async (newStatus) => {
     setIsLoading(true)
     try {
@@ -46,42 +58,32 @@ const Order = ({ order }) => {
     }
     setIsLoading(false)
   }
-  const getAllOrders = async () => {
+  const getOrder = async () => {
+    setIsLoading(true)
     try {
-      const res = await fetch(`${process.env.REACT_APP_CUSTOM_API}/orders`, {
-        method: 'GET',
-        redirect: 'follow',
-        headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_ORDER_API_KEY}`
+      const res = await fetch(
+        `${process.env.REACT_APP_CUSTOM_API}/orders/${id}`,
+        {
+          method: 'GET',
+          redirect: 'follow',
+          headers: {
+            Authorization: `Bearer ${process.env.REACT_APP_ORDER_API_KEY}`
+          }
         }
-      })
+      )
       const data = await res.json()
-      dispatch(setCompletedOrders(data.orders))
+      setOrder(data)
     } catch (err) {
       console.log(err)
     }
+    setIsLoading(false)
   }
+  useEffect(() => {
+    getOrder()
+  }, [])
   if (isUpdate) {
-    getAllOrders()
+    getOrder()
     setIsUpdate(false)
-  }
-
-  if (order.takeoutInfo) {
-    orderDetails.push(
-      {
-        label: '預計取餐時間',
-        value: order.pickupTime
-      },
-      { label: '外帶店家', value: order.takeoutInfo.branch }
-    )
-  } else if (order.deliveryLocation) {
-    orderDetails.push(
-      {
-        label: '預計送達時間',
-        value: order.pickupTime
-      },
-      { label: '外送地點', value: order.deliveryLocation }
-    )
   }
   const buyerDetails = [
     { label: '買家姓名', value: order.name },
@@ -89,12 +91,12 @@ const Order = ({ order }) => {
     { label: '買家信箱', value: order.email },
     { label: '買家備註', value: order.message ? order.message : '無' }
   ]
-  const productArr = order.cartItems.map((item) => [
+  const productArr = order.cartItems?.map((item) => [
     { label: '商品名稱', value: item.title },
     { label: '商品數量', value: item.quantity },
     { label: '商品總價', value: 'NT$' + item.price * item.quantity }
   ])
-  const productImgArr = order.cartItems.map((item) => item.imageUrl)
+  const productImgArr = order.cartItems?.map((item) => item.image)
 
   return (
     <div className="bg-beige">
@@ -117,24 +119,18 @@ const Order = ({ order }) => {
                     </li>
                   )
                 })}
-                <div className="d-flex justify-content-start mt-3">
+                <div className="d-flex justify-content-start my-2">
                   <button
-                    className={`cursor-pointer btn btn-success ${
-                      order.orderStatus === '已取餐' ||
-                      order.orderStatus === '已取消'
-                        ? 'd-none'
-                        : ''
+                    className={`cursor-pointer btn btn-success  ${
+                      order.orderStatus === '未付款' ? 'd-block' : 'd-none'
                     }`}
                     onClick={() => updateOrderStatus('已取餐')}
                   >
                     確認已取餐
                   </button>
                   <button
-                    className={`ms-2 cursor-pointer btn btn-danger ${
-                      order.orderStatus === '已取餐' ||
-                      order.orderStatus === '已取消'
-                        ? 'd-none'
-                        : ''
+                    className={`ms-2 cursor-pointer btn btn-danger  ${
+                      order.orderStatus === '未付款' ? 'd-block' : 'd-none'
                     }`}
                     onClick={() => updateOrderStatus('已取消')}
                   >

@@ -13,8 +13,7 @@ const migrations = {
     return {
       ...state,
       orderForm: {
-        ...state.orderForm,
-        completedOrders: []
+        ...state.orderForm
       }
     }
   }

@@ -428,7 +428,7 @@ const Cart = () => {
                   <div>{'$' + sum}</div>
                 </div>
                 {deliveryLocation && (
-                  <div className="h6 flex-between pt-2 text-black">
+                  <div className="flex-between pt-2 pb-2 text-black">
                     <div>運費: </div>
                     <div>{'$' + shippingFee}</div>
                   </div>

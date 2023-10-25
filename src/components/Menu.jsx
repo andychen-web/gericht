@@ -18,7 +18,7 @@ const Menu = () => {
           </Col>
         </Row>
         <Row md={12} className="d-flex">
-          <Col md={4} className="fs-2 text-white fw-bold">
+          <Col md={4} className="fs-2 text-white ">
             <Row className="ps-2">葡萄酒與啤酒</Row>
             {wines.map((item, key) => (
               <div key={key}>
@@ -45,7 +45,7 @@ const Menu = () => {
               alt="menuImg"
             />
           </Col>
-          <Col md={4} className="fs-2 text-white fw-bold">
+          <Col md={4} className="fs-2 text-white ">
             雞尾酒
             {cocktails.map((item, key) => (
               <div key={key}>

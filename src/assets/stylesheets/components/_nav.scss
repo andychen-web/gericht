@@ -1,0 +1,17 @@
+.dropdown-menu {
+  max-width: 20%;
+}
+.nav-link.custom-link {
+  color: white;
+  &:hover {
+    color: grey;
+  }
+}
+.custom-nav {
+  z-index: 3;
+  width: 100vw;
+}
+#dropdown-custom-components {
+  background-color: #000;
+  border: none;
+}

@@ -1,0 +1,41 @@
+.vh-md-100 {
+  @media (min-width: $lg) {
+    height: 100vh;
+  }
+}
+.custom-top {
+  top: 4rem;
+}
+.category,
+.price-range {
+  color: #fdfaf6;
+  &:hover {
+    color: $golden;
+    background: #171819 !important;
+  }
+}
+.category.clicked,
+.price-range.clicked {
+  color: $golden;
+  background: #171819 !important;
+}
+@media (max-width: $md) {
+  .category-wrap {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .category-wrap li {
+    flex-basis: 50%;
+  }
+
+  .category {
+    text-align: left;
+    padding-left: 15px;
+  }
+}
+.filter-max-width {
+  @media (min-width: $md) {
+    max-width: 160px;
+  }
+}

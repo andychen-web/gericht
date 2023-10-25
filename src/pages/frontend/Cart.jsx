@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container'
 import Modal from 'react-bootstrap/Modal'
 import Row from 'react-bootstrap/Row'
 import Table from 'react-bootstrap/Table'
+import PropTypes from 'prop-types'
 import { BsFillCartFill, BsFillTrash3Fill } from 'react-icons/bs'
 import { FaPencilAlt } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
@@ -241,12 +242,12 @@ const Cart = () => {
       putQuantity(updatedProduct)
     }
   }, [currentIndex, changeCounter])
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
 
-  // eslint-disable-next-line react/prop-types
   function InfoRow({ title, info }) {
+    InfoRow.propTypes = {
+      title: PropTypes.string,
+      info: PropTypes.string
+    }
     return (
       <div className="row mb-2">
         <div className="col">
@@ -258,6 +259,7 @@ const Cart = () => {
       </div>
     )
   }
+
   if (token) {
     return (
       <main className="bg">
@@ -268,9 +270,7 @@ const Cart = () => {
             <Col xs={12} lg={7}>
               <div className="header-width rounded h3 d-flex bg-white border p-2">
                 <BsFillCartFill />
-                <span className="ps-2 fs-5 title-bg text-black">
-                  購物車清單
-                </span>
+                <h5 className="ps-2  title-bg text-black">購物車清單</h5>
               </div>
 
               <Table
@@ -423,17 +423,17 @@ const Cart = () => {
               </Container>
               {/* 結帳金額 */}
               <div className="border bg-white rounded p-2">
-                <div className="h6 flex-between pt-2 text-black">
+                <div className="flex-between pt-2 pb-2 text-black">
                   <div>小計:</div>
                   <div>{'$' + sum}</div>
                 </div>
                 {deliveryLocation && (
-                  <div className="h6 flex-between pt-2 text-black">
+                  <div className="flex-between pt-2 pb-2 text-black">
                     <div>運費: </div>
                     <div>{'$' + shippingFee}</div>
                   </div>
                 )}
-                <div className="h4 flex-between border-top pt-2 text-black fs-5">
+                <div className="flex-between border-top pt-2 text-black fs-5">
                   <div>總計</div> <div>{'$' + total}</div>
                 </div>
                 <button
@@ -466,7 +466,7 @@ const Cart = () => {
                       <Field
                         type="text"
                         name="email"
-                        className="form-control form-control-sm custom-small-font"
+                        className="form-control form-control-sm "
                         id="userEmail"
                         autoComplete="on"
                         placeholder="請輸入訂購人電子郵件"
@@ -488,7 +488,7 @@ const Cart = () => {
                           name="name"
                           id="userName"
                           autoComplete="on"
-                          className="form-control form-control-sm custom-small-font"
+                          className="form-control form-control-sm"
                           placeholder="請輸入訂購人姓名"
                         />
                         <ErrorMessage
@@ -506,7 +506,7 @@ const Cart = () => {
                           type="text"
                           name="mobile"
                           id="userTel"
-                          className="form-control custom-small-font"
+                          className="form-control form-control-sm"
                           placeholder="請輸入訂購人聯絡電話"
                         />
                         <ErrorMessage
@@ -522,7 +522,7 @@ const Cart = () => {
                         name="text"
                         id="message"
                         placeholder="商品備註"
-                        className="form-control form-control-sm custom-small-font"
+                        className="form-control form-control-sm"
                       />
                     </div>
                   </Modal.Body>

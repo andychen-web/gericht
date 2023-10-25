@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import './css/custom.css'
+import './assets/stylesheets/all.scss'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Products from './pages/frontend/Products'
 import UserAuth from './pages/frontend/UserAuth'
@@ -21,8 +20,6 @@ import AdminProducts from './pages/backend/AdminProducts'
 
 function App() {
   const dispatch = useDispatch()
-  const orders = useSelector((state) => state.orderForm.completedOrders)
-  const products = useSelector((state) => state.product.productArray)
   const token = useSelector((state) => state.token.token)
   const adminToken = useSelector((state) => state.token.adminToken)
   const currentUser = useSelector((state) => state.user.currentUser)
@@ -47,14 +44,7 @@ function App() {
         >
           <Route path="orders" element={<AdminOrders />} />
           <Route path="products" element={<AdminProducts />} />
-          {orders?.length > 0 &&
-            orders.map((order) => (
-              <Route
-                key={order._id}
-                path={`${order._id}`}
-                element={<Order order={order} />}
-              />
-            ))}
+          <Route path="orders/:id" element={<Order />} />
         </Route>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
@@ -64,14 +54,7 @@ function App() {
         <Route path="/userAuth" element={<UserAuth />} />
         <Route path="/adminAuth" element={<AdminAuth />} />
         <Route path="/pickupMethods" element={<PickupMethods />} />
-        {products?.length > 0 &&
-          products.map((product) => (
-            <Route
-              key={product.id}
-              path={`product/${product.id}`}
-              element={<Product product={product} />}
-            />
-          ))}
+        <Route path="/product/:id" element={<Product />} />
       </Routes>
       <Footer />
     </>

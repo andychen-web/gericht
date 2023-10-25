@@ -1,0 +1,24 @@
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none !important;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+img {
+  height: auto;
+}
+main {
+  min-height: 75vh;
+  @media (max-width: $md) {
+    min-height: 50vh;
+  }
+}
+pre {
+  white-space: pre-wrap;
+}

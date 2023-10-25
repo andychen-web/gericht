@@ -16,7 +16,7 @@ const AboutUs = () => {
             className="d-center flex-column align-items-end"
           >
             <span className=" fw-bold custom-text">關於我們</span>
-            <h5 className="text-white py-1 xs:text-start md:text-end w-75">
+            <h5 className="text-white py-1 w-100 ps-4 text-end">
               我們充滿熱情，致力於提供卓越的產品和服務。我們深信唯有不斷探索和創新才能滿足客戶的需求。
             </h5>
           </Col>

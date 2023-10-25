@@ -1,0 +1,200 @@
+.form-group {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  .heading {
+    position: relative;
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: -0.5rem;
+      width: 40px;
+      height: 2px;
+      left: 3rem;
+      background: $golden;
+      margin-left: -20px;
+    }
+  }
+  .header-width {
+    width: 11rem;
+    margin-bottom: 1rem;
+  }
+  .title-border {
+    position: relative;
+    z-index: 0;
+    font-weight: 700;
+    &:after {
+      content: '';
+      position: absolute;
+      background: $golden;
+      top: 1.4rem;
+      width: 5.5rem;
+      left: 0;
+      height: 3px;
+      z-index: -1;
+    }
+  }
+  .signature-text {
+    font-family: 'Cormorant Upright', serif;
+    font-size: 2.5rem;
+    color: $golden;
+  }
+  .custom-text {
+    color: $golden;
+    @media (min-width: 300px) {
+      font-size: 2.3rem;
+    }
+    @media (min-width: 1200px) {
+      font-size: 4rem;
+    }
+  }
+  .hidden {
+    opacity: 0;
+    @include transitionAll(0.7s);
+  }
+  .show {
+    opacity: 1;
+  }
+  
+  .white-line {
+    width: 10%;
+    height: 1px;
+    background-color: white;
+  }
+  
+  .special-text {
+    font-family: 'Cormorant Upright', serif;
+    color: $golden;
+  }
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  .laurels {
+    @media (min-width: 300px) {
+      display: none;
+    }
+    @media (min-width: 800px) {
+      max-width: 130%;
+      position: relative;
+      bottom: 10rem;
+      display: block;
+    }
+  
+    @media (min-width: 1200px) {
+      max-width: 80%;
+      bottom: 0;
+    }
+  }
+  .scrollbar {
+    cursor: pointer;
+  }
+  .gallery {
+    scroll-behavior: smooth;
+  }
+  .custom-icon {
+    cursor: pointer;
+    color: white;
+    font-size: 1.5rem;
+    &:hover {
+      color: $golden;
+      @include transitionAll(0.3s);
+    }
+  }
+  .form-control:focus {
+    box-shadow: none;
+  }
+  
+  .menu-products {
+    width: 100%;
+    height: 270px;
+    object-fit: cover;
+    object-position: center;
+    @include transitionAll(0.3s);
+    &:hover {
+      transform: scale(1.2);
+      opacity: 0.6;
+    }
+  }
+  .check-detail {
+    position: absolute;
+    opacity: 0;
+    font-weight: bold;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    bottom: 40%;
+    left: 50%;
+    @include transitionAll(0.3s);
+  }
+  .product-img-wrap:hover {
+    cursor: pointer;
+    .check-detail {
+      opacity: 1;
+    }
+  }
+  .flex-between {
+    display: flex;
+    justify-content: space-between;
+  }
+  .align-center {
+    vertical-align: middle;
+  }
+  .d-center {
+    display: flex;
+    justify-content: center;
+  }
+  .mobile-small-font {
+    @media (max-width: $md) {
+      font-size: 12px;
+    }
+  }
+  .sm-font {
+    @media (max-width: $md) {
+      font-size: 10px;
+    }
+  }
+  .sm-height {
+    @media (max-width: $md) {
+      height: 30px;
+    }
+  }
+  .page-link {
+    color: #000;
+  }
+  .active > .page-link,
+  .page-link.active {
+    color: #000;
+    background-color: $golden;
+    border: 1px solid #dee2e6;
+  }
+  .page-link:focus {
+    color: #000;
+    box-shadow: 0 0 0 0.25rem rgba(220, 202, 135, 0.5);
+  }
+  .page-link:hover {
+    color: #000;
+  }
+  .blur-load {
+    background-size: cover;
+    background-position: center;
+    & > img {
+      opacity: 0;
+    }
+    &.loaded > img {
+      opacity: 1;
+      transition: opacity 0.5s ease-in-out;
+    }
+  }
+  .videobox {
+    position: relative;
+    width: 80%;
+    height: 100%;
+    margin: auto;
+    padding-bottom: 56.25%;
+  }
+  .videobox iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }

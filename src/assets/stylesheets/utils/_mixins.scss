@@ -1,0 +1,7 @@
+@mixin transitionAll($time) {
+  transition: all $time ease-in-out;
+}
+@mixin bg-img-cover($url) {
+  background-image: url($url);
+  background-size: cover;
+}

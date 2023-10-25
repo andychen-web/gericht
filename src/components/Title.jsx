@@ -10,7 +10,7 @@ const Title = ({ title, subTitle }) => {
   
   return (
     <>
-      <h4 className="text-white">{title}</h4>
+      <h5 className="text-white">{title}</h5>
       <img height={'auto'} width={'40px'} src={images.spoon} alt="image" />
       <span className="fw-bold custom-text fs-1">{subTitle}</span>
     </>

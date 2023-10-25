@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import { store, persistor } from './store'
 import { PersistGate } from 'redux-persist/integration/react'
 import { GoogleOAuthProvider } from '@react-oauth/google'
+import ScrollTop from './components/ScrollTop'
 
 const root = createRoot(document.getElementById('root'))
 root.render(
@@ -13,6 +14,7 @@ root.render(
     <BrowserRouter>
       <Provider store={store}>
         <PersistGate persistor={persistor}>
+          <ScrollTop />
           <App />
         </PersistGate>
       </Provider>

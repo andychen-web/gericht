@@ -1,0 +1,16 @@
+#productWrap,
+.product-info {
+  max-width: 490px;
+  @media (min-width: $md) {
+    max-width: 540px;
+  }
+}
+.position-left.product-img {
+  height: 300px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.product-card {
+  width: 160px;
+}

@@ -44,105 +44,15 @@
 
   檢查用戶的購物車裡是否已經有了目前要加入的商品
 
-  首先查看用戶購物車中是否有與當前產品同名的品項。
+  首先查看用戶購物車中，是否有與當前選擇新增產品同名的品項。
 
-  若有，就把這個商品存到 duplicateCartItem 變數裡，再根據 duplicateCartItem 的 quantity，把購物車既有產品更新；
+  若有，就把這個商品存到 duplicateCartItem 變數裡，再根據 duplicateCartItem 的 quantity property，把購物車既有產品更新；
 
   若無，把當前指定的商品直接加入到購物車中
+  
+## 後端程式碼
 
-  ```jsx
-  // Products 頁面
-  const addToCart = async (product) => {
-    if (!token) {
-      navigate('/userAuth')
-    } else {
-      setIsLoading(true)
-
-      const res = await fetch(
-        `${process.env.REACT_APP_API}api/newcart1/admin/products`,
-        {
-          method: 'GET',
-          headers: {
-            Authorization: token
-          }
-        }
-      )
-      const allCartItems = await res.json()
-      const userCartItems = allCartItems.products.filter(
-        (item) => item.uId === currentUser.id
-      )
-      const duplicateCartItem =
-        userCartItems.length > 0 &&
-        userCartItems.find((item) => item.title === product.title)
-
-      if (duplicateCartItem) {
-        try {
-          const response = await fetch(
-            `${process.env.REACT_APP_API}api/newcart1/admin/product/${duplicateCartItem.id}`,
-            {
-              method: 'PUT',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: token
-              },
-              body: JSON.stringify({
-                data: {
-                  uId: currentUser.id,
-                  title: product.title,
-                  origin_price: product.origin_price,
-                  price: product.price,
-                  unit: product.unit,
-                  quantity: duplicateCartItem.quantity + 1,
-                  category: product.category,
-                  imageUrl: product.image
-                }
-              })
-            }
-          )
-          const data = await response.json()
-          if (data.success) {
-            handleAlert('已更新購物車')
-          }
-        } catch (error) {
-          handleAlert('加入購物車失敗')
-        }
-      } else {
-        try {
-          const response = await fetch(
-            `${process.env.REACT_APP_API}api/newcart1/admin/product`,
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: token
-              },
-              body: JSON.stringify({
-                data: {
-                  uId: currentUser.id,
-                  title: product.title,
-                  origin_price: product.origin_price,
-                  price: product.price,
-                  unit: product.unit,
-                  quantity: product.quantity,
-                  category: product.category,
-                  imageUrl: product.image
-                }
-              })
-            }
-          )
-          const data = await response.json()
-          if (data.success) {
-            handleAlert('已新增至購物車')
-            dispatch(setCartUpdate(1))
-          }
-        } catch (error) {
-          handleAlert('加入購物車失敗')
-        }
-      }
-      setIsLoading(false)
-    }
-  }
-  ```
+- [Repo](https://github.com/andychen-web/gericht-server)
 
 ## 歡迎透過以下連結認識我
 

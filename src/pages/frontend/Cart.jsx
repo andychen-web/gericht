@@ -120,7 +120,7 @@ const Cart = () => {
   const putQuantity = async (updatedProduct) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API}api/newcart1/admin/product/${updatedProduct.id}`,
+        `${process.env.REACT_APP_API}api/${process.env.REACT_APP_CART_PATH}/product/${updatedProduct.id}`,
         {
           method: 'PUT',
           headers: {
@@ -141,7 +141,7 @@ const Cart = () => {
   const handleRemove = async (itemId) => {
     try {
       const res = await fetch(
-        `${process.env.REACT_APP_API}api/newcart1/admin/product/${itemId}`,
+        `${process.env.REACT_APP_API}api/${process.env.REACT_APP_CART_PATH}/product/${itemId}`,
         {
           headers: { Authorization: token },
           method: 'DELETE'
@@ -172,7 +172,7 @@ const Cart = () => {
     setIsLoading(true)
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API}api/newcart1/admin/products/all`,
+        `${process.env.REACT_APP_API}api/${process.env.REACT_APP_CART_PATH}/products/all`,
         {
           headers: { Authorization: token },
           method: 'GET'

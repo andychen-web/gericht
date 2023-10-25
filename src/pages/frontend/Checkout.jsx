@@ -37,7 +37,7 @@ const Checkout = () => {
   const cleanCart = async (id) => {
     try {
       const res = await fetch(
-        `${process.env.REACT_APP_API}api/newcart1/admin/product/${id}`,
+        `${process.env.REACT_APP_API}api/${process.env.REACT_APP_CART_PATH}/product/${id}`,
         {
           headers: { Authorization: token },
           method: 'DELETE'

@@ -97,7 +97,7 @@ const Products = () => {
       setIsLoading(true)
 
       const res = await fetch(
-        `${process.env.REACT_APP_API}api/newcart1/admin/products`,
+        `${process.env.REACT_APP_API}api/${process.env.REACT_APP_CART_PATH}/products`,
         {
           method: 'GET',
           headers: {
@@ -116,7 +116,7 @@ const Products = () => {
       if (duplicateCartItem) {
         try {
           const response = await fetch(
-            `${process.env.REACT_APP_API}api/newcart1/admin/product/${duplicateCartItem.id}`,
+            `${process.env.REACT_APP_API}api/${process.env.REACT_APP_CART_PATH}/product/${duplicateCartItem.id}`,
             {
               method: 'PUT',
               headers: {
@@ -147,7 +147,7 @@ const Products = () => {
       } else {
         try {
           const response = await fetch(
-            `${process.env.REACT_APP_API}api/newcart1/admin/product`,
+            `${process.env.REACT_APP_API}api/${process.env.REACT_APP_CART_PATH}/product`,
             {
               method: 'POST',
               headers: {

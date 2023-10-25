@@ -25,7 +25,7 @@ const Navigation = () => {
     const getCart = async (token) => {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API}api/newcart1/admin/products/all`,
+          `${process.env.REACT_APP_API}api/${process.env.REACT_APP_CART_PATH}/products/all`,
           {
             headers: { Authorization: token },
             method: 'GET'

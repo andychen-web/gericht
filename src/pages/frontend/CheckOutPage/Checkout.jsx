@@ -7,8 +7,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import Loader from '../../components/Loader'
-import { setCartUpdate } from '../../slices/cartSlice'
+import Loader from '../../../components/Loader'
+import { setCartUpdate } from '../../../slices/cartSlice'
 
 const Checkout = () => {
   const MySwal = withReactContent(Swal)

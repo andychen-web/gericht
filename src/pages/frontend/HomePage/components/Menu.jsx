@@ -2,8 +2,8 @@ import React from 'react'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
-import data from '../data/data'
-import images from '../data/images'
+import data from '../../../../data/data'
+import images from '../../../../data/images'
 import Title from './Title'
 const wines = data.wines
 const cocktails = data.cocktails

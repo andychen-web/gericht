@@ -5,11 +5,11 @@ import { GiScooter } from 'react-icons/gi'
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api'
 import Modal from 'react-bootstrap/Modal'
 import { useDispatch } from 'react-redux'
-import { setDeliveryLocation, setTakeoutInfo } from '../../slices/cartSlice'
+import { setDeliveryLocation, setTakeoutInfo } from '../../../slices/cartSlice'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import Loader from '../../components/Loader'
+import Loader from '../../../components/Loader'
 
 const PickupMethods = () => {
   const MySwal = withReactContent(Swal)

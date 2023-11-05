@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import images from '../data/images'
+import images from '../../../../data/images'
 import Title from './Title'
 import { useNavigate } from 'react-router'
 
@@ -17,7 +17,7 @@ const Header = () => {
     blurDivs.forEach((div) => {
       const img = div.querySelector('img')
 
-      function loaded () {
+      function loaded() {
         div.classList.add('loaded')
       }
 

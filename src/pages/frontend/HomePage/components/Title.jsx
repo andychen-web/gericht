@@ -1,5 +1,5 @@
 import React from 'react'
-import images from '../data/images'
+import images from '../../../../data/images'
 import PropTypes from 'prop-types';
 
 const Title = ({ title, subTitle }) => {
